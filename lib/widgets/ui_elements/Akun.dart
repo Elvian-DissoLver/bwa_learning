@@ -22,6 +22,8 @@ class Akun extends StatelessWidget {
         ),
         title: Text('Muhammad Sulaiman', style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        subtitle: Text('Admin', style: TextStyle(fontWeight: FontWeight.bold),
+        ),
 
       ),
     );

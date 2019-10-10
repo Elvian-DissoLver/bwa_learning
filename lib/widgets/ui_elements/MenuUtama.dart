@@ -1,4 +1,4 @@
-import 'package:bwa_learning/pages/beranda/Beranda.dart';
+import 'package:bwa_learning/pages/admin/beranda/Beranda.dart';
 import 'package:bwa_learning/pages/pesanan.dart';
 import 'package:bwa_learning/pages/simpan.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,15 +15,15 @@ class MenuUtama extends StatelessWidget {
       crossAxisCount: 5,
       children: <Widget>[
         MenuUtamaItem(
-            title: 'Materi Belajar',
-            icon: (FontAwesomeIcons.bookOpen),
+            title: 'Atur Kelas',
+            icon: Icons.class_,
             colorBox: Colors.blue,
             iconColor: Colors.white,
             onPressed: () {}
         ),
         MenuUtamaItem(
-            title: 'Jadwal Guru',
-            icon: (FontAwesomeIcons.calendarCheck),
+            title: 'Daftar Guru',
+            icon: (FontAwesomeIcons.chalkboardTeacher),
             colorBox: Colors.blue[900],
             iconColor: Colors.white,
             onPressed: () {}
@@ -32,13 +32,6 @@ class MenuUtama extends StatelessWidget {
             title: 'Daftar Murid',
             icon: Icons.person_pin,
             colorBox: Colors.purple,
-            iconColor: Colors.white,
-            onPressed: () {}
-        ),
-        MenuUtamaItem(
-            title: 'Tugas',
-            icon: (FontAwesomeIcons.listAlt),
-            colorBox: Colors.green[300],
             iconColor: Colors.white,
             onPressed: () {}
         ),

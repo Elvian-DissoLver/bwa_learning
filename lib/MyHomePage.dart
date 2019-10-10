@@ -1,4 +1,4 @@
-import 'package:bwa_learning/pages/beranda/Beranda.dart';
+import 'package:bwa_learning/pages/admin/beranda/Beranda.dart';
 import 'package:bwa_learning/pages/inbox.dart';
 import 'package:bwa_learning/pages/pesanan.dart';
 import 'package:bwa_learning/pages/profile.dart';
@@ -44,11 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.save),
-              title: Text('Simpan')
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.view_agenda),
-              title: Text('Pesanan')
+              title: Text('Notifikasi')
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.inbox),
