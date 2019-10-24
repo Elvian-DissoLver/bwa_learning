@@ -45,6 +45,10 @@ class _BerandaState extends State<Beranda> {
           Akun(),
           Divider(),
           MenuUtama(),
+          SizedBox(
+            height: 50.0,
+            width: 50.0,
+          ),
           Divider(),
           ProgramBWA(),
         ],
