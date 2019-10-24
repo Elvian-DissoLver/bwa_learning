@@ -1,5 +1,5 @@
 
-import 'package:bwa_learning/scoped_models/app_model.dart';
+import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:bwa_learning/widgets/ui_elements/Akun.dart';
 import 'package:bwa_learning/widgets/ui_elements/MenuUtama.dart';
 import 'package:bwa_learning/widgets/ui_elements/ProgramBWA.dart';
@@ -44,9 +44,9 @@ class _BerandaState extends State<Beranda> {
         children: <Widget>[
           Akun(),
           Divider(),
-          ProgramBWA(),
-          Divider(),
           MenuUtama(),
+          Divider(),
+          ProgramBWA(),
         ],
       ),
     );

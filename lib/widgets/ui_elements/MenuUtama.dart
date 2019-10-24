@@ -1,4 +1,5 @@
 import 'package:bwa_learning/pages/admin/beranda/Beranda.dart';
+import 'package:bwa_learning/pages/admin/daftar_kelas/DaftarKelas.dart';
 import 'package:bwa_learning/pages/pesanan.dart';
 import 'package:bwa_learning/pages/simpan.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,11 +16,11 @@ class MenuUtama extends StatelessWidget {
       crossAxisCount: 5,
       children: <Widget>[
         MenuUtamaItem(
-            title: 'Atur Kelas',
+            title: 'Daftar Kelas',
             icon: Icons.class_,
             colorBox: Colors.blue,
             iconColor: Colors.white,
-            onPressed: () {}
+            onPressed: () => Navigator.pushNamed(context, '/daftarKelas')
         ),
         MenuUtamaItem(
             title: 'Daftar Guru',

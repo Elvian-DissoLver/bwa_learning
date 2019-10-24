@@ -1,4 +1,5 @@
-import 'package:bwa_learning/scoped_models/app_model.dart';
+import 'package:bwa_learning/pages/admin/daftar_kelas/DaftarKelas.dart';
+import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:flutter/material.dart';
 import 'package:bwa_learning/pages/pesanan.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -28,13 +29,14 @@ class _BWALearningState extends State<BWALearning> {
     return ScopedModel<AppModel>(
       model: _model,
       child: MaterialApp(
-        title: 'Note.Ku',
+        title: 'BWA Learning',
         theme: ThemeData(
           primarySwatch: Colors.purple,
         ),
 
         routes: {
           '/': (BuildContext context) => MyHomePage(),
+          '/daftarKelas': (BuildContext context) => DaftarKelas(),
         },
         onUnknownRoute: (RouteSettings settings) {
           return MaterialPageRoute(
