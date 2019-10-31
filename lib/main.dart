@@ -1,5 +1,7 @@
+import 'package:bwa_learning/models/Teacher.dart';
 import 'package:bwa_learning/pages/admin/class_list/ClassList.dart';
 import 'package:bwa_learning/pages/admin/student_list/StudentList.dart';
+import 'package:bwa_learning/pages/admin/teacher_list/TeacherList.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -37,6 +39,7 @@ class _BWALearningState extends State<BWALearning> {
         routes: {
           '/': (BuildContext context) => MyHomePage(),
           '/classList': (BuildContext context) => ClassList(),
+          '/teacherList': (BuildContext context) => TeacherList(),
           '/studentList': (BuildContext context) => StudentList(),
         },
         onUnknownRoute: (RouteSettings settings) {

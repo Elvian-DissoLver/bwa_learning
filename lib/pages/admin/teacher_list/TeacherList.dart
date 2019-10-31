@@ -1,38 +1,39 @@
 import 'package:bwa_learning/models/Student.dart';
+import 'package:bwa_learning/models/Teacher.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:bwa_learning/widgets/student/StudentListView.dart';
+import 'package:bwa_learning/widgets/teacher/TeacherListView.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class StudentList extends StatefulWidget {
+class TeacherList extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _StudentListState();
+    return _TeacherListState();
   }
 }
 
-class _StudentListState extends State<StudentList> {
-  List<Student> student = [];
+class _TeacherListState extends State<TeacherList> {
+  List<Teacher> teacher = [];
 
   @override
   void initState() {
     setState(() {
-      student = [
-        Student(
-          fullName: 'Iman',
-          email: 'iman@mail.com',
-          idKelas: '1',
-          idInstitution: '001'
+      teacher = [
+        Teacher(
+            fullName: 'Sadewo',
+            email: 'sadewo@mail.com',
+            idKelas: '1'
         ),
-        Student(
-          fullName: 'Tony',
-          idKelas: '1',
-            idInstitution: '001'
+        Teacher(
+            fullName: 'Akel',
+            email: 'akel@mail.com',
+            idKelas: '2',
         ),
-        Student(
-          fullName: 'Ahmad',
-          idKelas: '2',
-            idInstitution: '002'
+        Teacher(
+            fullName: 'Yana',
+            email: 'yana@mail.com',
+            idKelas: '3',
         ),
       ];
     });
@@ -53,7 +54,7 @@ class _StudentListState extends State<StudentList> {
       appBar: _buildAppBar(model),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: _buildFloatingActionButton(model),
-      body: StudentListView(student),
+      body: TeacherListView(teacher),
     );
   }
 

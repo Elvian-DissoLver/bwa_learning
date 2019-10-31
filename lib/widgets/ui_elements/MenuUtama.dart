@@ -24,7 +24,7 @@ class MenuUtama extends StatelessWidget {
             icon: (FontAwesomeIcons.chalkboardTeacher),
             colorBox: Colors.blue[900],
             iconColor: Colors.white,
-            onTap: () {}
+            onTap: () => Navigator.pushNamed(context, '/teacherList')
         ),
         MenuUtamaItem(
             title: 'Daftar Murid',
