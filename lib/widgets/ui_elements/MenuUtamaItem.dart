@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MenuUtamaItem extends StatelessWidget {
-  MenuUtamaItem({this.title, this.icon, this.colorBox, this.iconColor, this.onPressed});
+  MenuUtamaItem({this.title, this.icon, this.colorBox, this.iconColor, this.onTap});
   final String title;
   final IconData icon;
   final Color colorBox,iconColor;
-  final Function onPressed;
+  final Function onTap;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){},
+      onTap: onTap,
       child: Column(
         children: <Widget>[
           Container(
@@ -22,7 +22,6 @@ class MenuUtamaItem extends StatelessWidget {
             ),
             child: RawMaterialButton(
               shape: CircleBorder(),
-              onPressed: onPressed,
               child: Icon(icon, color: iconColor,),
             ),
           ),

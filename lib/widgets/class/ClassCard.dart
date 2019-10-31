@@ -1,9 +1,10 @@
 import 'package:bwa_learning/models/Kelas.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
-import 'package:bwa_learning/widgets/kelas/KelasItem.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:scoped_model/scoped_model.dart';
+
+import 'ClassItem.dart';
 
 List<Color> colorList = [
   Colors.blue,
@@ -16,9 +17,9 @@ List<Color> colorList = [
   Colors.deepOrange
 ];
 
-class KelasCard extends StatelessWidget {
+class ClassCard extends StatelessWidget {
 
-  KelasCard(
+  ClassCard(
       this.kelasData,
       this.level,
       this.tingkat
@@ -76,7 +77,7 @@ class KelasCard extends StatelessWidget {
                           child: GridView.count(
                             shrinkWrap: true,
                             crossAxisCount: 5,
-                            children: ListMyWidgets()
+                            children: listMyWidgets()
                           ),
                         )
                       ],
@@ -88,14 +89,14 @@ class KelasCard extends StatelessWidget {
     );
   }
 
-  List<Widget> ListMyWidgets() {
+  List<Widget> listMyWidgets() {
 
     List<Widget> list = new List();
 
     kelasData.forEach((f) {
       if (level == f.level) {
         list.add(
-            KelasItem(
+            ClassItem(
               title: f.className,
               colorBox: Colors.tealAccent,
               onPressed: () { print(f.className +" was tapped"); },

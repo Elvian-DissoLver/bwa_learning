@@ -20,7 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
   material_design_icons_flutter: ^3.2.4495
-  font_awesome_flutter: ^8.2.0
+  font_awesome_flutter:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
@@ -28,6 +28,7 @@ dependencies:
   carousel_slider: any
   rxdart:
   intl:
+  flutter_svg:
 
 dev_dependencies:
   flutter_test:

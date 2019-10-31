@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class KelasItem extends StatelessWidget {
-  KelasItem({this.title, this.icon, this.colorBox, this.iconColor, this.onPressed});
+class ClassItem extends StatelessWidget {
+  ClassItem({this.title, this.icon, this.colorBox, this.iconColor, this.onPressed});
   final String title;
   final IconData icon;
   final Color colorBox,iconColor;
@@ -13,7 +13,7 @@ class KelasItem extends StatelessWidget {
         children: <Widget>[
           Container(
             height: 50.0,
-            width: 90.0,
+            width: 100.0,
             decoration: BoxDecoration(
                 color: colorBox,
                 shape: BoxShape.circle

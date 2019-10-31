@@ -17,21 +17,21 @@ class MenuUtama extends StatelessWidget {
             icon: Icons.class_,
             colorBox: Colors.blue,
             iconColor: Colors.white,
-            onPressed: () => Navigator.pushNamed(context, '/daftarKelas')
+            onTap: () => Navigator.pushNamed(context, '/classList')
         ),
         MenuUtamaItem(
             title: 'Daftar Guru',
             icon: (FontAwesomeIcons.chalkboardTeacher),
             colorBox: Colors.blue[900],
             iconColor: Colors.white,
-            onPressed: () {}
+            onTap: () {}
         ),
         MenuUtamaItem(
             title: 'Daftar Murid',
             icon: Icons.person_pin,
             colorBox: Colors.purple,
             iconColor: Colors.white,
-            onPressed: () {}
+            onTap: () => Navigator.pushNamed(context, '/studentList')
         ),
       ],
     );
@@ -43,14 +43,14 @@ List<MenuUtamaItem> menuUtamaItem = [
     icon: Icons.flight,
     colorBox: Colors.blue,
     iconColor: Colors.white,
-    onPressed: () => print('loop')
+    onTap: () => print('loop')
   ),
   MenuUtamaItem(
     title: 'Hotel',
     icon: Icons.hotel,
     colorBox: Colors.blue[900],
     iconColor: Colors.white,
-    onPressed: () =>
+    onTap: () =>
       Pesanan(),
   ),
   MenuUtamaItem(

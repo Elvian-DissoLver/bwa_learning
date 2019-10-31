@@ -1,14 +1,16 @@
 import 'package:flutter/cupertino.dart';
 
 class Kelas {
-  String id;
+  String idKelas;
   String className;
   int level ;
+  String idInstitution;
 
   Kelas({
-    @required this.id,
+    @required this.idKelas,
     @required this.className,
     this.level,
+    this.idInstitution
   });
 
 }
