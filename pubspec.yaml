@@ -29,6 +29,7 @@ dependencies:
   rxdart:
   intl:
   flutter_svg:
+  rflutter_alert:
 
 dev_dependencies:
   flutter_test:

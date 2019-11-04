@@ -1,7 +1,9 @@
 import 'package:bwa_learning/models/Kelas.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import 'ClassItem.dart';
@@ -38,7 +40,7 @@ class ClassCard extends StatelessWidget {
 
           return Container(
               margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
-              height: 200,
+              height: 220,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [buildBoxShadow(color, context)],
@@ -59,15 +61,29 @@ class ClassCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          tingkat == 'sma' && level == 0 ? 'Kelas X' :
-                          tingkat == 'sma' && level == 1 ? 'Kelas XI' :
-                          'Kelas XII',
-                          style: TextStyle(
-                              fontFamily: 'ZillaSlab',
-                              fontSize: 15,
-                              color: Colors.black
-                          )
+                        Row(
+                          children: <Widget>[
+                            Text(
+                                tingkat == 'sma' && level == 0 ? 'KELAS X' :
+                                tingkat == 'sma' && level == 1 ? 'KELAS XI' :
+                                'KELAS XII',
+                                style: TextStyle(
+                                    fontFamily: 'ZillaSlab',
+                                    fontSize: 15,
+                                    color: Colors.black,
+                                )
+                            ),
+                            Spacer(),
+                            RaisedButton.icon(
+                                shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(5.0),
+                                ),
+                                onPressed: null,
+                                icon: Icon(Icons.add_circle),
+                                label: Text('Tambah'),
+                                color: Colors.green
+                            ),
+                          ],
                         ),
 
                         Container(

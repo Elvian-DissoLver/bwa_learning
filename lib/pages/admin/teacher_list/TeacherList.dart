@@ -44,7 +44,7 @@ class _TeacherListState extends State<TeacherList> {
   Widget _buildAppBar(AppModel model) {
     return AppBar(
       title: Text(
-        'Daftar Siswa',
+        'Daftar Guru',
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:bwa_learning/models/Kelas.dart';
 import 'package:bwa_learning/widgets/class/ClassListView.dart';
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ClassList extends StatefulWidget {
@@ -17,6 +18,7 @@ class _ClassListState extends State<ClassList> {
   @override
   void initState() {
     setState(() {
+
       kelas = [
         Kelas(
           idKelas: '1',
@@ -96,18 +98,7 @@ class _ClassListState extends State<ClassList> {
     return Scaffold(
       appBar: _buildAppBar(model),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: _buildFloatingActionButton(model),
       body: ClassListView(kelas),
-    );
-  }
-
-  Widget _buildFloatingActionButton(AppModel model) {
-    return FloatingActionButton(
-      child: Icon(Icons.add),
-
-      onPressed: () {
-
-      },
     );
   }
 

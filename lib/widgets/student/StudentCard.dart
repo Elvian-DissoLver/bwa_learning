@@ -58,10 +58,13 @@ class StudentCard extends StatelessWidget {
                             image: DecorationImage(
                                 fit: BoxFit.fill,
                                 image: NetworkImage(
-                                    "https://source.unsplash.com/ZHvM3XIOHoE"
+                                    "https://source.unsplash.com/ZHvM3XIOHoE" ?? Icons.person_pin
                                 )
                             ),
                           ),
+                        ),
+                        SizedBox(
+                          width: 20,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
