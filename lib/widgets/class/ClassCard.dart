@@ -78,7 +78,7 @@ class ClassCard extends StatelessWidget {
                                 shape: new RoundedRectangleBorder(
                                   borderRadius: new BorderRadius.circular(5.0),
                                 ),
-                                onPressed: null,
+                                onPressed: () => Navigator.pushNamed(context, '/addNewClass'),
                                 icon: Icon(Icons.add_circle),
                                 label: Text('Tambah'),
                                 color: Colors.green

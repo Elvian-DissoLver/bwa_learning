@@ -1,6 +1,7 @@
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -12,13 +13,29 @@ class AddNewClass extends StatefulWidget {
   }
 }
 
-class _AddNewClassState extends State<AddNewClass>{
-
-  List _cities =
-  ["Cluj-Napoca", "Bucuresti", "Timisoara", "Brasov", "Constanta"];
+class _AddNewClassState extends State<AddNewClass> {
+  List _cities = [
+    "Cluj-Napoca",
+    "Bucuresti",
+    "Timisoara",
+    "Brasov",
+    "Constanta"
+  ];
 
   List<DropdownMenuItem<String>> _dropDownMenuItems;
   String _currentCity;
+
+  final Map<String, dynamic> _formData = {
+    'username': null,
+    'password': null,
+  };
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final className = TextEditingController();
+  final wMName = TextEditingController();
+
+  bool classNameExist = true;
 
   @override
   void initState() {
@@ -26,20 +43,40 @@ class _AddNewClassState extends State<AddNewClass>{
       _dropDownMenuItems = getDropDownMenuItems();
       _currentCity = _dropDownMenuItems[0].value;
     });
+
+    super.initState();
+
+    className.addListener(_printLatestValue);
+    wMName.addListener(_printLatestValue);
+  }
+
+  _printLatestValue() {
+    print("first text field: ${className.text}");
+    print("Second text field: ${wMName.text}");
+
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+  }
+
+  void _authenticate() async {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+
+    _formKey.currentState.save();
+
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
     List<DropdownMenuItem<String>> items = new List();
     for (String city in _cities) {
-      items.add(new DropdownMenuItem(
-          value: city,
-          child: new Text(city)
-      ));
+      items.add(new DropdownMenuItem(value: city, child: new Text(city)));
     }
     return items;
   }
 
-  Widget _addNewClass(BuildContext context) {
+  Widget _addNewClass(AppModel appModel) {
     Alert(
         context: context,
         title: "Tambah Kelas",
@@ -57,16 +94,11 @@ class _AddNewClassState extends State<AddNewClass>{
 //                  autofocus: true,
               decoration: InputDecoration(
                   border: new OutlineInputBorder(
-                      borderSide: new BorderSide(
-                          color: Colors.pinkAccent)),
-                  icon: Icon(Icons.account_circle),
+                      borderSide: new BorderSide(color: Colors.pinkAccent)),
+//                  icon: Icon(Icons.account_circle),
                   labelText: 'Nama Kelas',
                   contentPadding: EdgeInsets.only(
-                      left: 16.0,
-                      top: 20.0,
-                      right: 16.0,
-                      bottom: 5.0)
-              ),
+                      left: 16.0, top: 20.0, right: 16.0, bottom: 5.0)),
             ),
             SizedBox(
               height: 20,
@@ -75,16 +107,11 @@ class _AddNewClassState extends State<AddNewClass>{
               obscureText: true,
               decoration: InputDecoration(
                   border: new OutlineInputBorder(
-                      borderSide: new BorderSide(
-                          color: Colors.pinkAccent)),
+                      borderSide: new BorderSide(color: Colors.pinkAccent)),
                   icon: Icon(Icons.lock),
                   labelText: 'Wali Kelas',
                   contentPadding: EdgeInsets.only(
-                      left: 16.0,
-                      top: 20.0,
-                      right: 16.0,
-                      bottom: 5.0)
-              ),
+                      left: 16.0, top: 20.0, right: 16.0, bottom: 5.0)),
             ),
           ],
         ),
@@ -115,12 +142,96 @@ class _AddNewClassState extends State<AddNewClass>{
     );
   }
 
+  Widget _buildClassNameField() {
+    return TextFormField(
+      decoration: InputDecoration(
+          border: new OutlineInputBorder(
+              borderSide: new BorderSide(color: Colors.pinkAccent)),
+          icon: Icon(Icons.class_),
+          labelText: 'Nama Kelas',
+          hintText: 'eg. X-A, XI-IPA-1',
+          contentPadding:
+              EdgeInsets.only(left: 16.0, top: 20.0, right: 16.0, bottom: 5.0)
+      ),
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Mohon isi kolom nama kelas';
+        } else if (classNameExist) {
+          return 'Kelas sudah ada';
+        }
+      },
+      onSaved: (value) {
+        _formData['email'] = value;
+      },
+      controller: className
+    );
+  }
+
+  Widget _buildWMNameField() {
+    return TextFormField(
+      controller: wMName,
+      decoration: InputDecoration(
+          border: new OutlineInputBorder(
+              borderSide: new BorderSide(color: Colors.pinkAccent)),
+          icon: Icon(FontAwesomeIcons.userGraduate),
+          labelText: 'Wali Kelas',
+          hintText: 'eg. Akel, S.Pd',
+          contentPadding:
+              EdgeInsets.only(left: 16.0, top: 20.0, right: 16.0, bottom: 5.0))
+      ,
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'Mohon isi kolom wali kelas';
+        }
+      },
+      onSaved: (value) {
+        _formData['email'] = value;
+      },
+    );
+  }
+
   Widget _buildPageContent(AppModel model) {
     return Scaffold(
-      appBar: _buildAppBar(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-//      body: ClassListView(kelas),
-    );
+        appBar: _buildAppBar(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        body: Container(
+          child: Center(
+            child: Container(
+              width: 300,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 20,
+                    ),
+                    _buildClassNameField(),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    _buildWMNameField(),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Spacer(),
+                        DialogButton(
+                          width: 80,
+                          onPressed: () => _authenticate(),
+                          child: Text(
+                            "OK",
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ));
   }
 
   @override
@@ -137,5 +248,4 @@ class _AddNewClassState extends State<AddNewClass>{
       },
     );
   }
-
 }
