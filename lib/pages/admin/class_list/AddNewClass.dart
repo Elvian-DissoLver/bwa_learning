@@ -37,6 +37,8 @@ class _AddNewClassState extends State<AddNewClass> {
 
   bool classNameExist = true;
 
+  bool _validate = false;
+
   @override
   void initState() {
     setState(() {
@@ -54,10 +56,12 @@ class _AddNewClassState extends State<AddNewClass> {
     print("first text field: ${className.text}");
     print("Second text field: ${wMName.text}");
 
-    if (!_formKey.currentState.validate()) {
-      return;
-    }
+//    _formKey.currentState.validate();
+    setState(() {
+      _validate = true;
+    });
   }
+
 
   void _authenticate() async {
     if (!_formKey.currentState.validate()) {
@@ -153,13 +157,8 @@ class _AddNewClassState extends State<AddNewClass> {
           contentPadding:
               EdgeInsets.only(left: 16.0, top: 20.0, right: 16.0, bottom: 5.0)
       ),
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Mohon isi kolom nama kelas';
-        } else if (classNameExist) {
-          return 'Kelas sudah ada';
-        }
-      },
+      validator: (value) => value.isEmpty ? 'Mohon isi kolom nama kelas' :
+                            classNameExist? 'Kelas sudah ada' : null,
       onSaved: (value) {
         _formData['email'] = value;
       },
@@ -179,11 +178,7 @@ class _AddNewClassState extends State<AddNewClass> {
           contentPadding:
               EdgeInsets.only(left: 16.0, top: 20.0, right: 16.0, bottom: 5.0))
       ,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Mohon isi kolom wali kelas';
-        }
-      },
+      validator: (value) => value.isEmpty ? 'Mohon isi kolom wali kelas' : null,
       onSaved: (value) {
         _formData['email'] = value;
       },
@@ -200,6 +195,7 @@ class _AddNewClassState extends State<AddNewClass> {
               width: 300,
               child: Form(
                 key: _formKey,
+                autovalidate: _validate,
                 child: Column(
                   children: <Widget>[
                     SizedBox(

@@ -1,4 +1,4 @@
-package com.example.bwa_learning
+package com.bwa.bwa_learning
 
 import android.os.Bundle
 
