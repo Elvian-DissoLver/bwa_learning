@@ -9,7 +9,7 @@ class Kelas {
 
   Kelas({
     @required this.idKelas,
-    @required this.className,
+    this.className,
     this.level,
     this.teacherClass,
     this.idInstitution

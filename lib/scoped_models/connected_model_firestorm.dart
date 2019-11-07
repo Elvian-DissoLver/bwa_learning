@@ -38,6 +38,8 @@ mixin KelasesModel on CoreModel {
 
     print('fetch kelas');
 
+    _apiKelases.setIdInstitution('1234');
+
     try {
       var result = await _apiKelases.getDataCollection();
 
@@ -45,11 +47,10 @@ mixin KelasesModel on CoreModel {
           .forEach((doc) {
         print(doc.data);
         _kelases.add(Kelas.fromJson(doc.data, doc.documentID));
-      });
 
-      _kelases.forEach((f) {
-        print(f);
-        print('0');
+        _kelases.sort((a, b) {
+          return a.className.compareTo(b.className);
+        });
       });
 
       _isLoading = false;

@@ -1,4 +1,6 @@
+import 'package:bwa_learning/models/Kelas.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
+import 'package:bwa_learning/widgets/helper/MessageDialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,6 +8,12 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class AddNewClass extends StatefulWidget {
+  final level;
+
+  AddNewClass(
+    this.level,
+  );
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -26,35 +34,47 @@ class _AddNewClassState extends State<AddNewClass> {
   String _currentCity;
 
   final Map<String, dynamic> _formData = {
-    'username': null,
-    'password': null,
+    'className': null,
+    'teacherClass': null,
+    'level': null,
+    'idInstitution': null
   };
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final className = TextEditingController();
-  final wMName = TextEditingController();
+  TextEditingController className = TextEditingController();
+  TextEditingController teacherClass = TextEditingController();
 
   bool classNameExist = true;
 
   bool _validate = false;
+
+  Kelas currentKelas;
 
   @override
   void initState() {
     setState(() {
       _dropDownMenuItems = getDropDownMenuItems();
       _currentCity = _dropDownMenuItems[0].value;
+
+      currentKelas = Kelas(
+        className: '',
+        level: null,
+        teacherClass: '',
+        idInstitution: ''
+      );
+
     });
 
     super.initState();
 
     className.addListener(_printLatestValue);
-    wMName.addListener(_printLatestValue);
+    teacherClass.addListener(_printLatestValue);
   }
 
   _printLatestValue() {
     print("first text field: ${className.text}");
-    print("Second text field: ${wMName.text}");
+    print("Second text field: ${teacherClass.text}");
 
 //    _formKey.currentState.validate();
     setState(() {
@@ -63,13 +83,27 @@ class _AddNewClassState extends State<AddNewClass> {
   }
 
 
-  void _authenticate() async {
+  void _authenticate(AppModel model) async {
+
     if (!_formKey.currentState.validate()) {
       return;
     }
 
-    _formKey.currentState.save();
-
+    setState(() {
+      currentKelas.className = className.text;
+      currentKelas.teacherClass = teacherClass.text;
+      currentKelas.level = widget.level;
+      currentKelas.idInstitution = '1234';
+    });
+    
+    await model.createKelas(currentKelas)
+        .then((bool success) {
+      if (success) {
+        model.setCurrentKelas(currentKelas);
+      } else {
+        MessageDialog.show(context);
+      }
+    });
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
@@ -158,9 +192,10 @@ class _AddNewClassState extends State<AddNewClass> {
               EdgeInsets.only(left: 16.0, top: 20.0, right: 16.0, bottom: 5.0)
       ),
       validator: (value) => value.isEmpty ? 'Mohon isi kolom nama kelas' :
-                            classNameExist? 'Kelas sudah ada' : null,
+//                            classNameExist? 'Kelas sudah ada' :
+                            null,
       onSaved: (value) {
-        _formData['email'] = value;
+        _formData['className'] = value;
       },
       controller: className
     );
@@ -168,7 +203,7 @@ class _AddNewClassState extends State<AddNewClass> {
 
   Widget _buildWMNameField() {
     return TextFormField(
-      controller: wMName,
+      controller: teacherClass,
       decoration: InputDecoration(
           border: new OutlineInputBorder(
               borderSide: new BorderSide(color: Colors.pinkAccent)),
@@ -180,7 +215,7 @@ class _AddNewClassState extends State<AddNewClass> {
       ,
       validator: (value) => value.isEmpty ? 'Mohon isi kolom wali kelas' : null,
       onSaved: (value) {
-        _formData['email'] = value;
+        _formData['teacherClass'] = value;
       },
     );
   }
@@ -214,7 +249,7 @@ class _AddNewClassState extends State<AddNewClass> {
                         Spacer(),
                         DialogButton(
                           width: 80,
-                          onPressed: () => _authenticate(),
+                          onPressed: () => _authenticate(model),
                           child: Text(
                             "OK",
                             style: TextStyle(color: Colors.white, fontSize: 18),

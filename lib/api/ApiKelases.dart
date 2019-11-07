@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ApiKelases{
   final Firestore _db = Firestore.instance;
   String path;
-  String userId;
+  String idInstitution;
   CollectionReference ref;
   String collectionPath;
 
@@ -15,12 +15,12 @@ class ApiKelases{
     this.path = path;
   }
 
-  String getUserId() {
-    return userId;
+  String getIdInstitution() {
+    return idInstitution;
   }
 
-  void setUserId(String userId) {
-    this.userId = userId;
+  void setIdInstitution(String idInstitution) {
+    this.idInstitution = idInstitution;
   }
 
   void setCollectionPath(String collectionPath) {
@@ -28,8 +28,8 @@ class ApiKelases{
   }
 
   Future<QuerySnapshot> getDataCollection() {
-    return ref.getDocuments() ;
-//    return ref.where('userId', isEqualTo: userId).getDocuments();
+//    return ref.getDocuments() ;
+    return ref.where('idInstitution', isEqualTo: idInstitution).getDocuments();
   }
   Stream<QuerySnapshot> streamDataCollection() {
     return ref.snapshots() ;

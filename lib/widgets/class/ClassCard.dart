@@ -1,4 +1,5 @@
 import 'package:bwa_learning/models/Kelas.dart';
+import 'package:bwa_learning/pages/admin/class_list/AddNewClass.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -76,7 +77,12 @@ class ClassCard extends StatelessWidget {
                                 shape: new RoundedRectangleBorder(
                                   borderRadius: new BorderRadius.circular(5.0),
                                 ),
-                                onPressed: () => Navigator.pushNamed(context, '/addNewClass'),
+                                onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AddNewClass(this.level),
+                                  ),
+                                ),
                                 icon: Icon(Icons.add_circle),
                                 label: Text('Tambah'),
                                 color: Colors.green

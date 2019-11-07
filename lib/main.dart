@@ -39,7 +39,6 @@ class _BWALearningState extends State<BWALearning> {
         routes: {
           '/': (BuildContext context) => MyHomePage(),
           '/classList': (BuildContext context) => ClassList(_model),
-          '/addNewClass': (BuildContext context) => AddNewClass(),
           '/teacherList': (BuildContext context) => TeacherList(),
           '/studentList': (BuildContext context) => StudentList(),
         },
