@@ -15,4 +15,12 @@ class Kelas {
     this.idInstitution
   });
 
+  Kelas.fromJson(Map<String, dynamic> map, String id) {
+    this.idKelas = id;
+    className = map['className'];
+    level = map['level'];
+    teacherClass = map['teacherClass'];
+    idInstitution = map['idInstitution'];
+  }
+
 }

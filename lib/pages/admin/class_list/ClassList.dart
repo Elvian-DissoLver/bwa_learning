@@ -1,11 +1,16 @@
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:bwa_learning/models/Kelas.dart';
 import 'package:bwa_learning/widgets/class/ClassListView.dart';
+import 'package:bwa_learning/widgets/loading/loading_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ClassList extends StatefulWidget {
+  final AppModel model;
+
+  ClassList(this.model);
+
   @override
   State<StatefulWidget> createState() {
     return _ClassListState();
@@ -13,75 +18,11 @@ class ClassList extends StatefulWidget {
 }
 
 class _ClassListState extends State<ClassList> {
-  List<Kelas> kelas = [];
 
   @override
   void initState() {
-    setState(() {
 
-      kelas = [
-        Kelas(
-          idKelas: '1',
-          className: 'XA',
-          level: 0,
-          idInstitution: '001'
-        ),
-        Kelas(
-          idKelas: '2',
-          className: 'XB',
-          level: 0,
-            idInstitution: '001'
-        ),
-        Kelas(
-          idKelas: '3',
-          className: 'XC',
-          level: 0,
-          idInstitution: '001'
-        ),
-        Kelas(
-          idKelas: '4',
-          className: 'XD',
-          level: 0,
-          idInstitution: '002'
-        ),
-        Kelas(
-          idKelas: '5',
-          className: 'XE',
-          level: 0,
-          idInstitution: '002'
-        ),
-        Kelas(
-          idKelas: '6',
-          className: 'XF',
-          level: 0,
-          idInstitution: '002'
-        ),
-        Kelas(
-            idKelas: '7',
-          className: 'XI IPA 1',
-          level: 1,
-          idInstitution: '001'
-        ),
-        Kelas(
-            idKelas: '8',
-          className: 'XI IPS 2',
-          level: 1,
-            idInstitution: '001'
-        ),
-        Kelas(
-            idKelas: '9',
-          className: 'XII IPA 1',
-          level: 2,
-            idInstitution: '001'
-        ),
-        Kelas(
-            idKelas: '10',
-          className: 'XII IPS 1',
-          level: 2,
-            idInstitution: '001'
-        ),
-      ];
-    });
+    widget.model.fetchKelases();
 
     super.initState();
   }
@@ -98,7 +39,7 @@ class _ClassListState extends State<ClassList> {
     return Scaffold(
       appBar: _buildAppBar(model),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      body: ClassListView(kelas),
+      body: ClassListView(),
     );
   }
 
@@ -111,6 +52,10 @@ class _ClassListState extends State<ClassList> {
             _buildPageContent(model),
           ],
         );
+
+        if (model.isLoading) {
+          stack.children.add(LoadingModal());
+        }
 
         return stack;
       },

@@ -1,4 +1,3 @@
-import 'package:bwa_learning/models/Kelas.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,19 +6,16 @@ import 'package:scoped_model/scoped_model.dart';
 import 'ClassCard.dart';
 
 class ClassListView extends StatelessWidget {
-  final List<Kelas> kelas;
-
-  ClassListView(this.kelas);
 
   Widget _buildEmptyText(AppModel model) {
     String emptyText;
 
     emptyText = 'Belum ada kelas. \r\nAyo coba buat kelas.';
 
-    Widget svg = new SvgPicture.asset(
-      'assets/img/todo_list.svg',
-      width: 200,
-    );
+//    Widget svg = new SvgPicture.asset(
+//      'assets/img/todo_list.svg',
+//      width: 200,
+//    );
 
     return Container(
       color: Color.fromARGB(16, 0, 0, 0),
@@ -27,7 +23,7 @@ class ClassListView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          svg,
+//          svg,
           SizedBox(
             height: 40.0,
           ),
@@ -48,8 +44,8 @@ class ClassListView extends StatelessWidget {
     return ListView.builder(
       itemCount: 3,
       itemBuilder: (BuildContext context, int index) {
-         return ClassCard(kelas, index, 'sma');
-      },
+         return ClassCard(model.kelases, index, 'sma');
+  },
     );
   }
 
@@ -57,9 +53,7 @@ class ClassListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<AppModel>(
       builder: (BuildContext context, Widget child, AppModel model) {
-        Widget kelasCards = kelas.length > 0
-            ? _buildListView(model)
-            : _buildEmptyText(model);
+        Widget kelasCards = _buildListView(model);
 
         return kelasCards;
       },

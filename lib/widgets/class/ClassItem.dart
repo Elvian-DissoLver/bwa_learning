@@ -12,11 +12,11 @@ class ClassItem extends StatelessWidget {
     return Column(
         children: <Widget>[
           Container(
-            height: 50.0,
+            height: 60.0,
             width: 100.0,
             decoration: BoxDecoration(
-                color: colorBox,
-                shape: BoxShape.circle
+              color: colorBox,
+              shape: BoxShape.circle,
             ),
             child: RawMaterialButton(
               shape: CircleBorder(),

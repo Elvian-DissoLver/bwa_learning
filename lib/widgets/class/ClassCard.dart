@@ -2,8 +2,6 @@ import 'package:bwa_learning/models/Kelas.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import 'ClassItem.dart';
@@ -40,7 +38,7 @@ class ClassCard extends StatelessWidget {
 
           return Container(
               margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
-              height: 220,
+              height: 230,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [buildBoxShadow(color, context)],
@@ -88,11 +86,10 @@ class ClassCard extends StatelessWidget {
 
                         Container(
                           margin: EdgeInsets.only(top: 14),
-                          alignment: Alignment.centerRight,
-
+                          height: 135,
                           child: GridView.count(
                             shrinkWrap: true,
-                            crossAxisCount: 5,
+                            crossAxisCount: kelasData.length > 0 ? 5 : 1,
                             children: listMyWidgets()
                           ),
                         )
@@ -109,17 +106,27 @@ class ClassCard extends StatelessWidget {
 
     List<Widget> list = new List();
 
-    kelasData.forEach((f) {
-      if (level == f.level) {
-        list.add(
-            ClassItem(
-              title: f.className,
-              colorBox: Colors.tealAccent,
-              onPressed: () { print(f.className +" was tapped"); },
-            )
-        );
-      }
-    });
+    if (kelasData.length > 0) {
+      kelasData.forEach((f) {
+        if (level == f.level) {
+          list.add(
+              ClassItem(
+                title: f.className,
+                colorBox: Colors.tealAccent,
+                onPressed: () { print(f.className +" was tapped"); },
+              )
+          );
+        }
+      });
+    } else {
+      list.add(
+        Text(
+          'Belum ada kelas.',
+          textAlign: TextAlign.center,
+        )
+      );
+    }
+
     return list;
   }
 
