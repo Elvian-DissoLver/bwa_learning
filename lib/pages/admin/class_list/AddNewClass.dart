@@ -1,6 +1,7 @@
 import 'package:bwa_learning/models/Kelas.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:bwa_learning/widgets/helper/MessageDialog.dart';
+import 'package:bwa_learning/widgets/helper/SuccessDialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -100,6 +101,7 @@ class _AddNewClassState extends State<AddNewClass> {
         .then((bool success) {
       if (success) {
         model.setCurrentKelas(currentKelas);
+        SuccessDialog().show(context, model, 'Kelas ${currentKelas.className} berhasil dibuat');
       } else {
         MessageDialog.show(context);
       }

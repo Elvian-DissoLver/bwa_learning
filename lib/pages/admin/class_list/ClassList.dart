@@ -1,9 +1,7 @@
 import 'package:bwa_learning/scoped_models/AppModel.dart';
-import 'package:bwa_learning/models/Kelas.dart';
 import 'package:bwa_learning/widgets/class/ClassListView.dart';
 import 'package:bwa_learning/widgets/loading/loading_modal.dart';
 import 'package:flutter/material.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ClassList extends StatefulWidget {
