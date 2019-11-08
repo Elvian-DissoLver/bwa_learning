@@ -80,7 +80,7 @@ class ClassCard extends StatelessWidget {
                                 onPressed: () => Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => AddNewClass(this.level),
+                                    builder: (context) => AddNewClass(this.level, model),
                                   ),
                                 ),
                                 icon: Icon(Icons.add_circle),

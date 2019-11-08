@@ -10,9 +10,10 @@ import 'package:scoped_model/scoped_model.dart';
 
 class AddNewClass extends StatefulWidget {
   final level;
+  AppModel model;
 
   AddNewClass(
-    this.level,
+    this.level, this.model,
   );
 
   @override
@@ -46,7 +47,7 @@ class _AddNewClassState extends State<AddNewClass> {
   TextEditingController className = TextEditingController();
   TextEditingController teacherClass = TextEditingController();
 
-  bool classNameExist = true;
+  bool classNameExist = false;
 
   bool _validate = false;
 
@@ -69,7 +70,7 @@ class _AddNewClassState extends State<AddNewClass> {
 
     super.initState();
 
-    className.addListener(_printLatestValue);
+    className.addListener(_searchClassName);
     teacherClass.addListener(_printLatestValue);
   }
 
@@ -77,14 +78,26 @@ class _AddNewClassState extends State<AddNewClass> {
     print("first text field: ${className.text}");
     print("Second text field: ${teacherClass.text}");
 
-//    _formKey.currentState.validate();
     setState(() {
       _validate = true;
     });
   }
 
+  _searchClassName() {
+    classNameExist = false;
+    widget.model.findKelas(className.text)
+        .then((bool success) {
+          if (success) {
+            setState(() {
+              classNameExist = true;
+              _validate = true;
+            });
+          }
+    });
+  }
 
-  void _authenticate(AppModel model) async {
+
+  void _handlingSaving(AppModel model) async {
 
     if (!_formKey.currentState.validate()) {
       return;
@@ -194,7 +207,7 @@ class _AddNewClassState extends State<AddNewClass> {
               EdgeInsets.only(left: 16.0, top: 20.0, right: 16.0, bottom: 5.0)
       ),
       validator: (value) => value.isEmpty ? 'Mohon isi kolom nama kelas' :
-//                            classNameExist? 'Kelas sudah ada' :
+                            classNameExist == true ? 'Kelas sudah ada' :
                             null,
       onSaved: (value) {
         _formData['className'] = value;
@@ -251,7 +264,7 @@ class _AddNewClassState extends State<AddNewClass> {
                         Spacer(),
                         DialogButton(
                           width: 80,
-                          onPressed: () => _authenticate(model),
+                          onPressed: () => _handlingSaving(model),
                           child: Text(
                             "OK",
                             style: TextStyle(color: Colors.white, fontSize: 18),

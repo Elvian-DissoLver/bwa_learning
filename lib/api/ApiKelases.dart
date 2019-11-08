@@ -31,6 +31,12 @@ class ApiKelases{
 //    return ref.getDocuments() ;
     return ref.where('idInstitution', isEqualTo: idInstitution).getDocuments();
   }
+
+  Future<QuerySnapshot> getDataCollectionByName(String className) {
+//    return ref.getDocuments() ;
+    return ref.where('className', isEqualTo: className).getDocuments();
+  }
+
   Stream<QuerySnapshot> streamDataCollection() {
     return ref.snapshots() ;
   }

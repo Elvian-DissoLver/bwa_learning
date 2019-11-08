@@ -62,6 +62,33 @@ mixin KelasesModel on CoreModel {
 
   }
 
+  Future<bool> findKelas(
+      String className) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+
+      var result = await _apiKelases.getDataCollectionByName(className);
+
+      if (result.documents.isNotEmpty) {
+        _isLoading = false;
+        notifyListeners();
+        print('woilop');
+        return true;
+      } else {
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
+
+    }  catch (error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
   Future<bool> createKelas(
       Kelas newKelas) async {
     _isLoading = true;

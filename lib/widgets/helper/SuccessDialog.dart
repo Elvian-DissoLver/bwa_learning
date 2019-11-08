@@ -11,7 +11,7 @@ class SuccessDialog {
         context: context,
         animType: AnimType.LEFTSLIDE,
         dialogType: DialogType.SUCCES,
-        tittle: 'Succes',
+        tittle: 'Success',
         desc: message,
         btnOkOnPress: () {
           Navigator.push(
