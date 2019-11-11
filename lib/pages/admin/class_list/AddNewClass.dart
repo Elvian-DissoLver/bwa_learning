@@ -2,6 +2,7 @@ import 'package:bwa_learning/models/Kelas.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:bwa_learning/widgets/helper/MessageDialog.dart';
 import 'package:bwa_learning/widgets/helper/SuccessDialog.dart';
+import 'package:bwa_learning/widgets/loading/loading_modal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -70,27 +71,38 @@ class _AddNewClassState extends State<AddNewClass> {
 
     super.initState();
 
-    className.addListener(_searchClassName);
-    teacherClass.addListener(_printLatestValue);
+    className.addListener(_validateLatestValue);
+//    teacherClass.addListener(_printLatestValue);
   }
 
-  _printLatestValue() {
+  _validateLatestValue() {
     print("first text field: ${className.text}");
     print("Second text field: ${teacherClass.text}");
 
     setState(() {
-      _validate = true;
+      classNameExist = false;
+      _validate = false;
     });
   }
 
   _searchClassName() {
-    classNameExist = false;
+
     widget.model.findKelas(className.text)
         .then((bool success) {
           if (success) {
             setState(() {
               classNameExist = true;
               _validate = true;
+            });
+          } else {
+              widget.model.createKelas(currentKelas)
+                .then((bool success) {
+              if (success) {
+                widget.model.setCurrentKelas(currentKelas);
+                SuccessDialog().show(context, widget.model, 'Kelas ${currentKelas.className} berhasil dibuat');
+              } else {
+                MessageDialog.show(context);
+              }
             });
           }
     });
@@ -109,16 +121,9 @@ class _AddNewClassState extends State<AddNewClass> {
       currentKelas.level = widget.level;
       currentKelas.idInstitution = '1234';
     });
-    
-    await model.createKelas(currentKelas)
-        .then((bool success) {
-      if (success) {
-        model.setCurrentKelas(currentKelas);
-        SuccessDialog().show(context, model, 'Kelas ${currentKelas.className} berhasil dibuat');
-      } else {
-        MessageDialog.show(context);
-      }
-    });
+
+    _searchClassName();
+
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
@@ -289,6 +294,10 @@ class _AddNewClassState extends State<AddNewClass> {
             _buildPageContent(model),
           ],
         );
+
+        if (model.isLoading) {
+          stack.children.add(LoadingModal());
+        }
 
         return stack;
       },
