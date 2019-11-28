@@ -17,4 +17,13 @@ class Student {
     this.idInstitution,
     this.idParent
   });
+
+  Student.fromJson(Map<String, dynamic> map, String id) {
+    this.idStudent = id;
+    fullName = map['fullName'];
+    email = map['email'];
+    noHp = map['map'];
+    idKelas = map['idKelas'];
+    idInstitution = map['idInstitution'];
+  }
 }

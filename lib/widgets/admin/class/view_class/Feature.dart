@@ -27,7 +27,7 @@ class Feature extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               GestureDetector(
-                onTap: null,
+                onTap: () => Navigator.pushNamed(context, '/studentClassList'),
                 child: Column(
                   children: <Widget>[
                     Container(

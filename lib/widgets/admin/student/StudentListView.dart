@@ -7,14 +7,11 @@ import 'package:scoped_model/scoped_model.dart';
 import 'StudentCard.dart';
 
 class StudentListView extends StatelessWidget {
-  final List<Student> student;
-
-  StudentListView(this.student);
 
   Widget _buildEmptyText(AppModel model) {
     String emptyText;
 
-    emptyText = 'Belum ada kelas. \r\nAyo coba buat kelas.';
+    emptyText = 'Belum ada data. \r\nAyo tambah data siswa.';
 
     Widget svg = new SvgPicture.asset(
       'assets/img/todo_list.svg',
@@ -46,9 +43,10 @@ class StudentListView extends StatelessWidget {
 
   Widget _buildListView(AppModel model) {
     return ListView.builder(
-      itemCount: student.length,
+      itemCount: model.students.length,
       itemBuilder: (BuildContext context, int index) {
-        return StudentCard(student[index]);
+        Student student = model.students[index];
+        return StudentCard(student);
       },
     );
   }
@@ -57,7 +55,7 @@ class StudentListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<AppModel>(
       builder: (BuildContext context, Widget child, AppModel model) {
-        Widget kelasCards = student.length > 0
+        Widget kelasCards = model.students.length > 0
             ? _buildListView(model)
             : _buildEmptyText(model);
 

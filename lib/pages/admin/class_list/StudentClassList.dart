@@ -1,27 +1,27 @@
 import 'package:bwa_learning/models/Student.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:bwa_learning/widgets/admin/student/StudentListView.dart';
+import 'package:bwa_learning/widgets/loading/loading_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class StudentList extends StatefulWidget {
+class StudentClassList extends StatefulWidget {
 
   final AppModel model;
 
-  StudentList(this.model);
+  StudentClassList(this.model);
 
   @override
   State<StatefulWidget> createState() {
-    return _StudentListState();
+    return _StudentClassListState();
   }
 }
 
-class _StudentListState extends State<StudentList> {
+class _StudentClassListState extends State<StudentClassList> {
 
   @override
   void initState() {
-
-    widget.model.fetchStudent();
+    widget.model.fetchStudentByIdKelas(widget.model.currentKelas.idKelas);
 
     super.initState();
   }
@@ -62,6 +62,10 @@ class _StudentListState extends State<StudentList> {
             _buildPageContent(model),
           ],
         );
+
+        if (model.isLoading) {
+          stack.children.add(LoadingModal());
+        }
 
         return stack;
       },

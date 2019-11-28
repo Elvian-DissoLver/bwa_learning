@@ -10,7 +10,6 @@ mixin CoreModel on Model {
   Kelas _kelas;
   bool _isLoading = false;
   ApiKelases _apiKelases = ApiKelases('kelas');
-
 }
 
 mixin KelasesModel on CoreModel {
@@ -170,4 +169,6 @@ mixin KelasesModel on CoreModel {
     }
   }
 }
+
+
 

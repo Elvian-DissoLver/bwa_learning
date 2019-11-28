@@ -24,7 +24,6 @@ class StudentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<AppModel>(
         builder: (BuildContext context, Widget child, AppModel model) {
-
           Color color = colorList.elementAt(
               studentData.fullName.length % colorList.length);
           return Container(

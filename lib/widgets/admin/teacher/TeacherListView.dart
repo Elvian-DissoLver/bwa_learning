@@ -14,7 +14,7 @@ class TeacherListView extends StatelessWidget {
   Widget _buildEmptyText(AppModel model) {
     String emptyText;
 
-    emptyText = 'Belum ada kelas. \r\nAyo coba buat kelas.';
+    emptyText = 'Belum ada data. \r\nAyo tambah data guru.';
 
     Widget svg = new SvgPicture.asset(
       'assets/img/todo_list.svg',
