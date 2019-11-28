@@ -1,14 +1,15 @@
-import 'package:bwa_learning/models/Student.dart';
+import 'package:bwa_learning/models/Teacher.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
-import 'package:bwa_learning/widgets/student/StudentCard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class StudentListView extends StatelessWidget {
-  final List<Student> student;
+import 'TeacherCard.dart';
 
-  StudentListView(this.student);
+class TeacherListView extends StatelessWidget {
+  final List<Teacher> teacher;
+
+  TeacherListView(this.teacher);
 
   Widget _buildEmptyText(AppModel model) {
     String emptyText;
@@ -45,9 +46,9 @@ class StudentListView extends StatelessWidget {
 
   Widget _buildListView(AppModel model) {
     return ListView.builder(
-      itemCount: student.length,
+      itemCount: teacher.length,
       itemBuilder: (BuildContext context, int index) {
-        return StudentCard(student[index]);
+        return TeacherCard(teacher[index]);
       },
     );
   }
@@ -56,7 +57,7 @@ class StudentListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<AppModel>(
       builder: (BuildContext context, Widget child, AppModel model) {
-        Widget kelasCards = student.length > 0
+        Widget kelasCards = teacher.length > 0
             ? _buildListView(model)
             : _buildEmptyText(model);
 

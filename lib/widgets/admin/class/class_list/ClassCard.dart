@@ -1,5 +1,6 @@
 import 'package:bwa_learning/models/Kelas.dart';
 import 'package:bwa_learning/pages/admin/class_list/AddNewClass.dart';
+import 'package:bwa_learning/pages/admin/class_list/ViewClass.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -96,7 +97,7 @@ class ClassCard extends StatelessWidget {
                           child: GridView.count(
                             shrinkWrap: true,
                             crossAxisCount: kelasData.length > 0 ? 5 : 1,
-                            children: listMyWidgets()
+                            children: listMyWidgets(context, model)
                           ),
                         )
                       ],
@@ -108,7 +109,7 @@ class ClassCard extends StatelessWidget {
     );
   }
 
-  List<Widget> listMyWidgets() {
+  List<Widget> listMyWidgets(BuildContext context, AppModel model) {
 
     List<Widget> list = new List();
 
@@ -119,7 +120,15 @@ class ClassCard extends StatelessWidget {
               ClassItem(
                 title: f.className,
                 colorBox: Colors.tealAccent,
-                onPressed: () { print(f.className +" was tapped"); },
+                onPressed: () {
+                  model.setCurrentKelas(f);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ViewClass(),
+                    ),
+                  );
+                },
               )
           );
         }
