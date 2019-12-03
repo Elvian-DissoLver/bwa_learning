@@ -90,5 +90,47 @@ mixin StudentModel on Model {
     }
 
   }
+
+  Future<bool> fetchStudentByPhone(String finder) async{
+    _isLoading = true;
+    notifyListeners();
+
+    _students = [];
+
+    print('fetch students');
+
+    _apiStudent.setIdInstitution('1234');
+
+    try {
+      var result = await _apiStudent.getDataCollectionByPhone(finder);
+
+      if (result.documents.isNotEmpty) {
+        result.documents
+            .forEach((doc) {
+          print(doc.data);
+          _students.add(Student.fromJson(doc.data, doc.documentID));
+
+          _students.sort((a, b) {
+            return a.fullName.compareTo(b.fullName);
+          });
+        });
+
+        _isLoading = false;
+        notifyListeners();
+        return true;
+      } else {
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
+
+
+    } catch (error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+
+  }
 }
 

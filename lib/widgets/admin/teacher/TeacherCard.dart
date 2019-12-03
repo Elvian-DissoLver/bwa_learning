@@ -32,7 +32,13 @@ class TeacherCard extends StatelessWidget {
               height: 90,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
-                boxShadow: [buildBoxShadow(color, context)],
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 4,
+                    spreadRadius: 2,
+                    color: Colors.black.withOpacity(0.3),
+                  ),
+                ],
               ),
               child: Material(
                 borderRadius: BorderRadius.circular(16),

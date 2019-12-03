@@ -13,10 +13,10 @@ class StudentListView extends StatelessWidget {
 
     emptyText = 'Belum ada data. \r\nAyo tambah data siswa.';
 
-    Widget svg = new SvgPicture.asset(
-      'assets/img/todo_list.svg',
-      width: 200,
-    );
+//    Widget svg = new SvgPicture.asset(
+//      'assets/img/todo_list.svg',
+//      width: 200,
+//    );
 
     return Container(
       color: Color.fromARGB(16, 0, 0, 0),
@@ -24,7 +24,7 @@ class StudentListView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          svg,
+//          svg,
           SizedBox(
             height: 40.0,
           ),

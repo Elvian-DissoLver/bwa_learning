@@ -6,7 +6,8 @@ class Student {
   String noHp;
   String idKelas;
   String idInstitution;
-  List<String> idParent;
+//  List<String> idParent;
+
 
   Student({
     this.idStudent,
@@ -15,14 +16,14 @@ class Student {
     this.noHp,
     this.idKelas,
     this.idInstitution,
-    this.idParent
+//      this.idParent
   });
 
   Student.fromJson(Map<String, dynamic> map, String id) {
     this.idStudent = id;
     fullName = map['fullName'];
     email = map['email'];
-    noHp = map['map'];
+    noHp = map['noHp'];
     idKelas = map['idKelas'];
     idInstitution = map['idInstitution'];
   }

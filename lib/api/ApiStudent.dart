@@ -36,11 +36,15 @@ class ApiStudent{
     return ref.where('idKelas', isEqualTo: idKelas).getDocuments();
   }
 
+  Future<QuerySnapshot> getDataCollectionByPhone(String finder) async{
+    return ref.where('noHp', isGreaterThanOrEqualTo: finder).getDocuments();
+  }
+
   Stream<QuerySnapshot> streamDataCollection() {
     return ref.snapshots() ;
   }
   Future<DocumentSnapshot> getDocumentById(String id) {
-    return ref.document(id).get();
+    return ref.document().get();
   }
   Future<void> removeDocument(String id){
     return ref.document(id).delete();

@@ -29,9 +29,16 @@ class StudentCard extends StatelessWidget {
           return Container(
               margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
               height: 90,
+              width: MediaQuery.of(context).size.width - 16,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
-                boxShadow: [buildBoxShadow(color, context)],
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 4,
+                    spreadRadius: 2,
+                    color: Colors.black.withOpacity(0.3),
+                  ),
+                ],
               ),
               child: Material(
                 borderRadius: BorderRadius.circular(16),

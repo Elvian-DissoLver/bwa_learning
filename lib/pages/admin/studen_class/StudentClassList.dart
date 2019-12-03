@@ -1,4 +1,4 @@
-import 'package:bwa_learning/models/Student.dart';
+import 'package:bwa_learning/pages/admin/studen_class/AddNewStudentClass.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:bwa_learning/widgets/admin/student/StudentListView.dart';
 import 'package:bwa_learning/widgets/loading/loading_modal.dart';
@@ -47,9 +47,12 @@ class _StudentClassListState extends State<StudentClassList> {
     return FloatingActionButton(
       child: Icon(Icons.add),
 
-      onPressed: () {
-
-      },
+      onPressed: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>AddNewStudentClass(model),
+        ),
+      ),
     );
   }
 

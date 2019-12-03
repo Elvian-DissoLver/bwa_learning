@@ -1,6 +1,5 @@
-import 'package:bwa_learning/pages/admin/class_list/AddNewClass.dart';
 import 'package:bwa_learning/pages/admin/class_list/ClassList.dart';
-import 'package:bwa_learning/pages/admin/class_list/StudentClassList.dart';
+import 'package:bwa_learning/pages/admin/studen_class/StudentClassList.dart';
 import 'package:bwa_learning/pages/admin/student_list/StudentList.dart';
 import 'package:bwa_learning/pages/admin/teacher_list/TeacherList.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
