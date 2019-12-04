@@ -1,6 +1,9 @@
 import 'package:bwa_learning/models/Student.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:bwa_learning/widgets/admin/student/StudentCard.dart';
+import 'package:bwa_learning/widgets/dialog/InfoDialog.dart';
+import 'package:bwa_learning/widgets/dialog/MessageDialog.dart';
+import 'package:bwa_learning/widgets/dialog/SuccessDialog.dart';
 import 'package:bwa_learning/widgets/loading/loading_modal.dart';
 import 'package:bwa_learning/widgets/ui_elements/rounded_button.dart';
 import 'package:flutter/material.dart';
@@ -22,19 +25,14 @@ class AddNewStudentClass extends StatefulWidget {
 }
 
 class _AddNewStudentClassState extends State<AddNewStudentClass> {
-
   Student selectStudent;
-
-  final globalKey = new GlobalKey<ScaffoldState>();
 
   TextEditingController _controller = new TextEditingController();
 
   bool _isStudentFound = false;
 
-
   @override
   void initState() {
-
     super.initState();
   }
 
@@ -49,17 +47,18 @@ class _AddNewStudentClassState extends State<AddNewStudentClass> {
   Widget _buildPageContent(AppModel model) {
     return Scaffold(
 //      appBar: _buildAppBar(model),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      key: globalKey,
-      body: Container(
-            child: Column(
-              children: <Widget>[
-                _buildSearchStudent(),
-                _buildResultSearch(model)
-              ],
-            ),
-      )
-    );
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        body: Container(
+          child: Column(
+            children: <Widget>[
+              _buildSearchStudent(),
+              _isStudentFound
+                  ? Text('${model.foundedStudent.length} data ditemukan')
+                  : Text(''),
+              _buildResultSearch(model)
+            ],
+          ),
+        ));
   }
 
   Widget _buildSearchStudent() {
@@ -107,20 +106,69 @@ class _AddNewStudentClassState extends State<AddNewStudentClass> {
   }
 
   _handlingSearch() async {
-    print('ok');
-
     setState(() {
       _isStudentFound = false;
       selectStudent = null;
     });
 
+    if (_controller.text.isEmpty) {
+      return MessageDialog.show(
+          context, 'Tidak ditemukan', 'Masukkan minimal satu karakter');
+    }
 
-    widget.model.fetchStudentByPhone(_controller.text)
+    await widget.model
+        .fetchStudentByPhone(_controller.text)
         .then((bool success) {
       if (success) {
         setState(() {
           _isStudentFound = true;
         });
+      }
+    });
+  }
+
+  _checkUpdateClassStudent(AppModel model) async{
+    if(selectStudent.idKelas.isNotEmpty) {
+      await widget.model.findKelasById(selectStudent.idKelas).then((bool success) {
+        if(success) {
+          InfoDialog(
+              '${selectStudent.fullName} sudah berada di Kelas ${model.searchKelas.className}. Apakah anda mau melanjutkan proses?',
+                  () => _prosesUpdateClassStudent(model)
+          ).show(context);
+        }
+        else {
+          _prosesUpdateClassStudent(model);
+        }
+      });
+    }
+    else {
+      _prosesUpdateClassStudent(model);
+    }
+  }
+
+  _updateClassStudent(AppModel model) async {
+    _checkUpdateClassStudent(model);
+  }
+
+  _prosesUpdateClassStudent(AppModel model) async {
+    setState(() {
+      selectStudent.idKelas = model.currentKelas.idKelas;
+    });
+
+    await widget.model.updateStudent(selectStudent).then((bool success) {
+      if(success) {
+        SuccessDialog(
+            '${selectStudent.fullName} berhasil ditambahkan ke Kelas ${model.currentKelas.className}',
+                () {
+              setState(() {
+                _isStudentFound = false;
+                selectStudent = null;
+              });
+            }).show(
+          context,
+        );
+      } else {
+        MessageDialog.show(context, 'Terjadi kesalahan', 'Coba ulangi lagi!');
       }
     });
   }
@@ -134,10 +182,10 @@ class _AddNewStudentClassState extends State<AddNewStudentClass> {
             height: 20,
           ),
           RoundedButton(
-            color:  Colors.greenAccent,
+            color: Colors.greenAccent,
             icon: Icon(Icons.add_circle_outline),
             label: 'Tambah Siswa',
-            onPressed: () {},
+            onPressed: () => _updateClassStudent(model),
           )
         ],
       ),
@@ -147,52 +195,55 @@ class _AddNewStudentClassState extends State<AddNewStudentClass> {
 
   Widget _buildResultSearch(AppModel model) {
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          new Flexible(
-              child: _isStudentFound && _controller.text.isNotEmpty
-                  ? new ListView.builder(
-                shrinkWrap: true,
-                itemCount: model.students.length,
-                itemBuilder: (BuildContext context, int index) {
-                  Student student = model.students[index];
-                  String listData = student.fullName+', '+student.noHp;
-                  return new ListTile(
-                    title: new Text(listData.toString()),
-                    onTap: () {
-                      print(model.students[index].fullName);
-
-                      setState(() {
-                        selectStudent = Student(
-                            idStudent: model.students[index].idStudent,
-                            fullName: model.students[index].fullName,
-                            idKelas: model.students[index].idKelas,
-                            idInstitution: model.students[index].idInstitution,
-                            noHp: model.students[index].noHp,
-                            email: model.students[index].email
-                        );
-                        _controller.clear();
-                        _isStudentFound = false;
-                      });
-
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        new Flexible(
+            child: _isStudentFound && _controller.text.isNotEmpty
+                ? new ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: model.foundedStudent.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      Student student = model.foundedStudent[index];
+                      String listData = student.fullName + ', ' + student.noHp;
+                      return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectStudent = Student(
+                                  idStudent: student.idStudent,
+                                  fullName: student.fullName,
+                                  idKelas: student.idKelas,
+                                  idInstitution: student.idInstitution,
+                                  noHp: student.noHp,
+                                  email: student.email);
+                              _controller.clear();
+                              _isStudentFound = false;
+                            });
+                          },
+                          child: Container(
+                            margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
+                            height: 40,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                color: Colors.green),
+                            child: Row(
+                              children: <Widget>[
+                                SizedBox(width: 20),
+                                Text(listData)
+                              ],
+                            ),
+                          ));
                     },
-                    trailing: Icon(
-                      Icons.arrow_forward
-                    ),
-                  );
-                },
-              )
-              : new ListView.builder(
-                shrinkWrap: true,
-                itemCount: 0,
-                itemBuilder: (BuildContext context, int index) {
-                  return new ListTile(
-                  );
-                },
-              ))
-        ],
-      );
+                  )
+                : new ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: 0,
+                    itemBuilder: (BuildContext context, int index) {
+                      return new ListTile();
+                    },
+                  ))
+      ],
+    );
   }
 
   @override
@@ -202,8 +253,9 @@ class _AddNewStudentClassState extends State<AddNewStudentClass> {
         Stack stack = Stack(
           children: <Widget>[
             _buildPageContent(model),
-            selectStudent!=null ? _buidSelectedStudent(model): SizedBox(height: 20)
-
+            selectStudent != null
+                ? _buidSelectedStudent(model)
+                : SizedBox(height: 20)
           ],
         );
 
@@ -216,4 +268,3 @@ class _AddNewStudentClassState extends State<AddNewStudentClass> {
     );
   }
 }
-

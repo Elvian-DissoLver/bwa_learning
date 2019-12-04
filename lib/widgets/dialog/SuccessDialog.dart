@@ -1,26 +1,22 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:bwa_learning/pages/admin/class_list/ClassList.dart';
-import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:flutter/material.dart';
 
 class SuccessDialog {
 
+  final String message;
+  final Function onTap;
+
+  SuccessDialog(this.message, this.onTap);
+
   Future show(
-      BuildContext context, AppModel model, String message) {
+      BuildContext context) {
     return AwesomeDialog(
         context: context,
         animType: AnimType.LEFTSLIDE,
         dialogType: DialogType.SUCCES,
         tittle: 'Success',
         desc: message,
-        btnOkOnPress: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ClassList(model),
-            ),
-          );
-        },
+        btnOkOnPress: onTap,
         btnOkIcon: Icons.check_circle,
         onDissmissCallback: () {
           debugPrint('Dialog Dissmiss from callback');

@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 
 class MessageDialog {
   static void show(
-      BuildContext context, {
-        String title = 'Something went wrong',
-        String message = 'Please try again!',
-      }) {
+      BuildContext context, String title, String message
+      ) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -15,7 +13,7 @@ class MessageDialog {
           actions: <Widget>[
             FlatButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Okay'),
+              child: Text('OK'),
             )
           ],
         );
