@@ -1,5 +1,5 @@
 class User {
-  final String id;
+  final String uid;
   final String email;
   final String userName;
   final String password;
@@ -8,7 +8,7 @@ class User {
   final String photoURL;
 
   User({
-    this.id,
+    this.uid,
     this.email,
     this.userName,
     this.password,

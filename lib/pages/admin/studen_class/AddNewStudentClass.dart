@@ -44,67 +44,6 @@ class _AddNewStudentClassState extends State<AddNewStudentClass> {
     );
   }
 
-  Widget _buildPageContent(AppModel model) {
-    return Scaffold(
-//      appBar: _buildAppBar(model),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        body: Container(
-          child: Column(
-            children: <Widget>[
-              _buildSearchStudent(),
-              _isStudentFound
-                  ? Text('${model.foundedStudent.length} data ditemukan')
-                  : Text(''),
-              _buildResultSearch(model)
-            ],
-          ),
-        ));
-  }
-
-  Widget _buildSearchStudent() {
-    return Container(
-      padding: EdgeInsets.all(16),
-      margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 46),
-      child: Theme(
-        data: ThemeData(
-          hintColor: Colors.transparent,
-        ),
-        child: TextField(
-          controller: _controller,
-          decoration: InputDecoration(
-            hintText: 'Cari siswa berdasarkan no.Hp',
-            hintStyle: TextStyle(
-              color: Colors.black26,
-              fontSize: 14,
-              fontFamily: 'Medium',
-            ),
-            filled: true,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(50),
-              borderSide: BorderSide(
-                color: Colors.black,
-                width: 0,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(50),
-              borderSide: BorderSide(
-                color: Colors.transparent,
-                width: 0,
-              ),
-            ),
-            contentPadding: EdgeInsets.all(12),
-            suffixIcon: IconButton(
-              icon: Icon(FontAwesomeIcons.search, size: 15),
-              color: Color(0xffb4c2d3),
-              onPressed: () => _handlingSearch(),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   _handlingSearch() async {
     setState(() {
       _isStudentFound = false;
@@ -171,6 +110,67 @@ class _AddNewStudentClassState extends State<AddNewStudentClass> {
         MessageDialog.show(context, 'Terjadi kesalahan', 'Coba ulangi lagi!');
       }
     });
+  }
+
+  Widget _buildPageContent(AppModel model) {
+    return Scaffold(
+//      appBar: _buildAppBar(model),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        body: Container(
+          child: Column(
+            children: <Widget>[
+              _buildSearchStudent(),
+              _isStudentFound
+                  ? Text('${model.foundedStudent.length} data ditemukan')
+                  : Text(''),
+              _buildResultSearch(model)
+            ],
+          ),
+        ));
+  }
+
+  Widget _buildSearchStudent() {
+    return Container(
+      padding: EdgeInsets.all(16),
+      margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 46),
+      child: Theme(
+        data: ThemeData(
+          hintColor: Colors.transparent,
+        ),
+        child: TextField(
+          controller: _controller,
+          decoration: InputDecoration(
+            hintText: 'Cari siswa berdasarkan no.Hp',
+            hintStyle: TextStyle(
+              color: Colors.black26,
+              fontSize: 14,
+              fontFamily: 'Medium',
+            ),
+            filled: true,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(50),
+              borderSide: BorderSide(
+                color: Colors.black,
+                width: 0,
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(50),
+              borderSide: BorderSide(
+                color: Colors.transparent,
+                width: 0,
+              ),
+            ),
+            contentPadding: EdgeInsets.all(12),
+            suffixIcon: IconButton(
+              icon: Icon(FontAwesomeIcons.search, size: 15),
+              color: Color(0xffb4c2d3),
+              onPressed: () => _handlingSearch(),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buidSelectedStudent(AppModel model) {

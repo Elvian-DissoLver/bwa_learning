@@ -1,3 +1,4 @@
+import 'package:bwa_learning/models/User.dart';
 import 'package:bwa_learning/pages/admin/class_list/ClassList.dart';
 import 'package:bwa_learning/pages/admin/studen_class/StudentClassList.dart';
 import 'package:bwa_learning/pages/admin/student_list/StudentList.dart';
@@ -19,9 +20,12 @@ class BWALearning extends StatefulWidget {
 
 class _BWALearningState extends State<BWALearning> {
   AppModel _model;
+  User user;
   @override
   void initState() {
     _model = AppModel();
+
+    _model.signInAnonymously();
 
     super.initState();
   }
@@ -31,6 +35,7 @@ class _BWALearningState extends State<BWALearning> {
     return ScopedModel<AppModel>(
       model: _model,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'BWA Learning',
         theme: ThemeData(
           primarySwatch: Colors.purple,
