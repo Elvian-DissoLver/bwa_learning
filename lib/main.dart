@@ -25,7 +25,7 @@ class _BWALearningState extends State<BWALearning> {
   void initState() {
     _model = AppModel();
 
-    _model.signInAnonymously();
+//    _model.signInAnonymously();
 
     super.initState();
   }
@@ -44,7 +44,7 @@ class _BWALearningState extends State<BWALearning> {
         routes: {
           '/': (BuildContext context) => MyHomePage(),
           '/classList': (BuildContext context) => ClassList(_model),
-          '/teacherList': (BuildContext context) => TeacherList(),
+          '/teacherList': (BuildContext context) => TeacherList(model: _model),
           '/studentList': (BuildContext context) => StudentList(_model),
           '/studentClassList': (BuildContext context) => StudentClassList(_model),
         },

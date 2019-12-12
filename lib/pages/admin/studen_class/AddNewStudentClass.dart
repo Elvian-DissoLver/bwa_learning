@@ -67,11 +67,11 @@ class _AddNewStudentClassState extends State<AddNewStudentClass> {
   }
 
   _checkUpdateClassStudent(AppModel model) async{
-    if(selectStudent.idKelas.isNotEmpty) {
-      await widget.model.findKelasById(selectStudent.idKelas).then((bool success) {
+    if(selectStudent.idClass != null) {
+      await widget.model.findClassById(selectStudent.idClass).then((bool success) {
         if(success) {
           InfoDialog(
-              '${selectStudent.fullName} sudah berada di Kelas ${model.searchKelas.className}. Apakah anda mau melanjutkan proses?',
+              '${selectStudent.fullName} sudah berada di Kelas ${model.searchClass.className}. Apakah anda mau melanjutkan proses?',
                   () => _prosesUpdateClassStudent(model)
           ).show(context);
         }
@@ -91,13 +91,13 @@ class _AddNewStudentClassState extends State<AddNewStudentClass> {
 
   _prosesUpdateClassStudent(AppModel model) async {
     setState(() {
-      selectStudent.idKelas = model.currentKelas.idKelas;
+      selectStudent.idClass = model.currentClass.idClass;
     });
 
     await widget.model.updateStudent(selectStudent).then((bool success) {
       if(success) {
         SuccessDialog(
-            '${selectStudent.fullName} berhasil ditambahkan ke Kelas ${model.currentKelas.className}',
+            '${selectStudent.fullName} berhasil ditambahkan ke Kelas ${model.currentClass.className}',
                 () {
               setState(() {
                 _isStudentFound = false;
@@ -212,7 +212,7 @@ class _AddNewStudentClassState extends State<AddNewStudentClass> {
                               selectStudent = Student(
                                   idStudent: student.idStudent,
                                   fullName: student.fullName,
-                                  idKelas: student.idKelas,
+                                  idClass: student.idClass,
                                   idInstitution: student.idInstitution,
                                   noHp: student.noHp,
                                   email: student.email);

@@ -56,7 +56,7 @@ class _TaskPageState extends State<TaskPage>
                                         fontSize: 30.0, fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    model.currentKelas.className,
+                                    model.currentClass.className,
                                     style: new TextStyle(
                                         fontSize: 28.0, color: Colors.grey),
                                   )

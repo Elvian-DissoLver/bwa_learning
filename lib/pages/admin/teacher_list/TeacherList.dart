@@ -5,6 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class TeacherList extends StatefulWidget {
+
+  final AppModel model;
+
+  const TeacherList({Key key, this.model}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return _TeacherListState();
@@ -12,29 +17,11 @@ class TeacherList extends StatefulWidget {
 }
 
 class _TeacherListState extends State<TeacherList> {
-  List<Teacher> teacher = [];
 
   @override
   void initState() {
-    setState(() {
-      teacher = [
-        Teacher(
-            fullName: 'Sadewo',
-            email: 'sadewo@mail.com',
-            idKelas: '1'
-        ),
-        Teacher(
-            fullName: 'Akel',
-            email: 'akel@mail.com',
-            idKelas: '2',
-        ),
-        Teacher(
-            fullName: 'Yana',
-            email: 'yana@mail.com',
-            idKelas: '3',
-        ),
-      ];
-    });
+
+    widget.model.fetchTeacherByIdInstitution(1234);
 
     super.initState();
   }
@@ -52,7 +39,7 @@ class _TeacherListState extends State<TeacherList> {
       appBar: _buildAppBar(model),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: _buildFloatingActionButton(model),
-      body: TeacherListView(teacher),
+      body: TeacherListView(),
     );
   }
 

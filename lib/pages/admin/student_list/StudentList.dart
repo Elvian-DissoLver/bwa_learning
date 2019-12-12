@@ -21,7 +21,7 @@ class _StudentListState extends State<StudentList> {
   @override
   void initState() {
 
-    widget.model.fetchStudent();
+    widget.model.fetchStudentByIdInstitution(1234);
 
     super.initState();
   }

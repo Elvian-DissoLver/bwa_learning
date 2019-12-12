@@ -41,7 +41,7 @@ class Header extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    model.currentKelas.className,
+                    model.currentClass.className,
                     style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'Medium',
@@ -107,7 +107,7 @@ class Header extends StatelessWidget {
                           height: 6,
                         ),
                         Text(
-                          model.currentKelas.teacherClass,
+                          model.currentClass.teacherClass,
                           style: TextStyle(
                             color: Colors.black,
                             fontFamily: 'Medium',

@@ -44,7 +44,7 @@ class ClassListView extends StatelessWidget {
     return ListView.builder(
       itemCount: 3,
       itemBuilder: (BuildContext context, int index) {
-         return ClassCard(model.kelases, index, 'sma');
+         return ClassCard(model.classes, index, 'sma');
   },
     );
   }

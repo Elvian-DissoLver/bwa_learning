@@ -1,4 +1,4 @@
-import 'package:bwa_learning/models/Kelas.dart';
+import 'package:bwa_learning/models/Class.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:bwa_learning/widgets/dialog/MessageDialog.dart';
 import 'package:bwa_learning/widgets/dialog/SuccessDialog.dart';
@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:scoped_model/scoped_model.dart';
-
 import 'ClassList.dart';
 
 // ignore: must_be_immutable
@@ -56,7 +55,7 @@ class _AddNewClassState extends State<AddNewClass> {
 
   bool _validate = false;
 
-  Kelas currentKelas;
+  Class currentClass;
 
   @override
   void initState() {
@@ -64,7 +63,7 @@ class _AddNewClassState extends State<AddNewClass> {
       _dropDownMenuItems = getDropDownMenuItems();
       _currentCity = _dropDownMenuItems[0].value;
 
-      currentKelas = Kelas(
+      currentClass = Class(
           className: '', level: null, teacherClass: '', idInstitution: '');
     });
 
@@ -84,18 +83,18 @@ class _AddNewClassState extends State<AddNewClass> {
   }
 
   _searchClassName(AppModel model) {
-    widget.model.findKelas(className.text).then((bool success) {
+    widget.model.findClassByName(className.text).then((bool success) {
       if (success) {
         setState(() {
           classNameExist = true;
           _validate = true;
         });
       } else {
-        widget.model.createKelas(currentKelas).then((bool success) {
+        widget.model.createClass(currentClass).then((bool success) {
           if (success) {
-            widget.model.setCurrentKelas(currentKelas);
+            widget.model.setCurrentClass(currentClass);
             SuccessDialog(
-              'Kelas ${currentKelas.className} berhasil dibuat',
+              'Kelas ${currentClass.className} berhasil dibuat',
               () {
                 Navigator.push(
                   context,
@@ -120,10 +119,10 @@ class _AddNewClassState extends State<AddNewClass> {
     }
 
     setState(() {
-      currentKelas.className = className.text;
-      currentKelas.teacherClass = teacherClass.text;
-      currentKelas.level = widget.level;
-      currentKelas.idInstitution = '1234';
+      currentClass.className = className.text;
+      currentClass.teacherClass = teacherClass.text;
+      currentClass.level = widget.level;
+      currentClass.idInstitution = '1234';
     });
 
     _searchClassName(model);

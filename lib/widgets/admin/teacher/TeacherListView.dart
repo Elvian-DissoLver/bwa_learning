@@ -7,9 +7,6 @@ import 'package:scoped_model/scoped_model.dart';
 import 'TeacherCard.dart';
 
 class TeacherListView extends StatelessWidget {
-  final List<Teacher> teacher;
-
-  TeacherListView(this.teacher);
 
   Widget _buildEmptyText(AppModel model) {
     String emptyText;
@@ -46,9 +43,9 @@ class TeacherListView extends StatelessWidget {
 
   Widget _buildListView(AppModel model) {
     return ListView.builder(
-      itemCount: teacher.length,
+      itemCount: model.teachers.length,
       itemBuilder: (BuildContext context, int index) {
-        return TeacherCard(teacher[index]);
+        return TeacherCard(model.teachers[index]);
       },
     );
   }
@@ -57,7 +54,7 @@ class TeacherListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<AppModel>(
       builder: (BuildContext context, Widget child, AppModel model) {
-        Widget kelasCards = teacher.length > 0
+        Widget kelasCards = model.teachers.length > 0
             ? _buildListView(model)
             : _buildEmptyText(model);
 
