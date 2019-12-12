@@ -21,7 +21,10 @@ dependencies:
     sdk: flutter
 
   cloud_firestore:
-  firebase_auth:
+  firebase_auth: 0.15.1
+  firebase_auth_web: 0.1.0+1
+  firebase_core: ^0.4.1
+  firebase_core_web: 0.1.0+2
   material_design_icons_flutter:
   font_awesome_flutter:
   # The following adds the Cupertino Icons font to your application.
@@ -39,7 +42,7 @@ dependencies:
   flappy_search_bar:
   flutter_colorpicker: ^0.2.2
   flutter_slidable: ^0.4.9
-  url_launcher: ^5.0.2
+#  url_launcher: ^5.0.2
   share: ^0.6.0+1
   launch_review: ^2.0.0
   modal_progress_hud: ^0.1.3
