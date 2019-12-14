@@ -37,7 +37,7 @@
 //  }
 //
 //  Future<QuerySnapshot> getDataCollectionByPhone(String finder) async{
-//    return ref.where('noHp', isGreaterThanOrEqualTo: finder).getDocuments();
+//    return ref.where('noHp', isGreaterThanOrEqualTo: finder).getDocuments().;
 //  }
 //
 //  Stream<QuerySnapshot> streamDataCollection() {

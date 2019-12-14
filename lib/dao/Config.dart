@@ -8,7 +8,7 @@ class Config {
     print('conInit');
 
     final conn = await MySqlConnection.connect(new ConnectionSettings(
-        host: '192.168.15.110',
+        host: '10.0.2.2',
         port: 3306,
         user: 'root',
         password: 'root',
