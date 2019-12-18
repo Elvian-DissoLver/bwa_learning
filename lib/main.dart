@@ -1,5 +1,6 @@
 import 'package:bwa_learning/models/User.dart';
 import 'package:bwa_learning/pages/admin/class_list/ClassList.dart';
+import 'package:bwa_learning/pages/admin/course_list/CourseList.dart';
 import 'package:bwa_learning/pages/admin/student_class/StudentClassList.dart';
 import 'package:bwa_learning/pages/admin/student_list/StudentList.dart';
 import 'package:bwa_learning/pages/admin/teacher_list/TeacherList.dart';
@@ -27,6 +28,8 @@ class _BWALearningState extends State<BWALearning> {
 
     _model.signInAnonymously();
 
+    _model.fetchInstitutionById(1234);
+
     super.initState();
   }
 
@@ -47,6 +50,7 @@ class _BWALearningState extends State<BWALearning> {
           '/teacherList': (BuildContext context) => TeacherList(model: _model),
           '/studentList': (BuildContext context) => StudentList(_model),
           '/studentClassList': (BuildContext context) => StudentClassList(_model),
+          '/courseList': (BuildContext context) => CourseList(_model),
         },
         onUnknownRoute: (RouteSettings settings) {
           return MaterialPageRoute(

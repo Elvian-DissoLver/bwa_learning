@@ -1,4 +1,4 @@
-import 'package:bwa_learning/models/Class.dart';
+import 'package:bwa_learning/models/Course.dart';
 import 'package:bwa_learning/models/LevelClass.dart';
 import 'package:bwa_learning/pages/admin/class_list/AddNewClass.dart';
 import 'package:bwa_learning/pages/admin/class_list/ViewClass.dart';
@@ -8,23 +8,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'ClassItem.dart';
+import 'CourseItem.dart';
 
 // ignore: must_be_immutable
-class ClassCard extends StatelessWidget {
-  ClassCard(this.classData, this.level);
+class CourseCard extends StatelessWidget {
+  CourseCard(this.courseData, this.level);
 
-  final List<Class> classData;
+  final List<Course> courseData;
   final level;
 
-  List<Widget> listClass;
+  List<Widget> listCourse;
 
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<AppModel>(
         builder: (BuildContext context, Widget child, AppModel model) {
-
-      listClass = listMyWidgets(context, model);
+      listCourse = listMyWidgets(context, model);
 
       return Container(
           margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
@@ -75,18 +74,19 @@ class ClassCard extends StatelessWidget {
                     ],
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 14),
-                    height: 135,
-                    child: listClass.length > 0 ? GridView.count(
-                        shrinkWrap: true,
-                        crossAxisCount: classData.length > 0 ? 5 : 1,
-                        children: listClass) : Center(
-                      child: Text(
-                        'Belum ada kelas. \r\nAyo tambahkan kelas.',
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  )
+                      margin: EdgeInsets.only(top: 14),
+                      height: 135,
+                      child: listCourse.length > 0
+                          ? GridView.count(
+                              shrinkWrap: true,
+                              crossAxisCount: courseData.length > 0 ? 5 : 1,
+                              children: listCourse)
+                          : Center(
+                              child: Text(
+                                'Belum ada pelajaran. \r\nAyo tambahkan pelajaran.',
+                                textAlign: TextAlign.center,
+                              ),
+                            ))
                 ],
               ),
             ),
@@ -95,26 +95,26 @@ class ClassCard extends StatelessWidget {
   }
 
   List<Widget> listMyWidgets(BuildContext context, AppModel model) {
-    listClass = new List();
+    listCourse = new List();
 
-      classData.forEach((f) {
-        if (level == f.level) {
-          listClass.add(ClassItem(
-            title: f.className,
-            colorBox: Colors.tealAccent,
-            onPressed: () {
-              model.setCurrentClass(f);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ViewClass(),
-                ),
-              );
-            },
-          ));
-        }
-      });
+    courseData.forEach((f) {
+      if (level == f.level) {
+        listCourse.add(CourseItem(
+          title: f.courseName,
+          colorBox: Colors.tealAccent,
+          onPressed: () {
+            model.setCurrentCourse(f);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ViewClass(),
+              ),
+            );
+          },
+        ));
+      }
+    });
 
-    return listClass;
+    return listCourse;
   }
 }

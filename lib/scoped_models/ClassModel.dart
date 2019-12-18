@@ -33,16 +33,16 @@ mixin ClassesModel on CoreModel {
     _class = setClass;
   }
 
-  Future<Null> fetchClassByIdInstitution(int idInstitution) async {
+  Future<Null> fetchClassByInstitutionId(int institutionId) async {
     _isLoading = true;
     notifyListeners();
 
     _classes = [];
 
-    print('fetch kelas by idInstitution');
+    print('fetch kelas by institutionId');
 
     try {
-      _classes = await ClassDao.db.getClassByIdInstitution(idInstitution);
+      _classes = await ClassDao.db.getClassByInstitutionId(institutionId);
 
       _isLoading = false;
       notifyListeners();
@@ -76,12 +76,12 @@ mixin ClassesModel on CoreModel {
     }
   }
 
-  Future<bool> findClassById(int idClass) async {
+  Future<bool> findClassById(int classId) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      _searchClass = await ClassDao.db.getClassById(idClass, 1234);
+      _searchClass = await ClassDao.db.getClassById(classId, 1234);
 
       if (_searchClass != null) {
         _isLoading = false;
@@ -108,8 +108,8 @@ mixin ClassesModel on CoreModel {
 
     var random = Random.secure();
 
-    if (newClass.idClass == null) {
-      newClass.idClass = random.nextInt(999999);
+    if (newClass.classId == null) {
+      newClass.classId = random.nextInt(999999);
     }
 
     try {
@@ -130,8 +130,8 @@ mixin ClassesModel on CoreModel {
     notifyListeners();
 
     try {
-      print(currentClass.idClass);
-      await ClassDao.db.updateClassById(newClass, currentClass.idClass);
+      print(currentClass.classId);
+      await ClassDao.db.updateClassById(newClass, currentClass.classId);
 
       _isLoading = false;
       notifyListeners();

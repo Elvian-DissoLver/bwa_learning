@@ -1,5 +1,4 @@
 import 'package:bwa_learning/dao/Config.dart';
-import 'package:bwa_learning/models/Class.dart';
 import 'package:bwa_learning/models/Student.dart';
 import 'package:mysql1/mysql1.dart';
 
@@ -38,15 +37,15 @@ class StudentDao {
     return studentList;
   }
 
-  Future<List<Student>> getStudentByIdInstitution(int idInstitution) async {
-    print("getStudentByIdInstitution");
+  Future<List<Student>> getStudentByinstitutionId(int institutionId) async {
+    print("getStudentByinstitutionId");
     var db = await database;
 
-    print("getStudentByIdInstitution2");
+    print("getStudentByinstitutionId2");
 
     List<Student> studentList = [];
 
-    var res = await db.query("SELECT * FROM student where idInstitution = $idInstitution");
+    var res = await db.query("SELECT * FROM student where institutionId = $institutionId");
 
     if (res.fields.length > 0) {
       res.forEach((f) {
@@ -64,13 +63,13 @@ class StudentDao {
     return studentList;
   }
 
-  Future<List<Student>> getStudentByPhone(String noHp, int idInstitution) async {
+  Future<List<Student>> getStudentByPhone(String noHp, int institutionId) async {
     print("getStudentByPhone");
     var db = await database;
 
     List<Student> studentList = [];
 
-    var res = await db.query("SELECT * FROM student where noHp >= $noHp and idInstitution = $idInstitution");
+    var res = await db.query("SELECT * FROM student where noHp >= $noHp and institutionId = $institutionId");
 
     if (res.length > 0) {
       res.forEach((f) {
@@ -88,12 +87,12 @@ class StudentDao {
     return studentList;
   }
 
-  Future<List<Student>> getStudentByIdClass(int idClass, int idInstitution) async {
-    print("getStudentByIdClass");
+  Future<List<Student>> getStudentByclassId(int classId, int institutionId) async {
+    print("getStudentByclassId");
     var db = await database;
 
     List<Student> studentList = [];
-    var res = await db.query("SELECT * FROM student WHERE idClass = '$idClass' and idInstitution = $idInstitution");
+    var res = await db.query("SELECT * FROM student WHERE classId = '$classId' and institutionId = $institutionId");
 
     if (res.length > 0) {
       res.forEach((f) {
@@ -110,11 +109,11 @@ class StudentDao {
     return studentList;
   }
 
-  updateStudentById(Student updatedStudent, int idStudent) async {
-    print("updateStudentByIdClass");
+  updateStudentById(Student updatedStudent, int studentId) async {
+    print("updateStudentByclassId");
     final db = await database;
     await db.query(
-        "UPDATE student SET fullName='${updatedStudent.fullName}', email='${updatedStudent.email}', noHp='${updatedStudent.noHp}', idClass=${updatedStudent.idClass}, idInstitution=${updatedStudent.idInstitution} WHERE idStudent = $idStudent"
+        "UPDATE student SET fullName='${updatedStudent.fullName}', email='${updatedStudent.email}', noHp='${updatedStudent.noHp}', classId=${updatedStudent.classId}, institutionId=${updatedStudent.institutionId} WHERE studentId = $studentId"
     );
     print('Class updated: ${updatedStudent.fullName}');
   }

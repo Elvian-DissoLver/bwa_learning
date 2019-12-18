@@ -10,48 +10,50 @@ class MenuUtama extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.count(
       shrinkWrap: true,
-      crossAxisCount: 5,
+      crossAxisCount: 4,
       children: <Widget>[
         MenuUtamaItem(
             title: 'Daftar Kelas',
             icon: Icons.class_,
             colorBox: Colors.blue,
             iconColor: Colors.white,
-            onTap: () => Navigator.pushNamed(context, '/classList')
-        ),
+            onTap: () => Navigator.pushNamed(context, '/classList')),
         MenuUtamaItem(
             title: 'Daftar Guru',
             icon: (FontAwesomeIcons.chalkboardTeacher),
             colorBox: Colors.blue[900],
             iconColor: Colors.white,
-            onTap: () => Navigator.pushNamed(context, '/teacherList')
-        ),
+            onTap: () => Navigator.pushNamed(context, '/teacherList')),
         MenuUtamaItem(
             title: 'Daftar Murid',
             icon: Icons.person_pin,
             colorBox: Colors.purple,
             iconColor: Colors.white,
-            onTap: () => Navigator.pushNamed(context, '/studentList')
-        ),
+            onTap: () => Navigator.pushNamed(context, '/studentList')),
+        MenuUtamaItem(
+            title: 'Daftar Pelajaran',
+            icon: (FontAwesomeIcons.book),
+            colorBox: Colors.redAccent,
+            iconColor: Colors.white,
+            onTap: () => Navigator.pushNamed(context, '/courseList')),
       ],
     );
   }
 }
+
 List<MenuUtamaItem> menuUtamaItem = [
   MenuUtamaItem(
-    title: 'Tiket Pesawat',
-    icon: Icons.flight,
-    colorBox: Colors.blue,
-    iconColor: Colors.white,
-    onTap: () => print('loop')
-  ),
+      title: 'Tiket Pesawat',
+      icon: Icons.flight,
+      colorBox: Colors.blue,
+      iconColor: Colors.white,
+      onTap: () => print('loop')),
   MenuUtamaItem(
     title: 'Hotel',
     icon: Icons.hotel,
     colorBox: Colors.blue[900],
     iconColor: Colors.white,
-    onTap: () =>
-      Pesanan(),
+    onTap: () => Pesanan(),
   ),
   MenuUtamaItem(
     title: 'Pesawat + Hotel',
@@ -61,7 +63,7 @@ List<MenuUtamaItem> menuUtamaItem = [
   ),
   MenuUtamaItem(
     title: 'Al - Quran',
-    icon:(FontAwesomeIcons.quran),
+    icon: (FontAwesomeIcons.quran),
     colorBox: Colors.green[300],
     iconColor: Colors.white,
   ),
@@ -86,7 +88,7 @@ List<MenuUtamaItem> menuUtamaItem = [
   MenuUtamaItem(
     title: 'Transportasi Bandara',
     icon: Icons.local_taxi,
-    colorBox: Colors.blue [300],
+    colorBox: Colors.blue[300],
     iconColor: Colors.white,
   ),
   MenuUtamaItem(

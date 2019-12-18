@@ -1,35 +1,37 @@
 import 'package:flutter/cupertino.dart';
 
 class Class {
-  int idClass;
+  int classId;
   String className;
   int level ;
   String teacherClass;
-  String idInstitution;
+  int institutionId;
 
   Class({
-    @required this.idClass,
+    @required this.classId,
     this.className,
     this.level,
     this.teacherClass,
-    this.idInstitution
+    this.institutionId
   });
 
-  Class.fromJson(Map<String, dynamic> map) {
-    idClass = map['idClass'];
-    className = map['className'];
-    level = map['level'];
-    teacherClass = map['teacherClass'];
-    idInstitution = map['idInstitution'];
+  factory Class.fromJson(Map<String, dynamic> map) {
+    return Class(
+      classId : map['classId'],
+      className : map['className'],
+      level : map['level'],
+      teacherClass : map['teacherClass'],
+      institutionId : map['institutionId'],
+    );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'idClass': this.idClass,
+      'classId': this.classId,
       'className': this.className,
       'level': this.level,
       'teacherClass': this.teacherClass,
-      'idInstitution': this.idInstitution
+      'institutionId': this.institutionId
     };
   }
 

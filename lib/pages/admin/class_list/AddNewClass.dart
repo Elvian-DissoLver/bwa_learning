@@ -43,7 +43,7 @@ class _AddNewClassState extends State<AddNewClass> {
     'className': null,
     'teacherClass': null,
     'level': null,
-    'idInstitution': null
+    'institutionId': null
   };
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -64,7 +64,7 @@ class _AddNewClassState extends State<AddNewClass> {
       _currentCity = _dropDownMenuItems[0].value;
 
       currentClass = Class(
-          className: '', level: null, teacherClass: '', idInstitution: '');
+          className: '', level: null, teacherClass: '', institutionId: null);
     });
 
     super.initState();
@@ -122,7 +122,7 @@ class _AddNewClassState extends State<AddNewClass> {
       currentClass.className = className.text;
       currentClass.teacherClass = teacherClass.text;
       currentClass.level = widget.level;
-      currentClass.idInstitution = '1234';
+      currentClass.institutionId = 1234;
     });
 
     _searchClassName(model);

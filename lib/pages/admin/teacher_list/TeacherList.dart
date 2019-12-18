@@ -1,4 +1,3 @@
-import 'package:bwa_learning/models/Teacher.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:bwa_learning/widgets/admin/teacher/TeacherListView.dart';
 import 'package:bwa_learning/widgets/loading/loading_modal.dart';
@@ -22,7 +21,7 @@ class _TeacherListState extends State<TeacherList> {
   @override
   void initState() {
 
-    widget.model.fetchTeacherByIdInstitution(1234);
+    widget.model.fetchTeacherByinstitutionId(widget.model.currentInstitution.institutionId);
 
     super.initState();
   }

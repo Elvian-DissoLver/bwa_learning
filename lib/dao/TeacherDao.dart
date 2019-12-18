@@ -1,6 +1,4 @@
 import 'package:bwa_learning/dao/Config.dart';
-import 'package:bwa_learning/models/Class.dart';
-import 'package:bwa_learning/models/Teacher.dart';
 import 'package:bwa_learning/models/Teacher.dart';
 import 'package:mysql1/mysql1.dart';
 
@@ -39,13 +37,13 @@ class TeacherDao {
     return teacherList;
   }
 
-  Future<List<Teacher>> getTeacherByIdInstitution(int idInstitution) async {
-    print("getTeacherByIdInstitution");
+  Future<List<Teacher>> getTeacherByinstitutionId(int institutionId) async {
+    print("getTeacherByinstitutionId");
     var db = await database;
 
     List<Teacher> teacherList = [];
 
-    var res = await db.query("SELECT * FROM teacher where idInstitution = $idInstitution");
+    var res = await db.query("SELECT * FROM teacher where institutionId = $institutionId");
 
     if (res.fields.length > 0) {
       res.forEach((f) {
@@ -63,13 +61,13 @@ class TeacherDao {
     return teacherList;
   }
 
-  Future<List<Teacher>> getTeacherByPhone(String noHp, int idInstitution) async {
+  Future<List<Teacher>> getTeacherByPhone(String noHp, int institutionId) async {
     print("getTeacherByPhone");
     var db = await database;
 
     List<Teacher> teacherList = [];
 
-    var res = await db.query("SELECT * FROM teacher where noHp >= $noHp and idInstitution = $idInstitution");
+    var res = await db.query("SELECT * FROM teacher where noHp >= $noHp and institutionId = $institutionId");
 
     if (res.length > 0) {
       res.forEach((f) {
@@ -87,12 +85,12 @@ class TeacherDao {
     return teacherList;
   }
 
-  Future<List<Teacher>> getTeacherByIdClass(int idClass, int idInstitution) async {
-    print("getTeacherByIdClass");
+  Future<List<Teacher>> getTeacherByclassId(int classId, int institutionId) async {
+    print("getTeacherByclassId");
     var db = await database;
 
     List<Teacher> teacherList = [];
-    var res = await db.query("SELECT * FROM teacher WHERE idClass = '$idClass' and idInstitution = $idInstitution");
+    var res = await db.query("SELECT * FROM teacher WHERE classId = '$classId' and institutionId = $institutionId");
 
     if (res.length > 0) {
       res.forEach((f) {

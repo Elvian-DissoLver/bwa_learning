@@ -37,12 +37,12 @@ class ScheduleCourseDao {
     return studentList;
   }
 
-  Future<List<ScheduleCourse>> getScheduleCourseByIdClass(int idClass, int idInstitution) async {
-    print("getScheduleCourseByIdClass");
+  Future<List<ScheduleCourse>> getScheduleCourseByclassId(int classId, int institutionId) async {
+    print("getScheduleCourseByclassId");
     var db = await database;
 
     List<ScheduleCourse> studentList = [];
-    var res = await db.query("SELECT * FROM schedule_course WHERE idClass = '$idClass'");
+    var res = await db.query("SELECT * FROM schedule_course WHERE classId = '$classId'");
 
     if (res.length > 0) {
       res.forEach((f) {

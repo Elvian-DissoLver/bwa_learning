@@ -3,7 +3,6 @@ import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:bwa_learning/widgets/admin/schedule_class/utils/diamond_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DetailPage extends StatefulWidget {
   final AppModel model;
@@ -99,10 +98,10 @@ class _DetailPageState extends State<DetailPage> {
     super.dispose();
   }
 
-  Widget getCourseName(int idCourse) {
+  Widget getCourseName(int courseId) {
     String courseName;
 
-    int index = widget.model.courses.indexWhere((t) => t.idCourse == idCourse);
+    int index = widget.model.courses.indexWhere((t) => t.courseId == courseId);
 
     index != null ? courseName = widget.model.courses.elementAt(index).courseName : courseName = '';
 
@@ -244,7 +243,7 @@ class _DetailPageState extends State<DetailPage> {
                                                 EdgeInsets.only(left: 30.0),
                                           ),
                                           Flexible(
-                                            child: getCourseName(currentScheduleCourse.elementAt(i).idCourse),
+                                            child: getCourseName(currentScheduleCourse.elementAt(i).courseId),
                                           ),
                                           Padding(
                                             padding:

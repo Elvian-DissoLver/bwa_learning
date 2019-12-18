@@ -16,16 +16,16 @@ mixin ScheduleCourseModel on Model {
     return _isLoading;
   }
 
-  Future<Null> fetchScheduleCourseByIdClass(int idClass) async {
+  Future<Null> fetchScheduleCourseByclassId(int classId) async {
     _isLoading = true;
     notifyListeners();
 
     _scheduleCourses = [];
 
-    print('fetch scheduleCourses by idClass');
+    print('fetch scheduleCourses by classId');
 
     try {
-      _scheduleCourses = await ScheduleCourseDao.db.getScheduleCourseByIdClass(idClass, 1234);
+      _scheduleCourses = await ScheduleCourseDao.db.getScheduleCourseByclassId(classId, 1234);
 
       _isLoading = false;
       notifyListeners();

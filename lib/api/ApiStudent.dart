@@ -3,7 +3,7 @@
 //class ApiStudent{
 //  final Firestore _db = Firestore.instance;
 //  String path;
-//  String idInstitution;
+//  String institutionId;
 //  CollectionReference ref;
 //  String collectionPath;
 //
@@ -15,12 +15,12 @@
 //    this.path = path;
 //  }
 //
-//  String getIdInstitution() {
-//    return idInstitution;
+//  String getinstitutionId() {
+//    return institutionId;
 //  }
 //
-//  void setIdInstitution(String idInstitution) {
-//    this.idInstitution = idInstitution;
+//  void setinstitutionId(String institutionId) {
+//    this.institutionId = institutionId;
 //  }
 //
 //  void setCollectionPath(String collectionPath) {
@@ -28,10 +28,10 @@
 //  }
 //
 //  Future<QuerySnapshot> getDataCollection() {
-//    return ref.where('idInstitution', isEqualTo: idInstitution).getDocuments();
+//    return ref.where('institutionId', isEqualTo: institutionId).getDocuments();
 //  }
 //
-//  Future<QuerySnapshot> getDataCollectionByIdClass(String idKelas) {
+//  Future<QuerySnapshot> getDataCollectionByclassId(String idKelas) {
 ////    return ref.getDocuments() ;
 //    return ref.where('idKelas', isEqualTo: idKelas).getDocuments();
 //  }

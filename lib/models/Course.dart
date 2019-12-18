@@ -1,19 +1,22 @@
 class Course {
-  int idCourse;
+  int courseId;
   String courseName;
-  int idTeacher;
-  int idInstitution;
+  int teacherId;
+  int institutionId;
+  int level;
 
   Course({
-    this.idCourse,
+    this.courseId,
     this.courseName,
-    this.idTeacher
+    this.teacherId,
+    this.level
   });
 
   Course.fromJson(Map<String, dynamic> map) {
-    idCourse = map['idCourse'];
+    courseId = map['courseId'];
     courseName = map['courseName'];
-    idTeacher = map['idTeacher'];
-    idInstitution = map['idInstitution'];
+    teacherId = map['teacherId'];
+    institutionId = map['institutionId'];
+    level = map['level'];
   }
 }

@@ -1,4 +1,3 @@
-import 'package:bwa_learning/models/Teacher.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -54,11 +53,11 @@ class TeacherListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<AppModel>(
       builder: (BuildContext context, Widget child, AppModel model) {
-        Widget kelasCards = model.teachers.length > 0
+        Widget teacherCards = model.teachers.length > 0
             ? _buildListView(model)
             : _buildEmptyText(model);
 
-        return kelasCards;
+        return teacherCards;
       },
     );
   }

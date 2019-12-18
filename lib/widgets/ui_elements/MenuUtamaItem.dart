@@ -26,7 +26,7 @@ class MenuUtamaItem extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 2.0),
+            padding: const EdgeInsets.only(top: 10.0),
             child: Text(title, style: TextStyle(fontSize: 12.0, ), textAlign: TextAlign.center,),
           )
         ],

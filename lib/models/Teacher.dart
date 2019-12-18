@@ -1,26 +1,26 @@
 class Teacher {
-  int idTeacher;
+  int teacherId;
   String fullName;
   String email;
   String noHp;
-  int idClass;
-  int idInstitution;
+  int classId;
+  int institutionId;
 
   Teacher({
-    this.idTeacher,
+    this.teacherId,
     this.fullName,
     this.email,
     this.noHp,
-    this.idClass,
-    this.idInstitution
+    this.classId,
+    this.institutionId
   });
 
   Teacher.fromJson(Map<String, dynamic> map) {
-    this.idTeacher = map['idTeacher'];
+    this.teacherId = map['teacherId'];
     fullName = map['fullName'];
     email = map['email'];
     noHp = map['noHp'];
-    idClass = map['idClass'];
-    idInstitution = map['idInstitution'];
+    classId = map['classId'];
+    institutionId = map['institutionId'];
   }
 }

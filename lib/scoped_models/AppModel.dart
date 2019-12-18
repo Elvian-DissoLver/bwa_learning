@@ -1,5 +1,6 @@
 import 'package:bwa_learning/scoped_models/ClassModel.dart';
 import 'package:bwa_learning/scoped_models/CourseModel.dart';
+import 'package:bwa_learning/scoped_models/InstitutionModel.dart';
 import 'package:bwa_learning/scoped_models/ScheduleCourseModel.dart';
 import 'package:bwa_learning/scoped_models/StudentModel.dart';
 import 'package:bwa_learning/scoped_models/UserModel.dart';
@@ -15,4 +16,5 @@ class AppModel extends Model
         TeacherModel,
         ScheduleCourseModel,
         CourseModel,
+        InstitutionModel,
         UserModel {}

@@ -35,9 +35,9 @@ class _TaskPageState extends State<TaskPage>
     super.initState();
 
     widget.model
-        .fetchScheduleCourseByIdClass(widget.model.currentClass.idClass);
+        .fetchScheduleCourseByclassId(widget.model.currentClass.classId);
 
-    widget.model.fetchCourseByIdInstitution(1234);
+    widget.model.fetchCourseByInstitutionId(1234);
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -131,10 +131,10 @@ class _TaskPageState extends State<TaskPage>
     super.dispose();
   }
 
-  Widget getCourseName(int idCourse) {
+  Widget getCourseName(int courseId) {
     String courseName;
 
-    int index = widget.model.courses.indexWhere((t) => t.idCourse == idCourse);
+    int index = widget.model.courses.indexWhere((t) => t.courseId == courseId);
 
     index != null ? courseName = widget.model.courses.elementAt(index).courseName : courseName = '';
 
@@ -254,7 +254,7 @@ class _TaskPageState extends State<TaskPage>
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
                                     Flexible(
-                                      child: getCourseName(schedulePerDay.elementAt(i).idCourse)
+                                      child: getCourseName(schedulePerDay.elementAt(i).courseId)
                                     ),
                                     Padding(
                                       padding:

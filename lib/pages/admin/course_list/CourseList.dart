@@ -1,28 +1,27 @@
 import 'package:bwa_learning/scoped_models/AppModel.dart';
-import 'package:bwa_learning/widgets/admin/student/StudentListView.dart';
+import 'package:bwa_learning/widgets/admin/course/CourseListView.dart';
 import 'package:bwa_learning/widgets/loading/loading_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'AddNewStudentClass.dart';
-
-class StudentClassList extends StatefulWidget {
+class CourseList extends StatefulWidget {
 
   final AppModel model;
 
-  StudentClassList(this.model);
+  CourseList(this.model);
 
   @override
   State<StatefulWidget> createState() {
-    return _StudentClassListState();
+    return _CourseListState();
   }
 }
 
-class _StudentClassListState extends State<StudentClassList> {
+class _CourseListState extends State<CourseList> {
 
   @override
   void initState() {
-    widget.model.fetchStudentByclassId(widget.model.currentClass.classId);
+
+    widget.model.fetchCourseByInstitutionId(1234);
 
     super.initState();
   }
@@ -30,7 +29,7 @@ class _StudentClassListState extends State<StudentClassList> {
   Widget _buildAppBar(AppModel model) {
     return AppBar(
       title: Text(
-        'Daftar Siswa',
+        'Daftar Pelajaran',
       ),
     );
   }
@@ -38,22 +37,7 @@ class _StudentClassListState extends State<StudentClassList> {
   Widget _buildPageContent(AppModel model) {
     return Scaffold(
       appBar: _buildAppBar(model),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: _buildFloatingActionButton(model),
-      body: StudentListView(),
-    );
-  }
-
-  Widget _buildFloatingActionButton(AppModel model) {
-    return FloatingActionButton(
-      child: Icon(Icons.add),
-
-      onPressed: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>AddNewStudentClass(model),
-        ),
-      ),
+      body: CourseListView(),
     );
   }
 

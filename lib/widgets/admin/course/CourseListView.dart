@@ -1,17 +1,16 @@
-import 'package:bwa_learning/models/LevelClass.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'ClassCard.dart';
+import 'CourseCard.dart';
 
-class ClassListView extends StatelessWidget {
+class CourseListView extends StatelessWidget {
 
   Widget _buildEmptyText(AppModel model) {
     String emptyText;
 
-    emptyText = 'Belum ada kelas. \r\nAyo coba buat kelas.';
+    emptyText = 'Belum ada pelajaran. \r\nAyo tambahkan pelajaran.';
 
 //    Widget svg = new SvgPicture.asset(
 //      'assets/img/todo_list.svg',
@@ -43,9 +42,9 @@ class ClassListView extends StatelessWidget {
 
   Widget _buildListView(AppModel model) {
     return ListView.builder(
-      itemCount: SchoolHelper.getIteration(model.currentInstitution.level),
+      itemCount: 3,
       itemBuilder: (BuildContext context, int index) {
-         return ClassCard(model.classes, index);
+         return CourseCard(model.courses, index);
   },
     );
   }
@@ -54,9 +53,9 @@ class ClassListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<AppModel>(
       builder: (BuildContext context, Widget child, AppModel model) {
-        Widget classCards = _buildListView(model);
+        Widget courseCards = _buildListView(model);
 
-        return classCards;
+        return courseCards;
       },
     );
   }

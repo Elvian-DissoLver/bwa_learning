@@ -67,8 +67,8 @@ class _AddNewStudentClassState extends State<AddNewStudentClass> {
   }
 
   _checkUpdateClassStudent(AppModel model) async{
-    if(selectStudent.idClass != null) {
-      await widget.model.findClassById(selectStudent.idClass).then((bool success) {
+    if(selectStudent.classId != null) {
+      await widget.model.findClassById(selectStudent.classId).then((bool success) {
         if(success) {
           InfoDialog(
               '${selectStudent.fullName} sudah berada di Kelas ${model.searchClass.className}. Apakah anda mau melanjutkan proses?',
@@ -91,7 +91,7 @@ class _AddNewStudentClassState extends State<AddNewStudentClass> {
 
   _prosesUpdateClassStudent(AppModel model) async {
     setState(() {
-      selectStudent.idClass = model.currentClass.idClass;
+      selectStudent.classId = model.currentClass.classId;
     });
 
     await widget.model.updateStudent(selectStudent).then((bool success) {
@@ -210,10 +210,10 @@ class _AddNewStudentClassState extends State<AddNewStudentClass> {
                           onTap: () {
                             setState(() {
                               selectStudent = Student(
-                                  idStudent: student.idStudent,
+                                  studentId: student.studentId,
                                   fullName: student.fullName,
-                                  idClass: student.idClass,
-                                  idInstitution: student.idInstitution,
+                                  classId: student.classId,
+                                  institutionId: student.institutionId,
                                   noHp: student.noHp,
                                   email: student.email);
                               _controller.clear();

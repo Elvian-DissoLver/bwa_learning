@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:bwa_learning/api/ApiStudent.dart';
 import 'package:bwa_learning/dao/StudentDao.dart';
 import 'package:bwa_learning/models/Student.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -32,16 +31,16 @@ mixin StudentModel on Model {
     _student = student;
   }
 
-  Future<Null> fetchStudentByIdInstitution(int idInstitution) async {
+  Future<Null> fetchStudentByinstitutionId(int institutionId) async {
     _isLoading = true;
     notifyListeners();
 
     _students = [];
 
-    print('fetch students by idInstitution');
+    print('fetch students by institutionId');
 
     try {
-      _students = await StudentDao.db.getStudentByIdInstitution(idInstitution);
+      _students = await StudentDao.db.getStudentByinstitutionId(institutionId);
 
       _isLoading = false;
       notifyListeners();
@@ -51,16 +50,16 @@ mixin StudentModel on Model {
     }
   }
 
-  Future<Null> fetchStudentByIdClass(int idClass) async {
+  Future<Null> fetchStudentByclassId(int classId) async {
     _isLoading = true;
     notifyListeners();
 
     _students = [];
 
-    print('fetch students by idClass');
+    print('fetch students by classId');
 
     try {
-      _students = await StudentDao.db.getStudentByIdClass(idClass, 1234);
+      _students = await StudentDao.db.getStudentByclassId(classId, 1234);
 
       _isLoading = false;
       notifyListeners();
@@ -96,8 +95,8 @@ mixin StudentModel on Model {
     notifyListeners();
 
     try {
-      print(updatedStudent.idStudent);
-      await StudentDao.db.updateStudentById(updatedStudent, updatedStudent.idStudent);
+      print(updatedStudent.studentId);
+      await StudentDao.db.updateStudentById(updatedStudent, updatedStudent.studentId);
 
       _isLoading = false;
       notifyListeners();

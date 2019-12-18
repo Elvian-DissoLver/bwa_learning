@@ -47,11 +47,15 @@ dependencies:
   launch_review: ^2.0.0
   modal_progress_hud: ^0.1.3
   connectivity: ^0.4.2
+  json_serializable:
+  json_annotation:
+  enum_to_string:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  build_runner:
+  json_serializable:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

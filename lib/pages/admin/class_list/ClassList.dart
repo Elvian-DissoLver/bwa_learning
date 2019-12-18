@@ -20,7 +20,7 @@ class _ClassListState extends State<ClassList> {
   @override
   void initState() {
 
-    widget.model.fetchClassByIdInstitution(1234);
+    widget.model.fetchClassByInstitutionId(widget.model.currentInstitution.institutionId);
 
     super.initState();
   }

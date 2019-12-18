@@ -30,16 +30,16 @@ mixin CourseModel on Model {
     _course = course;
   }
 
-  Future<Null> fetchCourseByIdInstitution(int idInstitution) async {
+  Future<Null> fetchCourseByInstitutionId(int institutionId) async {
     _isLoading = true;
     notifyListeners();
 
     _courses = [];
 
-    print('fetch courses by idInstitution');
+    print('fetch courses by institutionId');
 
     try {
-      _courses = await CourseDao.db.getCourseByIdInstitution(idInstitution);
+      _courses = await CourseDao.db.getCourseByInstitutionId(institutionId);
 
       _isLoading = false;
       notifyListeners();
