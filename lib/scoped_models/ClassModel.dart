@@ -76,12 +76,42 @@ mixin ClassesModel on CoreModel {
     }
   }
 
+  Future<bool> findStudentClassById(int classId) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      await ClassDao.db.getClassById(classId, 1234).then((onValue) {
+        _class = onValue;
+      });
+
+      if (_searchClass != null) {
+        _isLoading = false;
+        notifyListeners();
+
+        print(_searchClass.className);
+
+        return true;
+      } else {
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
+    } catch (error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
   Future<bool> findClassById(int classId) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      _searchClass = await ClassDao.db.getClassById(classId, 1234);
+      await ClassDao.db.getClassById(classId, 1234).then((onValue) {
+        _searchClass = onValue;
+      });
 
       if (_searchClass != null) {
         _isLoading = false;

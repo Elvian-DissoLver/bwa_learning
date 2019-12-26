@@ -18,7 +18,7 @@ class Institution {
     return Institution(
       institutionId: map['institutionId'],
       institutionName: map['institutionName'],
-      level: EnumToString.fromString(School.values, map['level'].toString()),
+      level: EnumToString.fromString(School.values, map['level']),
       regional: map['regional'],
     );
   }

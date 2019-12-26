@@ -5,9 +5,9 @@ enum School {
 }
 
 enum ClassEnum {
-  KELAS_I, KELAS_II, KELAS_III, KELAS_IV, KELAS_V, KELAS_VI,
-  KELAS_VII, KELAS_VIII, KELAS_IX,
-  KELAS_X, KELAS_XI, KELAS_XII
+  I, II, III, IV, V, VI,
+  VII, VIII, IX,
+  X, XI, XII
 }
 
 class SchoolHelper{
@@ -38,37 +38,37 @@ class SchoolHelper{
     switch(school) {
       case School.SLTA:
         if(level == 0) {
-          return ClassEnum.KELAS_X;
+          return ClassEnum.X;
         } else if(level == 1) {
-          return ClassEnum.KELAS_XI;
+          return ClassEnum.XI;
         } else if(level == 2) {
-          return ClassEnum.KELAS_XII;
+          return ClassEnum.XII;
         }
         break;
 
       case School.SLTP:
         if(level == 0) {
-          return ClassEnum.KELAS_VII;
+          return ClassEnum.VII;
         } else if(level == 1) {
-          return ClassEnum.KELAS_VIII;
+          return ClassEnum.VIII;
         } else if(level == 2) {
-          return ClassEnum.KELAS_IX;
+          return ClassEnum.IX;
         }
         break;
 
       case School.SD:
         if(level == 0) {
-          return ClassEnum.KELAS_I;
+          return ClassEnum.I;
         } else if(level == 1) {
-          return ClassEnum.KELAS_II;
+          return ClassEnum.II;
         } else if(level == 2) {
-          return ClassEnum.KELAS_III;
+          return ClassEnum.III;
         } else if(level == 3) {
-          return ClassEnum.KELAS_IV;
+          return ClassEnum.IV;
         } else if(level == 4) {
-          return ClassEnum.KELAS_V;
+          return ClassEnum.V;
         } else if(level == 5) {
-          return ClassEnum.KELAS_VI;
+          return ClassEnum.VI;
         }
 
         break;

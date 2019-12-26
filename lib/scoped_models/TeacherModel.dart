@@ -30,7 +30,7 @@ mixin TeacherModel on Model {
     _teacher = teacher;
   }
 
-  Future<Null> fetchTeacherByinstitutionId(int institutionId) async {
+  Future<Null> fetchTeacherByInstitutionId(int institutionId) async {
     _isLoading = true;
     notifyListeners();
 
@@ -39,13 +39,34 @@ mixin TeacherModel on Model {
     print('fetch teachers by institutionId');
 
     try {
-      _teachers = await TeacherDao.db.getTeacherByinstitutionId(institutionId);
+      _teachers = await TeacherDao.db.getTeacherByInstitutionId(institutionId);
 
       _isLoading = false;
       notifyListeners();
     } catch (error) {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  Future<bool> fetchTeacherById(int teacherId) async {
+    _isLoading = true;
+    notifyListeners();
+
+    print('fetch students by email');
+
+    try {
+      await TeacherDao.db.getTeacherById(teacherId).then((onValue) {
+        _teacher = onValue;
+      });
+
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    } catch (error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
     }
   }
 }

@@ -9,7 +9,6 @@ mixin StudentModel on Model {
   List<Student> _foundedStudent = [];
   Student _student;
   bool _isLoading = false;
-//  ApiStudent _apiStudent = ApiStudent('student');
 
   List<Student> get students {
     return List.from(_students);
@@ -31,7 +30,7 @@ mixin StudentModel on Model {
     _student = student;
   }
 
-  Future<Null> fetchStudentByinstitutionId(int institutionId) async {
+  Future<Null> fetchStudentByInstitutionId(int institutionId) async {
     _isLoading = true;
     notifyListeners();
 
@@ -40,7 +39,7 @@ mixin StudentModel on Model {
     print('fetch students by institutionId');
 
     try {
-      _students = await StudentDao.db.getStudentByinstitutionId(institutionId);
+      _students = await StudentDao.db.getStudentByInstitutionId(institutionId);
 
       _isLoading = false;
       notifyListeners();
@@ -50,7 +49,7 @@ mixin StudentModel on Model {
     }
   }
 
-  Future<Null> fetchStudentByclassId(int classId) async {
+  Future<Null> fetchStudentByClassId(int classId) async {
     _isLoading = true;
     notifyListeners();
 
@@ -59,13 +58,34 @@ mixin StudentModel on Model {
     print('fetch students by classId');
 
     try {
-      _students = await StudentDao.db.getStudentByclassId(classId, 1234);
+      _students = await StudentDao.db.getStudentByClassId(classId, 1234);
 
       _isLoading = false;
       notifyListeners();
     } catch (error) {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  Future<bool> fetchStudentByEmail(String email, int institutionId) async {
+    _isLoading = true;
+    notifyListeners();
+
+    print('fetch students by email');
+
+    try {
+      await StudentDao.db.getStudentByEmail(email, institutionId).then((onValue) {
+        _student = onValue;
+      });
+
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    } catch (error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
     }
   }
 

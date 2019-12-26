@@ -73,7 +73,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
       bool isExist = false;
 
       QuerySnapshot query =
-      await Firestore.instance.collection(widget.user.uid).getDocuments();
+      await Firestore.instance.collection(widget.user.userId.toString()).getDocuments();
 
       query.documents.forEach((doc) {
         if (listNameController.text.toString() == doc.documentID) {
@@ -83,7 +83,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
 
       if (isExist == false && listNameController.text.isNotEmpty) {
         await Firestore.instance
-            .collection(widget.user.uid)
+            .collection(widget.user.userId.toString())
             .document(listNameController.text.toString().trim())
             .setData({
           "color": currentColor.value.toString(),

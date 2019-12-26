@@ -21,7 +21,7 @@ class _TeacherListState extends State<TeacherList> {
   @override
   void initState() {
 
-    widget.model.fetchTeacherByinstitutionId(widget.model.currentInstitution.institutionId);
+    widget.model.fetchTeacherByInstitutionId(widget.model.currentInstitution.institutionId);
 
     super.initState();
   }

@@ -1,6 +1,6 @@
 import 'package:bwa_learning/models/Course.dart';
 import 'package:bwa_learning/models/LevelClass.dart';
-import 'package:bwa_learning/pages/admin/class_list/AddNewClass.dart';
+import 'package:bwa_learning/pages/admin/course_list/AddNewCourse.dart';
 import 'package:bwa_learning/pages/admin/class_list/ViewClass.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:enum_to_string/enum_to_string.dart';
@@ -19,11 +19,14 @@ class CourseCard extends StatelessWidget {
 
   List<Widget> listCourse;
 
+  String levelClass;
+
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<AppModel>(
         builder: (BuildContext context, Widget child, AppModel model) {
       listCourse = listMyWidgets(context, model);
+      levelClass = EnumToString.parse(SchoolHelper.getClassEnum(model.currentInstitution.level, level));
 
       return Container(
           margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
@@ -50,7 +53,7 @@ class CourseCard extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Text(
-                          '${EnumToString.parseCamelCase(SchoolHelper.getClassEnum(model.currentInstitution.level, level)).toUpperCase()}',
+                          'Kelas $levelClass',
                           style: TextStyle(
                             fontFamily: 'ZillaSlab',
                             fontSize: 15,
@@ -65,7 +68,7 @@ class CourseCard extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      AddNewClass(this.level, model),
+                                      AddNewCourse(level, this.levelClass, model),
                                 ),
                               ),
                           icon: Icon(Icons.add_circle),

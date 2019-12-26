@@ -1,4 +1,4 @@
-import 'package:bwa_learning/pages/admin/beranda/Beranda.dart';
+import 'package:bwa_learning/pages/beranda/Beranda.dart';
 import 'package:bwa_learning/pages/inbox.dart';
 import 'package:bwa_learning/pages/pesanan.dart';
 import 'package:bwa_learning/pages/profile.dart';

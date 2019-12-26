@@ -51,7 +51,7 @@ class ClassCard extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Text(
-                          '${EnumToString.parseCamelCase(SchoolHelper.getClassEnum(model.currentInstitution.level, level)).toUpperCase()}',
+                          'Kelas ${EnumToString.parse(SchoolHelper.getClassEnum(model.currentInstitution.level, level))}',
                           style: TextStyle(
                             fontFamily: 'ZillaSlab',
                             fontSize: 15,

@@ -1,5 +1,6 @@
 
 
+import 'package:bwa_learning/dao/UserDao.dart';
 import 'package:bwa_learning/models/User.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -9,19 +10,30 @@ mixin UserModel on Model {
 
   User _user;
 
-  Future<bool> signInAnonymously() async {
-    final user = await auth.signInAnonymously();
-
-    _user = User(
-        uid: user.user.uid,
-        email: user.user.email,
-        token: user.user.uid,
-        displayName: user.user.displayName,
-        photoURL: user.user.photoUrl
-    );
-  }
+  bool _isLoading = false;
 
   User get currentUser{
     return _user;
+  }
+
+  Future<bool> findUserByEmail(String email) async {
+    _isLoading = true;
+    notifyListeners();
+
+    print('find user by email');
+
+    try {
+      await UserDao.db.getUserByEmail(email).then((onValue) {
+        _user =onValue;
+      });
+
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    } catch (error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
   }
 }

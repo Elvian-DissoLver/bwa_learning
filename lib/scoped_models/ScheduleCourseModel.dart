@@ -7,6 +7,15 @@ import 'package:scoped_model/scoped_model.dart';
 mixin ScheduleCourseModel on Model {
   List<ScheduleCourse> _scheduleCourses = [];
   bool _isLoading = false;
+  ScheduleCourse _scheduleCourse;
+
+  void setCurrentScheduleCourse(ScheduleCourse scheduleCourse) {
+    _scheduleCourse = scheduleCourse;
+  }
+
+  ScheduleCourse get currentScheduleCourse{
+    return _scheduleCourse;
+  }
 
   List<ScheduleCourse> get scheduleCourses {
     return List.from(_scheduleCourses);

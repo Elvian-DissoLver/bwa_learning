@@ -1,5 +1,9 @@
+import 'package:bwa_learning/models/Category.dart';
+import 'package:bwa_learning/models/CourseState.dart';
+import 'package:bwa_learning/scoped_models/CategoryModel.dart';
 import 'package:bwa_learning/scoped_models/ClassModel.dart';
 import 'package:bwa_learning/scoped_models/CourseModel.dart';
+import 'package:bwa_learning/scoped_models/CourseStateModel.dart';
 import 'package:bwa_learning/scoped_models/InstitutionModel.dart';
 import 'package:bwa_learning/scoped_models/ScheduleCourseModel.dart';
 import 'package:bwa_learning/scoped_models/StudentModel.dart';
@@ -17,4 +21,7 @@ class AppModel extends Model
         ScheduleCourseModel,
         CourseModel,
         InstitutionModel,
-        UserModel {}
+        UserModel,
+        CategoryModel,
+        CourseStateModel
+{}

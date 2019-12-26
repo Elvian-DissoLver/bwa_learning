@@ -2,16 +2,20 @@ import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable()
 class CourseState {
+  int courseStateId;
   int courseId;
   String startAt;
   String endAt;
-  bool isDone;
+  int isDone;
+  int classId;
 
   CourseState({
+    this.courseStateId,
     this.courseId,
     this.startAt,
     this.endAt,
-    this.isDone
+    this.isDone,
+    this.classId
   });
 
   @override
@@ -19,8 +23,13 @@ class CourseState {
     return 'CourseState{endAt: $endAt}';
   }
 
-  CourseState.fromJson(Map<String, dynamic> json) {
-    endAt= json['endAt'] as String;
+  CourseState.fromJson(Map<String, dynamic> map) {
+    courseStateId = map['courseStateId'];
+    courseId = map['courseId'];
+    startAt = map['startAt'];
+    endAt = map['endAt'];
+    isDone = map['isDone'];
+    classId = map['classId'];
   }
 
 }

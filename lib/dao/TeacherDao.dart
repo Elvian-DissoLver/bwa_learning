@@ -37,7 +37,7 @@ class TeacherDao {
     return teacherList;
   }
 
-  Future<List<Teacher>> getTeacherByinstitutionId(int institutionId) async {
+  Future<List<Teacher>> getTeacherByInstitutionId(int institutionId) async {
     print("getTeacherByinstitutionId");
     var db = await database;
 
@@ -85,7 +85,7 @@ class TeacherDao {
     return teacherList;
   }
 
-  Future<List<Teacher>> getTeacherByclassId(int classId, int institutionId) async {
+  Future<List<Teacher>> getTeacherByClassId(int classId, int institutionId) async {
     print("getTeacherByclassId");
     var db = await database;
 
@@ -105,6 +105,23 @@ class TeacherDao {
       print("Null");
     }
     return teacherList;
+  }
+
+  Future<Teacher> getTeacherById(int teacherId) async {
+    print("getTeacherByEmail");
+    var db = await database;
+    var res = await db.query("SELECT * FROM teacher WHERE teacherId = '$teacherId'");
+
+    Teacher findTeacher;
+
+    if (res.length > 0) {
+      res.forEach((f) {
+        print(f);
+        findTeacher = Teacher.fromJson(f.fields);
+      });
+      return findTeacher;
+    }
+    return null;
   }
 
 }

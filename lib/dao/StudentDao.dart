@@ -37,7 +37,24 @@ class StudentDao {
     return studentList;
   }
 
-  Future<List<Student>> getStudentByinstitutionId(int institutionId) async {
+  Future<Student> getStudentByEmail(String email, int institutionId) async {
+    print("getStudentByEmail");
+    var db = await database;
+    var res = await db.query("SELECT * FROM student WHERE email = '$email' and institutionId='$institutionId'");
+
+    Student findStudent;
+
+    if (res.length > 0) {
+      res.forEach((f) {
+        print(f);
+        findStudent = Student.fromJson(f.fields);
+      });
+      return findStudent;
+    }
+    return null;
+  }
+
+  Future<List<Student>> getStudentByInstitutionId(int institutionId) async {
     print("getStudentByinstitutionId");
     var db = await database;
 
@@ -87,7 +104,7 @@ class StudentDao {
     return studentList;
   }
 
-  Future<List<Student>> getStudentByclassId(int classId, int institutionId) async {
+  Future<List<Student>> getStudentByClassId(int classId, int institutionId) async {
     print("getStudentByclassId");
     var db = await database;
 

@@ -1,19 +1,24 @@
 class User {
-  final String uid;
-  final String email;
-  final String userName;
-  final String password;
-  final String token;
-  final String displayName;
-  final String photoURL;
+  int userId;
+  String email;
+  String userName;
+  String password;
+  String token;
+  String displayName;
+  String photoURL;
+  String status;
 
   User({
-    this.uid,
+    this.userId,
     this.email,
     this.userName,
-    this.password,
-    this.token,
-    this.displayName,
-    this.photoURL,
+    this.status
   });
+
+  User.fromJson(Map<String, dynamic> map) {
+    this.userId = map['userId'];
+    userName = map['userName'];
+    email = map['email'];
+    status = map['status'];
+   }
 }
