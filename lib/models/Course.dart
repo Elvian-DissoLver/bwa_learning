@@ -3,8 +3,10 @@ class Course {
   String courseName;
   int teacherId;
   int institutionId;
+  int parentId;
   int level;
   int categoryId;
+  List<Course> childData;
 
   Course({
     this.courseId,
@@ -12,6 +14,7 @@ class Course {
     this.teacherId,
     this.level,
     this.institutionId,
+    this.parentId,
     this.categoryId
   });
 
@@ -20,6 +23,7 @@ class Course {
     courseName = map['courseName'];
     teacherId = map['teacherId'];
     institutionId = map['institutionId'];
+    parentId = map['parentId'];
     level = map['level'];
     categoryId = map['categoryId'];
   }

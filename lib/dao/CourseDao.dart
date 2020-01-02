@@ -61,4 +61,28 @@ class CourseDao {
     return courseList;
   }
 
+  Future<List<Course>> getCourseByInstitutionIdAndTeacherId(int institutionId, int teacherId) async {
+    print("getCourseByinstitutionIdAndTeacherId");
+    var db = await database;
+
+    List<Course> courseList = [];
+
+    var res = await db.query("SELECT * FROM course where institutionId = $institutionId and teacherId=$teacherId");
+
+    if (res.fields.length > 0) {
+      res.forEach((f) {
+        print(f);
+        courseList.add(Course.fromJson(f.fields));
+        courseList.sort((a, b) {
+          return a.level.compareTo(b.level);
+        });
+      });
+    }
+    else{
+      print("Null");
+    }
+
+    return courseList;
+  }
+
 }

@@ -5,6 +5,8 @@ import 'package:bwa_learning/pages/admin/student_class/StudentClassList.dart';
 import 'package:bwa_learning/pages/admin/student_list/StudentList.dart';
 import 'package:bwa_learning/pages/admin/teacher_list/TeacherList.dart';
 import 'package:bwa_learning/pages/student/schedule_class/SchedulePage.dart';
+import 'package:bwa_learning/pages/teacher/course_list/CourseList.dart';
+import 'package:bwa_learning/pages/teacher/schedule_teacher/ScheduleTeacher.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -29,11 +31,24 @@ class _BWALearningState extends State<BWALearning> {
 
     _model.fetchInstitutionById(1234);
 
-    _model.findUserByEmail("iman@mail.com").then((onValue) {
-      _model.currentUser.status == 'student' && _model.currentInstitution != null ? _model.fetchStudentByEmail(_model.currentUser.email, _model.currentInstitution.institutionId).then((onValue) {
-        _model.findStudentClassById(_model.currentStudent.classId);
-      }) :
-        null;
+//    _model.findUserByEmail("iman@mail.com").then((onValue) {
+    _model.findUserByEmail("ewo@mail.com").then((onValue) {
+      _model.currentUser.status == 'student' &&
+              _model.currentInstitution != null
+          ? _model
+              .fetchStudentByEmail(_model.currentUser.email,
+                  _model.currentInstitution.institutionId)
+              .then((onValue) {
+              _model.findStudentClassById(_model.currentStudent.classId);
+            })
+          : _model.currentUser.status == 'teacher' &&
+                  _model.currentInstitution != null
+              ? _model
+                  .fetchTeacherByEmail(_model.currentUser.email)
+                  .then((onValue) {
+                  _model.findStudentClassById(_model.currentStudent.classId);
+                })
+              : null;
     });
 
     super.initState();
@@ -49,26 +64,30 @@ class _BWALearningState extends State<BWALearning> {
         theme: ThemeData(
           primarySwatch: Colors.purple,
         ),
-
         routes: {
           '/': (BuildContext context) => MyHomePage(),
           // admin
           '/classList': (BuildContext context) => ClassList(_model),
           '/teacherList': (BuildContext context) => TeacherList(model: _model),
           '/studentList': (BuildContext context) => StudentList(_model),
-          '/studentClassList': (BuildContext context) => StudentClassList(_model),
+          '/studentClassList': (BuildContext context) =>
+              StudentClassList(_model),
           '/courseList': (BuildContext context) => CourseList(_model),
           // student
-          '/scheduleList': (BuildContext context) => SchedulePage(model: _model),
+          '/scheduleList': (BuildContext context) =>
+              SchedulePage(model: _model),
+          // teacher
+          '/scheduleList': (BuildContext context) =>
+              ScheduleTeacher(model: _model),
+          '/teacherCourseList': (BuildContext context) =>
+              TeacherCourseList(_model),
         },
         onUnknownRoute: (RouteSettings settings) {
           return MaterialPageRoute(
-            builder: (BuildContext context) =>
-                MyHomePage(),
+            builder: (BuildContext context) => MyHomePage(),
           );
         },
       ),
     );
   }
 }
-

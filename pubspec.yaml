@@ -50,6 +50,7 @@ dependencies:
   json_serializable:
   json_annotation:
   enum_to_string:
+  tree_view:
 
 dev_dependencies:
   flutter_test:

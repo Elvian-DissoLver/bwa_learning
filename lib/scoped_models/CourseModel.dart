@@ -48,4 +48,23 @@ mixin CourseModel on Model {
       notifyListeners();
     }
   }
+
+  Future<Null> fetchCourseByInstitutionIdAndTeacherId(int institutionId, int teacherId) async {
+    _isLoading = true;
+    notifyListeners();
+
+    _courses = [];
+
+    print('fetch courses by institutionId and teacherId');
+
+    try {
+      _courses = await CourseDao.db.getCourseByInstitutionIdAndTeacherId(institutionId, teacherId);
+
+      _isLoading = false;
+      notifyListeners();
+    } catch (error) {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 }

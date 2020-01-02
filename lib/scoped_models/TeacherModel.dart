@@ -69,4 +69,25 @@ mixin TeacherModel on Model {
       return false;
     }
   }
+
+  Future<bool> fetchTeacherByEmail(String email) async {
+    _isLoading = true;
+    notifyListeners();
+
+    print('fetch teacher by email');
+
+    try {
+      await TeacherDao.db.getTeacherByEmail(email).then((onValue) {
+        _teacher = onValue;
+      });
+
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    } catch (error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
 }

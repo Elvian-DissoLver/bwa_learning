@@ -33,7 +33,7 @@ class _SchedulePageState extends State<SchedulePage>
     super.initState();
 
     widget.model
-        .fetchScheduleCourseByclassId(widget.model.currentStudent.classId);
+        .fetchScheduleCourseByClassId(widget.model.currentStudent.classId);
 
     widget.model.fetchCourseByInstitutionId(1234);
 

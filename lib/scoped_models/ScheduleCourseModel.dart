@@ -25,7 +25,7 @@ mixin ScheduleCourseModel on Model {
     return _isLoading;
   }
 
-  Future<Null> fetchScheduleCourseByclassId(int classId) async {
+  Future<Null> fetchScheduleCourseByClassId(int classId) async {
     _isLoading = true;
     notifyListeners();
 
@@ -34,7 +34,26 @@ mixin ScheduleCourseModel on Model {
     print('fetch scheduleCourses by classId');
 
     try {
-      _scheduleCourses = await ScheduleCourseDao.db.getScheduleCourseByclassId(classId, 1234);
+      _scheduleCourses = await ScheduleCourseDao.db.getScheduleCourseByClassId(classId, 1234);
+
+      _isLoading = false;
+      notifyListeners();
+    } catch (error) {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<Null> fetchScheduleCourseByTeacherId(int teacherId) async {
+    _isLoading = true;
+    notifyListeners();
+
+    _scheduleCourses = [];
+
+    print('fetch scheduleCourses by teacherId');
+
+    try {
+      _scheduleCourses = await ScheduleCourseDao.db.getScheduleCourseByTeacherId(teacherId);
 
       _isLoading = false;
       notifyListeners();

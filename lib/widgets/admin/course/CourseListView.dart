@@ -42,7 +42,7 @@ class CourseListView extends StatelessWidget {
 
   Widget _buildListView(AppModel model) {
     return ListView.builder(
-      itemCount: 3,
+      itemCount: 1,
       itemBuilder: (BuildContext context, int index) {
          return CourseCard(model.courses, index);
   },

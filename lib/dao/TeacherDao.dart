@@ -108,9 +108,26 @@ class TeacherDao {
   }
 
   Future<Teacher> getTeacherById(int teacherId) async {
-    print("getTeacherByEmail");
+    print("getTeacherById");
     var db = await database;
     var res = await db.query("SELECT * FROM teacher WHERE teacherId = '$teacherId'");
+
+    Teacher findTeacher;
+
+    if (res.length > 0) {
+      res.forEach((f) {
+        print(f);
+        findTeacher = Teacher.fromJson(f.fields);
+      });
+      return findTeacher;
+    }
+    return null;
+  }
+
+  Future<Teacher> getTeacherByEmail(String email) async {
+    print("getTeacherByEmail");
+    var db = await database;
+    var res = await db.query("SELECT * FROM teacher WHERE email = '$email'");
 
     Teacher findTeacher;
 

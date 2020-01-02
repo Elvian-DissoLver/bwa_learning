@@ -1,31 +1,29 @@
 import 'package:bwa_learning/models/Category.dart';
-import 'package:bwa_learning/models/Class.dart';
 import 'package:bwa_learning/models/Course.dart';
 import 'package:bwa_learning/models/ScheduleCourse.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import 'ViewScheduleCourse.dart';
+import 'ViewScheduleTeacher.dart';
 
-class DetailSchedulePage extends StatefulWidget {
+class DetailScheduleTeacher extends StatefulWidget {
   final AppModel model;
   final String currentDay;
 
-  DetailSchedulePage(
+  DetailScheduleTeacher(
       {Key key, this.model, this.currentDay})
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _DetailSchedulePageState();
+  State<StatefulWidget> createState() => _DetailScheduleTeacherState();
 }
 
-class _DetailSchedulePageState extends State<DetailSchedulePage> {
+class _DetailScheduleTeacherState extends State<DetailScheduleTeacher> {
   TextEditingController itemController = new TextEditingController();
   Category category;
   Course selectCourse;
   ScheduleCourse scheduleCourse;
-  Class selectClass;
 
   @override
   Widget build(BuildContext context) {
@@ -73,16 +71,6 @@ class _DetailSchedulePageState extends State<DetailSchedulePage> {
           categoryName:  widget.model.Categories.elementAt(indexCategory).categoryName
       );
       return category;
-    }
-  }
-
-  getClassLessonName(int classId) {
-
-    int indexClass = widget.model.classes.indexWhere((t) => t.classId == classId);
-
-    if(indexClass != null) {
-      selectClass = widget.model.classes.elementAt(indexClass);
-      return selectClass;
     }
   }
 
@@ -193,13 +181,12 @@ class _DetailSchedulePageState extends State<DetailSchedulePage> {
                             physics: const BouncingScrollPhysics(),
                             itemCount: currentScheduleCourses.length,
                             itemBuilder: (BuildContext context, int i) {
-                              getClassLessonName(currentScheduleCourses.elementAt(i).classId);
+                              getCategoryCourseName(currentScheduleCourses.elementAt(i).courseId);
                               return new Slidable(
                                 delegate: new SlidableBehindDelegate(),
                                 actionExtentRatio: 0.25,
                                 child: GestureDetector(
                                   onTap: () {
-                                    widget.model.setCurrentClass(getClassLessonName(currentScheduleCourses.elementAt(i).classId));
                                     widget.model.setCurrentCategory(getCategoryCourseName(currentScheduleCourses.elementAt(i).courseId));
 
                                     widget.model.courses.forEach((f) {
@@ -216,7 +203,7 @@ class _DetailSchedulePageState extends State<DetailSchedulePage> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => ViewScheduleCourse(model: widget.model),
+                                        builder: (context) => ViewScheduleTeacher(model: widget.model),
                                       ),
                                     );
                                   },
@@ -238,7 +225,7 @@ class _DetailSchedulePageState extends State<DetailSchedulePage> {
                                           ),
                                           Flexible(
                                             child: Text(
-                                              selectClass.className,
+                                              category.categoryName,
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 17.0,

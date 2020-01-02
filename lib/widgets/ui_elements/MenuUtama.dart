@@ -1,4 +1,3 @@
-import 'package:bwa_learning/pages/pesanan.dart';
 import 'package:bwa_learning/pages/student/student_class/ViewClass.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,6 +18,7 @@ class MenuUtama extends StatelessWidget {
             crossAxisCount: 4,
             children:  model.currentUser.status == 'admin' ? listAdminMainMenu(context, model) :
             model.currentUser.status == 'student' ? listStudentMainMenu(context, model) :
+            model.currentUser.status == 'teacher' ? listTeacherMainMenu(context, model) :
             listStudentMainMenu(context, model)
           );
         }
@@ -79,6 +79,39 @@ List<MenuUtamaItem> listStudentMainMenu(BuildContext context, AppModel model) {
           );
         }
     )
+  ];
+
+  return menuUtamaItem;
+}
+
+List<MenuUtamaItem> listTeacherMainMenu(BuildContext context, AppModel model) {
+  var menuUtamaItem = [
+    MenuUtamaItem(
+        title: 'Jadwal Mengajar',
+        icon: (FontAwesomeIcons.chalkboard),
+        colorBox: Colors.blue,
+        iconColor: Colors.white,
+        onTap: () => Navigator.pushNamed(context, '/scheduleList')),
+    MenuUtamaItem(
+        title: 'Kelasku',
+        icon: Icons.class_,
+        colorBox: Colors.blue[900],
+        iconColor: Colors.white,
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ViewClass(),
+            ),
+          );
+        }
+    ),
+    MenuUtamaItem(
+        title: 'Daftar Pelajaran',
+        icon: (FontAwesomeIcons.book),
+        colorBox: Colors.redAccent,
+        iconColor: Colors.white,
+        onTap: () => Navigator.pushNamed(context, '/teacherCourseList'))
   ];
 
   return menuUtamaItem;
