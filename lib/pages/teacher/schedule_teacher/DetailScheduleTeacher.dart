@@ -1,11 +1,11 @@
 import 'package:bwa_learning/models/Category.dart';
+import 'package:bwa_learning/models/Class.dart';
 import 'package:bwa_learning/models/Course.dart';
 import 'package:bwa_learning/models/ScheduleCourse.dart';
+import 'package:bwa_learning/pages/teacher/schedule_teacher/ViewScheduleTeacher.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-
-import 'ViewScheduleTeacher.dart';
 
 class DetailScheduleTeacher extends StatefulWidget {
   final AppModel model;
@@ -24,6 +24,7 @@ class _DetailScheduleTeacherState extends State<DetailScheduleTeacher> {
   Category category;
   Course selectCourse;
   ScheduleCourse scheduleCourse;
+  Class selectClass;
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +72,16 @@ class _DetailScheduleTeacherState extends State<DetailScheduleTeacher> {
           categoryName:  widget.model.Categories.elementAt(indexCategory).categoryName
       );
       return category;
+    }
+  }
+
+  getClassLessonName(int classId) {
+
+    int indexClass = widget.model.classes.indexWhere((t) => t.classId == classId);
+
+    if(indexClass != null) {
+      selectClass = widget.model.classes.elementAt(indexClass);
+      return selectClass;
     }
   }
 
@@ -181,12 +192,13 @@ class _DetailScheduleTeacherState extends State<DetailScheduleTeacher> {
                             physics: const BouncingScrollPhysics(),
                             itemCount: currentScheduleCourses.length,
                             itemBuilder: (BuildContext context, int i) {
-                              getCategoryCourseName(currentScheduleCourses.elementAt(i).courseId);
+                              getClassLessonName(currentScheduleCourses.elementAt(i).classId);
                               return new Slidable(
                                 delegate: new SlidableBehindDelegate(),
                                 actionExtentRatio: 0.25,
                                 child: GestureDetector(
                                   onTap: () {
+                                    widget.model.setCurrentClass(getClassLessonName(currentScheduleCourses.elementAt(i).classId));
                                     widget.model.setCurrentCategory(getCategoryCourseName(currentScheduleCourses.elementAt(i).courseId));
 
                                     widget.model.courses.forEach((f) {
@@ -217,20 +229,20 @@ class _DetailScheduleTeacherState extends State<DetailScheduleTeacher> {
                                       padding: EdgeInsets.only(left: 50.0),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                        MainAxisAlignment.start,
                                         children: <Widget>[
                                           Padding(
                                             padding:
-                                                EdgeInsets.only(left: 30.0),
+                                            EdgeInsets.only(left: 30.0),
                                           ),
                                           Flexible(
-                                            child: Text(
-                                              category.categoryName,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 17.0,
-                                              ),
-                                            )
+                                              child: Text(
+                                                selectClass.className,
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 17.0,
+                                                ),
+                                              )
                                           ),
                                           Padding(
                                             padding:

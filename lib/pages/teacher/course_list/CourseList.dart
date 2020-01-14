@@ -19,6 +19,7 @@ class TeacherCourseList extends StatefulWidget {
 
 class _TeacherCourseListState extends State<TeacherCourseList> {
   String selectLevelClass;
+  List<Course> listCourses;
 
   @override
   void initState() {
@@ -63,7 +64,32 @@ class _TeacherCourseListState extends State<TeacherCourseList> {
           onChanged: (newValue) {
             setState(() {
               selectLevelClass = newValue;
+              listCourses = new List();
             });
+
+            switch (newValue) {
+              case 'Kelas X':
+                model.courses.forEach((f) {
+                  if (f.level == 0) {
+                    listCourses.add(f);
+                  }
+                });
+                break;
+              case 'Kelas XI':
+                model.courses.forEach((f) {
+                  if (f.level == 1) {
+                    listCourses.add(f);
+                  }
+                });
+                break;
+              case 'Kelas XII':
+                model.courses.forEach((f) {
+                  if (f.level == 2) {
+                    listCourses.add(f);
+                  }
+                });
+                break;
+            }
           },
           hint: Text(
             "Pilih tingkat pelajaran!",
@@ -83,18 +109,8 @@ class _TeacherCourseListState extends State<TeacherCourseList> {
 
   List<Widget> _buildCourseParentList(
       List<Course> childDocuments, int parentId, double tab) {
-    print('parentId: $parentId');
     List<Course> parent = new List();
     List<Course> member = new List();
-
-    Course course = Course(
-        courseId: 99,
-        courseName: null,
-        teacherId: null,
-        level: 0,
-        institutionId: 1234,
-        parentId: parentId,
-        categoryId: 1);
 
     childDocuments.forEach((f) {
       if (f.parentId == parentId) {
@@ -102,9 +118,7 @@ class _TeacherCourseListState extends State<TeacherCourseList> {
         parent.add(f);
       }
     });
-    parent.add(course);
 
-    if (parent.length > 0) {
     return parent.map((p) {
       widget.model.courses.forEach((c) {
         if (c.parentId == p.courseId) {
@@ -112,19 +126,11 @@ class _TeacherCourseListState extends State<TeacherCourseList> {
         }
       });
 
-      print('member length $member.length');
-
       return Parent(
-          parent: p.courseName != null
-              ? _getCourse(course: p, tap: tab)
-              : addParentCourse(tab),
-          childList: member.length > 0
-              ? ChildList(
-                  children:
-                      _buildCourseParentList(member, p.courseId, tab + 10))
-              : ChildList(children: [addParentCourse(tab + 10)]));
+          parent: _getCourse(course: p, tap: tab),
+          childList: ChildList(
+              children: _buildCourseParentList(member, p.courseId, tab + 15)));
     }).toList();
-    }
   }
 
   Widget addParentCourse(double tab) {
@@ -150,27 +156,37 @@ class _TeacherCourseListState extends State<TeacherCourseList> {
 
   Widget _buildCourseList(AppModel model) {
     return TreeView(
-      parentList: _buildCourseParentList(model.courses, 0, 5),
+      parentList: _buildCourseParentList(listCourses, 0, 5),
     );
   }
 
   CourseCard _getCourse({@required Course course, double tap}) =>
-      CourseCard(fileName: course.courseName, left: tap);
+      CourseCard(fileName: course.courseName.toString(), left: tap);
 
   Widget _buildPageContent(AppModel model) {
     return Scaffold(
         appBar: _buildAppBar(model),
         resizeToAvoidBottomPadding: false,
+        floatingActionButton:
+            listCourses != null ? _buildFloatingActionButton(model) : Text(''),
         body: Container(
           child: Column(
             children: <Widget>[
               _buildDropDownClassLevel(model),
               Expanded(
-                child: _buildCourseList(model),
+                child:
+                    listCourses != null ? _buildCourseList(model) : Container(),
               )
             ],
           ),
         ));
+  }
+
+  Widget _buildFloatingActionButton(AppModel model) {
+    return FloatingActionButton(
+      child: Icon(Icons.add),
+      onPressed: () {},
+    );
   }
 
   @override

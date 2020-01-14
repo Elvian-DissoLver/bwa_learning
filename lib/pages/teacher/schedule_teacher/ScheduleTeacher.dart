@@ -1,5 +1,6 @@
 import 'package:bwa_learning/models/ScheduleCourse.dart';
 import 'package:bwa_learning/pages/student/schedule_class/DetailSchedulePage.dart';
+import 'package:bwa_learning/pages/teacher/schedule_teacher/DetailScheduleTeacher.dart';
 import 'package:bwa_learning/scoped_models/AppModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -186,7 +187,7 @@ class _ScheduleTeacherState extends State<ScheduleTeacher>
         onTap: () {
           Navigator.of(context).push(
             new PageRouteBuilder(
-              pageBuilder: (_, __, ___) => new DetailSchedulePage(
+              pageBuilder: (_, __, ___) => new DetailScheduleTeacher(
                 model: widget.model,
                 currentDay: day.elementAt(index),
               ),

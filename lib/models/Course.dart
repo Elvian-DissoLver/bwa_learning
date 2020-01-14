@@ -1,6 +1,6 @@
 class Course {
   int courseId;
-  String courseName;
+  var courseName;
   int teacherId;
   int institutionId;
   int parentId;

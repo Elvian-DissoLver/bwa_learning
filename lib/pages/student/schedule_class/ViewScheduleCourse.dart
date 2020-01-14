@@ -37,28 +37,7 @@ class _ViewScheduleCourseState extends State< ViewScheduleCourse> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(left: 16, top: 50),
-                ),
-
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  padding: EdgeInsets.all(10),
-                  width: 150,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.white,
-                  ),
-                  child: Center(
-                    child: Text(
-                      model.currentClass.className,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'Medium',
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
+                  padding: EdgeInsets.only(left: 16, top: 70),
                 ),
 
                 Container(
@@ -181,21 +160,21 @@ class _ViewScheduleCourseState extends State< ViewScheduleCourse> {
                                 ),
                               ),
                               Spacer(),
-//                              Text(
-//                                model.currentCourseState.isDone == 1 ? 'Sudah Dipelajari' : 'Sedang Dipelajari',
-//                                style: TextStyle(
-//                                  color: Color(0xff7a7a7a),
-//                                  fontFamily: 'Medium',
-//                                  fontSize: 12,
-//                                ),
-//                              ),
+                              Text(
+                                model.currentCourseState.isDone == 1 ? 'Sudah Dipelajari' : 'Sedang Dipelajari',
+                                style: TextStyle(
+                                  color: Color(0xff7a7a7a),
+                                  fontFamily: 'Medium',
+                                  fontSize: 12,
+                                ),
+                              ),
                             ],
                           ),
                           SizedBox(
                             height: 6,
                           ),
                           Text(
-                            model.currentCourse.courseName,
+                            model.currentCourse.courseName.toString(),
                             style: TextStyle(
                               color: Colors.black,
                               fontFamily: 'Medium',
@@ -227,17 +206,17 @@ class _ViewScheduleCourseState extends State< ViewScheduleCourse> {
                   child: Column(
 //                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                'Jam Belajar',
-                                style: TextStyle(
-                                  color: Color(0xff7a7a7a),
-                                  fontFamily: 'Medium',
-                                  fontSize: 12,
-                                ),
-                              ),
-                              Spacer(),
+                      Row(
+                        children: <Widget>[
+                          Text(
+                            'Jam Belajar',
+                            style: TextStyle(
+                              color: Color(0xff7a7a7a),
+                              fontFamily: 'Medium',
+                              fontSize: 12,
+                            ),
+                          ),
+                          Spacer(),
 //                              Text(
 //                                model.currentCourseState.isDone == 1 ? 'Sudah Dipelajari' : 'Sedang Dipelajari',
 //                                style: TextStyle(
@@ -246,40 +225,40 @@ class _ViewScheduleCourseState extends State< ViewScheduleCourse> {
 //                                  fontSize: 12,
 //                                ),
 //                              ),
-                            ],
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Container(
+                            height: 30.0,
+                            width: 30.0,
+                            decoration: BoxDecoration(
+                                color: Colors.greenAccent,
+                                shape: BoxShape.circle
+                            ),
+                            child: RawMaterialButton(
+                              shape: CircleBorder(),
+                              child: Icon(Icons.access_alarm, color: Colors.red),
+                            ),
                           ),
                           SizedBox(
-                            height: 10,
+                            width: 10,
                           ),
-                          Row(
-                            children: <Widget>[
-                              Container(
-                                height: 30.0,
-                                width: 30.0,
-                                decoration: BoxDecoration(
-                                    color: Colors.greenAccent,
-                                    shape: BoxShape.circle
-                                ),
-                                child: RawMaterialButton(
-                                  shape: CircleBorder(),
-                                  child: Icon(Icons.access_alarm, color: Colors.red),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                '${model.currentScheduleCourse.startAt} - ${model.currentScheduleCourse.endAt}',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: 'Medium',
-                                  fontSize: 16,
-                                ),
-                              )
-                            ],
-                          ),
-
+                          Text(
+                            '${model.currentScheduleCourse.startAt} - ${model.currentScheduleCourse.endAt}',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'Medium',
+                              fontSize: 16,
+                            ),
+                          )
                         ],
+                      ),
+
+                    ],
                   ),
                 ),
               ],
@@ -290,3 +269,4 @@ class _ViewScheduleCourseState extends State< ViewScheduleCourse> {
     );
   }
 }
+

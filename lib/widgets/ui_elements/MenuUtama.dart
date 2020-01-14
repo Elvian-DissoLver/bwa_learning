@@ -64,7 +64,7 @@ List<MenuUtamaItem> listStudentMainMenu(BuildContext context, AppModel model) {
         icon: (FontAwesomeIcons.chalkboard),
         colorBox: Colors.blue,
         iconColor: Colors.white,
-        onTap: () => Navigator.pushNamed(context, '/scheduleList')),
+        onTap: () => Navigator.pushNamed(context, '/studentScheduleList')),
     MenuUtamaItem(
         title: 'Kelasku',
         icon: Icons.class_,
@@ -91,7 +91,7 @@ List<MenuUtamaItem> listTeacherMainMenu(BuildContext context, AppModel model) {
         icon: (FontAwesomeIcons.chalkboard),
         colorBox: Colors.blue,
         iconColor: Colors.white,
-        onTap: () => Navigator.pushNamed(context, '/scheduleList')),
+        onTap: () => Navigator.pushNamed(context, '/teacherScheduleList')),
     MenuUtamaItem(
         title: 'Kelasku',
         icon: Icons.class_,

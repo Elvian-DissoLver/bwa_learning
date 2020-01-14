@@ -53,7 +53,7 @@ mixin TeacherModel on Model {
     _isLoading = true;
     notifyListeners();
 
-    print('fetch students by email');
+    print('fetch teacher by id');
 
     try {
       await TeacherDao.db.getTeacherById(teacherId).then((onValue) {

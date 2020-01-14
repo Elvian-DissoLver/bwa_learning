@@ -74,10 +74,10 @@ class _BWALearningState extends State<BWALearning> {
               StudentClassList(_model),
           '/courseList': (BuildContext context) => CourseList(_model),
           // student
-          '/scheduleList': (BuildContext context) =>
+          '/studentScheduleList': (BuildContext context) =>
               SchedulePage(model: _model),
           // teacher
-          '/scheduleList': (BuildContext context) =>
+          '/teacherScheduleList': (BuildContext context) =>
               ScheduleTeacher(model: _model),
           '/teacherCourseList': (BuildContext context) =>
               TeacherCourseList(_model),
