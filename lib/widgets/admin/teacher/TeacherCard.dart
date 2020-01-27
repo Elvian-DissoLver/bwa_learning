@@ -1,5 +1,5 @@
-import 'package:bwa_learning/models/Teacher.dart';
-import 'package:bwa_learning/scoped_models/AppModel.dart';
+import 'package:bwa_learning/models/origin/Teacher.dart';
+import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 

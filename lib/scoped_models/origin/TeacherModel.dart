@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:bwa_learning/dao/TeacherDao.dart';
-import 'package:bwa_learning/models/Teacher.dart';
+import 'package:bwa_learning/dao/origin/TeacherDao.dart';
+import 'package:bwa_learning/models/origin/Teacher.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 mixin TeacherModel on Model {

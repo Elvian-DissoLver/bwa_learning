@@ -1,17 +1,19 @@
-import 'package:bwa_learning/models/User.dart';
 import 'package:bwa_learning/pages/admin/class_list/ClassList.dart';
 import 'package:bwa_learning/pages/admin/course_list/CourseList.dart';
 import 'package:bwa_learning/pages/admin/student_class/StudentClassList.dart';
 import 'package:bwa_learning/pages/admin/student_list/StudentList.dart';
 import 'package:bwa_learning/pages/admin/teacher_list/TeacherList.dart';
 import 'package:bwa_learning/pages/student/schedule_class/SchedulePage.dart';
-import 'package:bwa_learning/pages/teacher/course_list/CourseList.dart';
+import 'package:bwa_learning/pages/teacher/attendance_list/TeacherAttendanceList.dart';
+import 'package:bwa_learning/pages/teacher/course_list/TeacherCourseList.dart';
 import 'package:bwa_learning/pages/teacher/schedule_teacher/ScheduleTeacher.dart';
-import 'package:bwa_learning/scoped_models/AppModel.dart';
+import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
+import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import 'MyHomePage.dart';
+import 'models/talim/User.dart';
 
 void main() async => runApp(BWALearning());
 
@@ -24,30 +26,30 @@ class BWALearning extends StatefulWidget {
 
 class _BWALearningState extends State<BWALearning> {
   AppModel _model;
+  AppModelV2 _model2;
   User user;
   @override
   void initState() {
     _model = AppModel();
+    _model2 = AppModelV2();
 
     _model.fetchInstitutionById(1234);
+    _model2.fetchInstitutionById(1234);
 
 //    _model.findUserByEmail("iman@mail.com").then((onValue) {
-    _model.findUserByEmail("ewo@mail.com").then((onValue) {
-      _model.currentUser.status == 'student' &&
-              _model.currentInstitution != null
+    _model2.findUserByEmail("ewo@mail.com").then((onValue) {
+      _model2.currentUser.status == 'student' &&
+              _model2.currentInstitution != null
           ? _model
               .fetchStudentByEmail(_model.currentUser.email,
                   _model.currentInstitution.institutionId)
               .then((onValue) {
               _model.findStudentClassById(_model.currentStudent.classId);
             })
-          : _model.currentUser.status == 'teacher' &&
-                  _model.currentInstitution != null
-              ? _model
-                  .fetchTeacherByEmail(_model.currentUser.email)
-                  .then((onValue) {
-                  _model.findStudentClassById(_model.currentStudent.classId);
-                })
+          : _model2.currentUser.status == 'teacher' &&
+                  _model2.currentInstitution != null
+              ? _model2
+                  .fetchInstructorByEmail(_model2.currentUser.email)
               : null;
     });
 
@@ -56,8 +58,8 @@ class _BWALearningState extends State<BWALearning> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModel<AppModel>(
-      model: _model,
+    return ScopedModel<AppModelV2>(
+      model: _model2,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'BWA Learning',
@@ -81,6 +83,8 @@ class _BWALearningState extends State<BWALearning> {
               ScheduleTeacher(model: _model),
           '/teacherCourseList': (BuildContext context) =>
               TeacherCourseList(_model),
+          '/teacherAttendanceList': (BuildContext context) =>
+              TeacherAttendanceList(_model2),
         },
         onUnknownRoute: (RouteSettings settings) {
           return MaterialPageRoute(

@@ -1,4 +1,4 @@
-import 'package:bwa_learning/scoped_models/AppModel.dart';
+import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
 import 'package:bwa_learning/widgets/admin/class/view_class/Feature.dart';
 import 'package:bwa_learning/widgets/admin/class/view_class/Header.dart';
 import 'package:flutter/cupertino.dart';

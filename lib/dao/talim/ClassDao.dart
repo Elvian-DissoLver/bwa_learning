@@ -1,6 +1,7 @@
-import 'package:bwa_learning/dao/Config.dart';
-import 'package:bwa_learning/models/Class.dart';
+import 'package:bwa_learning/models/talim/Class.dart';
 import 'package:mysql1/mysql1.dart';
+
+import 'Config.dart';
 
 class ClassDao {
 
@@ -18,7 +19,7 @@ class ClassDao {
 
     List<Class> classList = [];
 
-    var res = await db.query("SELECT * FROM class");
+    var res = await db.query("SELECT * FROM classes");
 
     if (res.length > 0) {
       res.forEach((f) {
@@ -40,13 +41,14 @@ class ClassDao {
 
     List<Class> classList = [];
 
-    var res = await db.query("SELECT * FROM class where institutionId = $institutionId");
+    var res = await db.query("SELECT * FROM class where SchoolPackageID = $institutionId");
 
     if (res.fields.length > 0) {
       res.forEach((f) {
         print(f);
         classList.add(Class.fromJson(f.fields));
       });
+
     }
     else{
       print("Null");
@@ -75,7 +77,7 @@ class ClassDao {
   Future<Class> getClassById(int classId, int institutionId) async {
     print("getClassById");
     var db = await database;
-    var res = await db.query("SELECT * FROM class WHERE classId = '$classId' and institutionId = $institutionId");
+    var res = await db.query("SELECT * FROM class WHERE id_classes = '$classId' and SchoolPackageID = $institutionId");
 
     Class findClass;
 
@@ -87,20 +89,6 @@ class ClassDao {
       return findClass;
     }
     return null;
-  }
-
-  Future addClass(Class newClass) async {
-    print("addClass");
-    final db = await database;
-    await db.query("INSERT INTO class VALUES (${newClass.classId},'${newClass.className}','${newClass.level}','${newClass.teacherClass}','${newClass.institutionId}')");
-
-  }
-
-  updateClassById(Class updatedClass, int classId) async {
-    print("updateClass");
-    final db = await database;
-    await db.query("UPDATE class SET ${updatedClass.toMap()} WHERE idClass = $classId ");
-    print('Class updated: ${updatedClass.className}');
   }
 
 }

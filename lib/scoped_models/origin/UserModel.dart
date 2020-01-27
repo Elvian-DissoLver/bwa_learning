@@ -1,7 +1,6 @@
 
-
-import 'package:bwa_learning/dao/UserDao.dart';
-import 'package:bwa_learning/models/User.dart';
+import 'package:bwa_learning/dao/origin/UserDao.dart';
+import 'package:bwa_learning/models/origin/User.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scoped_model/scoped_model.dart';
 

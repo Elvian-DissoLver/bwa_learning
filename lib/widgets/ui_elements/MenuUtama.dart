@@ -1,5 +1,6 @@
 import 'package:bwa_learning/pages/student/student_class/ViewClass.dart';
-import 'package:bwa_learning/scoped_models/AppModel.dart';
+import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
+import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,25 +9,25 @@ import 'package:scoped_model/scoped_model.dart';
 import 'MenuUtamaItem.dart';
 
 class MenuUtama extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<AppModel>(
-        builder: (BuildContext context, Widget child, AppModel model) {
-          return GridView.count(
-            shrinkWrap: true,
-            crossAxisCount: 4,
-            children:  model.currentUser.status == 'admin' ? listAdminMainMenu(context, model) :
-            model.currentUser.status == 'student' ? listStudentMainMenu(context, model) :
-            model.currentUser.status == 'teacher' ? listTeacherMainMenu(context, model) :
-            listStudentMainMenu(context, model)
-          );
-        }
-    );
+    return ScopedModelDescendant<AppModelV2>(
+        builder: (BuildContext context, Widget child, AppModelV2 model) {
+      return GridView.count(
+          shrinkWrap: true,
+          crossAxisCount: 4,
+          children: model.currentUser.status == 'admin'
+              ? listAdminMainMenu(context, model)
+              : model.currentUser.status == 'student'
+                  ? listStudentMainMenu(context, model)
+                  : model.currentUser.status == 'teacher'
+                      ? listTeacherMainMenu(context, model)
+                      : listStudentMainMenu(context, model));
+    });
   }
 }
 
-List<MenuUtamaItem> listAdminMainMenu(BuildContext context, AppModel model) {
+List<MenuUtamaItem> listAdminMainMenu(BuildContext context, AppModelV2 model) {
   var menuUtamaItem = [
     MenuUtamaItem(
         title: 'Daftar Kelas',
@@ -57,7 +58,7 @@ List<MenuUtamaItem> listAdminMainMenu(BuildContext context, AppModel model) {
   return menuUtamaItem;
 }
 
-List<MenuUtamaItem> listStudentMainMenu(BuildContext context, AppModel model) {
+List<MenuUtamaItem> listStudentMainMenu(BuildContext context, AppModelV2 model) {
   var menuUtamaItem = [
     MenuUtamaItem(
         title: 'Jadwal Kelas',
@@ -77,14 +78,13 @@ List<MenuUtamaItem> listStudentMainMenu(BuildContext context, AppModel model) {
               builder: (context) => ViewClass(),
             ),
           );
-        }
-    )
+        })
   ];
 
   return menuUtamaItem;
 }
 
-List<MenuUtamaItem> listTeacherMainMenu(BuildContext context, AppModel model) {
+List<MenuUtamaItem> listTeacherMainMenu(BuildContext context, AppModelV2 model) {
   var menuUtamaItem = [
     MenuUtamaItem(
         title: 'Jadwal Mengajar',
@@ -104,16 +104,20 @@ List<MenuUtamaItem> listTeacherMainMenu(BuildContext context, AppModel model) {
               builder: (context) => ViewClass(),
             ),
           );
-        }
-    ),
+        }),
     MenuUtamaItem(
-        title: 'Daftar Pelajaran',
+        title: 'Daftar   Pelajaran',
         icon: (FontAwesomeIcons.book),
         colorBox: Colors.redAccent,
         iconColor: Colors.white,
-        onTap: () => Navigator.pushNamed(context, '/teacherCourseList'))
+        onTap: () => Navigator.pushNamed(context, '/teacherCourseList')),
+    MenuUtamaItem(
+        title: 'Daftar  Kehadiran',
+        icon: (FontAwesomeIcons.clipboardCheck),
+        colorBox: Colors.greenAccent,
+        iconColor: Colors.white,
+        onTap: () => Navigator.pushNamed(context, '/teacherAttendanceList'))
   ];
 
   return menuUtamaItem;
 }
-

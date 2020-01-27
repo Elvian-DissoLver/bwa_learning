@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:bwa_learning/dao/CourseStateDao.dart';
-import 'package:bwa_learning/models/CourseState.dart';
+import 'package:bwa_learning/dao/origin/CourseStateDao.dart';
+import 'package:bwa_learning/models/origin/CourseState.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 mixin CourseStateModel on Model {

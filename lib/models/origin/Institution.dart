@@ -1,4 +1,4 @@
-import 'package:bwa_learning/models/LevelClass.dart';
+import 'package:bwa_learning/models/origin/LevelClass.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
 

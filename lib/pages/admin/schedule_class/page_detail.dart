@@ -1,5 +1,5 @@
-import 'package:bwa_learning/models/ScheduleCourse.dart';
-import 'package:bwa_learning/scoped_models/AppModel.dart';
+import 'package:bwa_learning/models/origin/ScheduleCourse.dart';
+import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
 import 'package:bwa_learning/widgets/admin/schedule_class/utils/diamond_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';

@@ -1,5 +1,6 @@
 
-import 'package:bwa_learning/scoped_models/AppModel.dart';
+import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
+import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
 import 'package:bwa_learning/widgets/ui_elements/Akun.dart';
 import 'package:bwa_learning/widgets/ui_elements/MenuUtama.dart';
 import 'package:bwa_learning/widgets/ui_elements/ProgramBWA.dart';
@@ -13,7 +14,7 @@ class Beranda extends StatefulWidget {
 
 class _BerandaState extends State<Beranda> {
 
-  Widget _buildAppBar(AppModel model) {
+  Widget _buildAppBar(AppModelV2 model) {
     return AppBar(
       title: Text('BWA Learning'),
       actions: <Widget>[
@@ -37,7 +38,7 @@ class _BerandaState extends State<Beranda> {
     );
   }
 
-  Widget _buildPageContent(AppModel model) {
+  Widget _buildPageContent(AppModelV2 model) {
     return Scaffold(
       appBar: _buildAppBar(model),
       body: ListView(
@@ -58,8 +59,8 @@ class _BerandaState extends State<Beranda> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<AppModel>(
-      builder: (BuildContext context, Widget child, AppModel model) {
+    return ScopedModelDescendant<AppModelV2>(
+      builder: (BuildContext context, Widget child, AppModelV2 model) {
         Stack stack = Stack(
           children: <Widget>[
             _buildPageContent(model),

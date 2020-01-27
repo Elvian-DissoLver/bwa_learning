@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:bwa_learning/dao/InstitutionDao.dart';
-import 'package:bwa_learning/models/Institution.dart';
+import 'package:bwa_learning/dao/origin/InstitutionDao.dart';
+import 'package:bwa_learning/models/origin/Institution.dart';
 
 import 'ClassModel.dart';
 

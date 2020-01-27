@@ -1,4 +1,5 @@
-import 'package:bwa_learning/scoped_models/AppModel.dart';
+import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
+import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -7,8 +8,8 @@ class Akun extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<AppModel>(
-        builder: (BuildContext context, Widget child, AppModel model) {
+    return ScopedModelDescendant<AppModelV2>(
+        builder: (BuildContext context, Widget child, AppModelV2 model) {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: ListTile(

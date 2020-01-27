@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:bwa_learning/dao/CategoryDao.dart';
-import 'package:bwa_learning/models/Category.dart';
+import 'package:bwa_learning/dao/origin/CategoryDao.dart';
+import 'package:bwa_learning/models/origin/Category.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 mixin CategoryModel on Model {

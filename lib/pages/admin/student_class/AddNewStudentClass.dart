@@ -1,5 +1,5 @@
-import 'package:bwa_learning/models/Student.dart';
-import 'package:bwa_learning/scoped_models/AppModel.dart';
+import 'package:bwa_learning/models/origin/Student.dart';
+import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
 import 'package:bwa_learning/widgets/admin/student/StudentCard.dart';
 import 'package:bwa_learning/widgets/dialog/InfoDialog.dart';
 import 'package:bwa_learning/widgets/dialog/MessageDialog.dart';
@@ -11,6 +11,7 @@ import 'package:flutter/widgets.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+// ignore: must_be_immutable
 class AddNewStudentClass extends StatefulWidget {
   AppModel model;
 

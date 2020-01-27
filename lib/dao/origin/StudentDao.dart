@@ -1,6 +1,7 @@
-import 'package:bwa_learning/dao/Config.dart';
-import 'package:bwa_learning/models/Student.dart';
+import 'package:bwa_learning/models/origin/Student.dart';
 import 'package:mysql1/mysql1.dart';
+
+import 'Config.dart';
 
 class StudentDao {
 

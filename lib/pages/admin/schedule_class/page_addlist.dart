@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'package:bwa_learning/models/User.dart';
+import 'package:bwa_learning/models/origin/User.dart';
 import 'package:flutter/services.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
