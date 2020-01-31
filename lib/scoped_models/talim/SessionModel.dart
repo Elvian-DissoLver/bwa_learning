@@ -39,7 +39,7 @@ mixin SessionModel on Model {
     print('fetch sessions by classId');
 
     try {
-//      _sessions = await SessionDao.db.getSessionByClassId(classId);
+      _sessions = await SessionDao.db.getSessionByClassId(classId);
 
       if(_sessions.length > 0){
         _isLoading = false;

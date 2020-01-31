@@ -1,14 +1,17 @@
 import 'package:bwa_learning/models/origin/Course.dart';
 import 'package:bwa_learning/models/talim/Class.dart';
 import 'package:bwa_learning/models/talim/Session.dart';
-import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
+import 'package:bwa_learning/models/talim/SessionAbsence.dart';
+import 'package:bwa_learning/models/talim/Student.dart';
 import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
+import 'package:bwa_learning/widgets/dialog/InfoDialog.dart';
 import 'package:bwa_learning/widgets/dialog/MessageDialog.dart';
+import 'package:bwa_learning/widgets/dialog/SuccessDialog.dart';
 import 'package:bwa_learning/widgets/loading/loading_modal.dart';
-import 'package:bwa_learning/widgets/teacher/course_list/CourseCard.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:tree_view/tree_view.dart';
 
 class TeacherAttendanceList extends StatefulWidget {
   final AppModelV2 model;
@@ -25,11 +28,24 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
   Class selectLevelClass;
   Session selectSessions;
   bool showSessions = false;
+  bool showNewStudentData = false;
+  bool showStudentData = false;
+  bool showPostButton = false;
+  bool showPutButton = false;
+  bool isInVal = false;
+  var userStatus = List<bool>();
   List<Course> listCourses;
+  int institutionId;
+  var dateNow;
+  List<SessionAbsence> sessionAbsenceList;
 
   @override
   void initState() {
-    widget.model.fetchClassByInstitutionId(widget.model.currentInstitution.institutionId);
+    institutionId = widget.model.currentInstitution.institutionId;
+    dateNow = DateFormat('yyyy-MM-D').format(DateTime.now());
+
+    widget.model.fetchClassByInstitutionId(
+        institutionId);
 
     super.initState();
   }
@@ -70,13 +86,13 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
               selectLevelClass = newValue;
             });
             model.fetchSessionByClassId(newValue.classId).then((onValue) {
-              if(onValue){
+              if (onValue) {
                 setState(() {
                   showSessions = true;
                 });
               } else {
-                return MessageDialog.show(
-                    context, 'Tidak ditemukan', 'Belum tersedia Sesi untuk kelas ${selectLevelClass.classNo}');
+                return MessageDialog.show(context, 'Tidak ditemukan',
+                    'Belum tersedia Sesi untuk kelas ${selectLevelClass.classNo}');
               }
             });
           },
@@ -123,6 +139,29 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
             setState(() {
               selectSessions = newValue;
             });
+            model
+                .fetchSessionAbsenceByTrainingSessionIdAndDate(
+                    selectSessions.trainingSessionID, dateNow)
+                .then((onValue) {
+              if (onValue) {
+                setState(() {
+                  showStudentData = true;
+                });
+              } else {
+                model.fetchSessionAbsenceByTrainingSessionId(selectSessions.trainingSessionID).then((onValue) {
+                  if (onValue) {
+                    setState(() {
+                      showNewStudentData = true;
+                    });
+                  } else{
+                    return MessageDialog.show(context, 'Tidak ditemukan',
+                        'Data student belum tersedia untuk Sesi ini');
+                  }
+                });
+              }
+            });
+            model.fetchStudentByInstitutionId(institutionId);
+
           },
           hint: Text("Pilih Sesi!"),
           items: model.sessions.map((value) {
@@ -138,51 +177,222 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
     );
   }
 
-  Widget addParentCourse(double tab) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(tab, 4, 4, 4),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 4,
-            spreadRadius: 2,
-            color: Colors.black.withOpacity(0.3),
+  Widget _buildListViewBuilder(AppModelV2 model, BuildContext context, int index, SessionAbsence sessionAbsence, Student studentData) {
+    return GestureDetector(
+      onTap: () {},
+      child: studentData!=null ? Container(
+          margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
+          height: 84,
+          width: MediaQuery.of(context).size.width - 16,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 4,
+                spreadRadius: 2,
+                color: Colors.black.withOpacity(0.3),
+              ),
+            ],
           ),
-        ],
-      ),
-      child: ListTile(
-        leading: Icon(Icons.add_circle_outline),
-        title: Text('Tambah Pelajaran'),
-      ),
+          child: Material(
+            borderRadius: BorderRadius.circular(16),
+            clipBehavior: Clip.antiAlias,
+            color: Colors.white,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(16),
+              onTap: () {
+
+              },
+              child: studentAbsenceCard(model, sessionAbsence, studentData, index),
+            ),
+          )) : Container(),
     );
   }
 
-
-  CourseCard _getCourse({@required Course course, double tap}) =>
-      CourseCard(fileName: course.courseName.toString(), left: tap);
-
-  Widget _buildPageContent(AppModelV2 model) {
-    return Scaffold(
-        appBar: _buildAppBar(model),
-        resizeToAvoidBottomPadding: false,
-        floatingActionButton:
-            listCourses != null ? _buildFloatingActionButton(model) : Text(''),
-        body: Container(
-          child: Column(
-            children: <Widget>[
-              _buildDropDownClassLevel(model),
-              showSessions==true ?_buildDropDownSession(model) : Text(''),
-            ],
-          ),
+  _buildNewResultSearch(AppModelV2 model) {
+    print('newResult');
+    sessionAbsenceList = new List();
+    return Expanded(
+        child: new ListView.builder(
+          shrinkWrap: true,
+          itemCount: model.sessionAbsences.length,
+          itemBuilder: (BuildContext context, int index) {
+            SessionAbsence sessionAbsence = model.sessionAbsences[index];
+            int indexStudent = model.students.indexWhere((t) => t.studentID == sessionAbsence.studentID);
+            if(indexStudent > -1) {
+              print('indexStudent: $indexStudent');
+              userStatus.add(false);
+              print('isInStudent $indexStudent: ${userStatus[indexStudent]}');
+              sessionAbsenceList.add(sessionAbsence);
+              sessionAbsenceList[indexStudent].isIn = userStatus[indexStudent];
+              print('isInStudentInList $index: ${sessionAbsenceList[indexStudent].isIn}');
+              sessionAbsenceList[indexStudent].date = dateNow;
+            }
+            Student studentData = indexStudent!=-1 ? model.students[indexStudent] : null;
+            return _buildListViewBuilder(model, context, indexStudent, sessionAbsence, studentData);
+          },
         ));
   }
 
-  Widget _buildFloatingActionButton(AppModelV2 model) {
-    return FloatingActionButton(
-      child: Icon(Icons.add),
-      onPressed: () {},
+  Widget _buildResultSearch(AppModelV2 model) {
+    print('Result');
+    sessionAbsenceList = new List();
+    return Expanded(
+        child: new ListView.builder(
+      shrinkWrap: true,
+      itemCount: model.sessionAbsences.length,
+      itemBuilder: (BuildContext context, int index) {
+        print(index);
+        SessionAbsence sessionAbsence = model.sessionAbsences[index];
+        int indexStudent = model.students.indexWhere((t) => t.studentID == sessionAbsence.studentID);
+        if(indexStudent > -1) {
+          print('indexStudent: $indexStudent');
+          userStatus.add(model.sessionAbsences[indexStudent].isIn);
+          print('isInStudent $indexStudent: ${userStatus[indexStudent]}');
+          sessionAbsenceList.add(sessionAbsence);
+          sessionAbsenceList[indexStudent].isIn = userStatus[indexStudent];
+          print('isInStudentInList $index: ${sessionAbsenceList[indexStudent].isIn}');
+          sessionAbsenceList[indexStudent].date = dateNow;
+        }
+        Student studentData = indexStudent!=-1 ? model.students[indexStudent] : null;
+        return _buildListViewBuilder(model, context, indexStudent, sessionAbsence, studentData);
+      },
+    ));
+  }
+
+  Widget studentAbsenceCard(AppModelV2 model, SessionAbsence sessionAbsence, Student studentData, int index) {
+    print('index: ' +index.toString());
+    return Container(
+        padding: EdgeInsets.all(10),
+        child: Row(
+          children:[
+            Container(
+              width: 50.0,
+              height: 50.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: NetworkImage(
+                        "https://source.unsplash.com/ZHvM3XIOHoE" ?? Icons.person_pin
+                    )
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Text(
+                '${studentData.fullName
+                    .trim()
+                    .length <= 20 ? studentData.fullName.trim() : studentData
+                    .fullName.trim().substring(0, 20) + '...'}',
+                style: TextStyle(
+                    fontFamily: 'ZillaSlab',
+                    fontSize: 17,
+                    color: Colors.black
+                )
+            ),
+            Spacer(),
+            Center(
+              child: Column(
+                children: <Widget>[
+                  Text(
+                      'Masuk',
+                      style: TextStyle(
+                          fontFamily: 'ZillaSlab',
+                          fontSize: 14,
+                          color: Colors.black
+                      )
+                  ),
+                  Checkbox(
+                    value: userStatus[index],
+                    onChanged: (bool value) {
+                      setState(() {
+                        userStatus[index] = !userStatus[index];
+                        sessionAbsenceList[index].isIn = userStatus[index];
+                      });
+                      print('sessionIndex $index: ${sessionAbsenceList[index].isIn}');
+                      model.fetchSessionAbsenceByPersonIdAndDate(sessionAbsence.studentID, dateNow).then((onValue){
+                        if(onValue) {
+                          setState(() {
+                            showPutButton = true;
+                          });
+                        } else {
+                          setState(() {
+                            showPostButton = true;
+                          });
+                        }
+                      });
+                    },
+                  ),
+                ],
+              ),
+            )
+          ],
+        )
+    );
+  }
+
+  Widget _buildPageContent(AppModelV2 model) {
+    return Scaffold(
+      appBar: _buildAppBar(model),
+      resizeToAvoidBottomPadding: false,
+      body: Column(
+        children: <Widget>[
+          _buildDropDownClassLevel(model),
+          showSessions ? _buildDropDownSession(model) : Container(),
+          showNewStudentData ? _buildNewResultSearch(model): Container(),
+          showStudentData ? _buildResultSearch(model) : Container(),
+        ],
+      ),
+      floatingActionButton:
+      showPostButton ? _buildFloatingPostButton(model) :
+      showPutButton ? _buildFloatingPutButton(model) : Container(),
+    );
+  }
+
+  Widget _buildFloatingPostButton(AppModelV2 model) {
+    return FloatingActionButton.extended(
+      icon: Icon(Icons.add),
+      label: Text('Tambah data'),
+      onPressed: () {
+        InfoDialog('Anda yakin untuk menambah data?', () => {
+          model.addSessionAbsence(sessionAbsenceList).then((onValue) {
+            if(onValue) {
+              SuccessDialog('Data telah berhasil diperbarui', () {
+                setState(() {
+                  showPostButton = false;
+                });
+              }).show(context);
+            } else {
+              MessageDialog.show(context, 'Terjadi kesalahan', 'Coba ulangi lagi!');
+            }
+          })
+        }).show(context);
+      },
+    );
+  }
+
+  Widget _buildFloatingPutButton(AppModelV2 model) {
+    return FloatingActionButton.extended(
+      icon: Icon(Icons.system_update_alt),
+      label: Text('Perbarui data'),
+      onPressed: () {
+        InfoDialog('Anda yakin untuk memperbarui data?', () => {
+          model.updateSessionAbsence(sessionAbsenceList).then((onValue) {
+            if(onValue) {
+              SuccessDialog('Data telah berhasil diperbarui', () {
+                setState(() {
+                  showPutButton = false;
+                });
+              }).show(context);
+            } else {
+              MessageDialog.show(context, 'Terjadi kesalahan', 'Coba ulangi lagi!');
+            }
+          })
+        }).show(context);
+      },
     );
   }
 
@@ -205,4 +415,3 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
     );
   }
 }
-
