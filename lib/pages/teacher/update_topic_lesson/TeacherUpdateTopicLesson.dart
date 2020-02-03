@@ -1,8 +1,9 @@
-import 'package:bwa_learning/models/origin/Course.dart';
+import 'dart:math';
 import 'package:bwa_learning/models/talim/Class.dart';
+import 'package:bwa_learning/models/talim/LinkTrainingMeetingTopic.dart';
 import 'package:bwa_learning/models/talim/Session.dart';
 import 'package:bwa_learning/models/talim/SessionAbsence.dart';
-import 'package:bwa_learning/models/talim/Student.dart';
+import 'package:bwa_learning/models/talim/Topic.dart';
 import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
 import 'package:bwa_learning/widgets/dialog/InfoDialog.dart';
 import 'package:bwa_learning/widgets/dialog/MessageDialog.dart';
@@ -12,40 +13,42 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:tree_view/tree_view.dart';
 
-class TeacherAttendanceList extends StatefulWidget {
+class TeacherUpdateTopicLesson extends StatefulWidget {
   final AppModelV2 model;
 
-  TeacherAttendanceList(this.model);
+  TeacherUpdateTopicLesson(this.model);
 
   @override
   State<StatefulWidget> createState() {
-    return _TeacherAttendanceListState();
+    return _TeacherUpdateTopicLessonState();
   }
 }
 
-class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
+class _TeacherUpdateTopicLessonState extends State<TeacherUpdateTopicLesson> {
   Class selectLevelClass;
   Session selectSessions;
   bool showSessions = false;
   bool showNewStudentData = false;
   bool showStudentData = false;
+  bool showTopicData = false;
+  bool showNewTopicData = false;
   bool showPostButton = false;
   bool showPutButton = false;
   bool isInVal = false;
   var userStatus = List<bool>();
-  List<Course> listCourses;
+  var topicStatus = List<bool>();
   int institutionId;
   var dateNow;
   List<SessionAbsence> sessionAbsenceList;
+  List<LinkTrainingMeetingTopic> ltmTopic;
+  int index = 0;
 
   @override
   void initState() {
     institutionId = widget.model.currentInstitution.institutionId;
-    dateNow = DateFormat('yyyy-MM-dd').format(DateTime.now());
-
-    print(DateTime.now());
-    print(dateNow);
+    dateNow = DateFormat('yyyy-MM-D').format(DateTime.now());
 
     widget.model.fetchClassByInstitutionId(
         institutionId);
@@ -143,28 +146,25 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
               selectSessions = newValue;
             });
             model
-                .fetchSessionAbsenceByTrainingSessionIdAndDate(
-                    selectSessions.trainingSessionID, dateNow)
+                .fetchLinkTrainingMeetingTopicByTrainingSessionId(selectSessions.trainingSessionID)
                 .then((onValue) {
               if (onValue) {
                 setState(() {
-                  showStudentData = true;
+                  showTopicData = true;
                 });
+                model.fetchTopicByCompanyIdAndKeyword(institutionId,'1');
               } else {
-                model.fetchSessionAbsenceByTrainingSessionId(selectSessions.trainingSessionID).then((onValue) {
-                  if (onValue) {
-                    setState(() {
-                      showNewStudentData = true;
-                    });
-                  } else{
+                model.fetchTopicByCompanyIdAndKeyword(institutionId,'1').then((onValue) {
+                  if(onValue) {
+                    showNewTopicData = true;
+                  } else {
                     return MessageDialog.show(context, 'Tidak ditemukan',
-                        'Data student belum tersedia untuk Sesi ini');
+                        'Data Topik belum tersedia untuk Sesi ini');
                   }
+
                 });
               }
             });
-            model.fetchStudentByInstitutionId(institutionId);
-
           },
           hint: Text("Pilih Sesi!"),
           items: model.sessions.map((value) {
@@ -180,116 +180,100 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
     );
   }
 
-  Widget _buildListViewBuilder(AppModelV2 model, BuildContext context, int index, SessionAbsence sessionAbsence, Student studentData) {
-    return GestureDetector(
-      onTap: () {},
-      child: studentData!=null ? Container(
-          margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
-          height: 84,
-          width: MediaQuery.of(context).size.width - 16,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 4,
-                spreadRadius: 2,
-                color: Colors.black.withOpacity(0.3),
-              ),
-            ],
-          ),
-          child: Material(
-            borderRadius: BorderRadius.circular(16),
-            clipBehavior: Clip.antiAlias,
-            color: Colors.white,
-            child: InkWell(
-              borderRadius: BorderRadius.circular(16),
-              onTap: () {
+  List<Widget> _buildNewTopicParentList(
+      AppModelV2 model, List<Topic> topics, int parentId, double tab) {
+    print('new');
+    List<Topic> parent = new List();
+    List<Topic> member = new List();
 
-              },
-              child: studentAbsenceCard(model, sessionAbsence, studentData, index),
-            ),
-          )) : Container(),
-    );
-  }
+    topics.forEach((f) {
+      if (f.parentTopicID == parentId) {
+        print(f.name);
+        parent.add(f);
+      }
+    });
 
-  _buildNewResultSearch(AppModelV2 model) {
-    print('newResult');
-    sessionAbsenceList = new List();
-    return Expanded(
-        child: new ListView.builder(
-          shrinkWrap: true,
-          itemCount: model.sessionAbsences.length,
-          itemBuilder: (BuildContext context, int index) {
-            SessionAbsence sessionAbsence = model.sessionAbsences[index];
-            int indexStudent = model.students.indexWhere((t) => t.studentID == sessionAbsence.studentID);
-            if(indexStudent > -1) {
-              print('indexStudent: $indexStudent');
-              userStatus.add(false);
-              print('isInStudent $indexStudent: ${userStatus[indexStudent]}');
-              sessionAbsenceList.add(sessionAbsence);
-              sessionAbsenceList[indexStudent].isIn = userStatus[indexStudent];
-              print('isInStudentInList $index: ${sessionAbsenceList[indexStudent].isIn}');
-              sessionAbsenceList[indexStudent].date = dateNow;
-            }
-            Student studentData = indexStudent!=-1 ? model.students[indexStudent] : null;
-            return _buildListViewBuilder(model, context, indexStudent, sessionAbsence, studentData);
-          },
-        ));
-  }
-
-  Widget _buildResultSearch(AppModelV2 model) {
-    print('Result');
-    sessionAbsenceList = new List();
-    return Expanded(
-        child: new ListView.builder(
-      shrinkWrap: true,
-      itemCount: model.sessionAbsences.length,
-      itemBuilder: (BuildContext context, int index) {
-        print(index);
-        SessionAbsence sessionAbsence = model.sessionAbsences[index];
-        int indexStudent = model.students.indexWhere((t) => t.studentID == sessionAbsence.studentID);
-        if(indexStudent > -1) {
-          print('indexStudent: $indexStudent');
-          userStatus.add(model.sessionAbsences[indexStudent].isIn);
-          print('isInStudent $indexStudent: ${userStatus[indexStudent]}');
-          sessionAbsenceList.add(sessionAbsence);
-          sessionAbsenceList[indexStudent].isIn = userStatus[indexStudent];
-          print('isInStudentInList $index: ${sessionAbsenceList[indexStudent].isIn}');
-          sessionAbsenceList[indexStudent].date = dateNow;
+    return parent.map((p) {
+      widget.model.topics.forEach((c) {
+        if (c.parentTopicID == p.topicID) {
+          member.add(c);
         }
-        Student studentData = indexStudent!=-1 ? model.students[indexStudent] : null;
-        return _buildListViewBuilder(model, context, indexStudent, sessionAbsence, studentData);
-      },
-    ));
+      });
+
+      topicStatus.add(false);
+      LinkTrainingMeetingTopic linkTrainingMeetingTopic = new LinkTrainingMeetingTopic(
+        id: Random.secure().nextInt(999999),
+        trainingSessionID: selectSessions.trainingSessionID,
+        dataStatusID: false,
+        topicID: p.topicID,
+
+      );
+
+      ltmTopic.add(linkTrainingMeetingTopic);
+
+      return Parent(
+          parent: topicCards(model, p, tab, index++),
+          childList: ChildList(
+              children: _buildNewTopicParentList(model, member, p.topicID, tab + 15)));
+    }).toList();
   }
 
-  Widget studentAbsenceCard(AppModelV2 model, SessionAbsence sessionAbsence, Student studentData, int index) {
+  List<Widget> _buildTopicParentList(
+      AppModelV2 model, List<Topic> topics, int parentId, double tab) {
+    print('old');
+    List<Topic> parent = new List();
+    List<Topic> member = new List();
+
+    topics.forEach((f) {
+      if (f.parentTopicID == parentId) {
+        print(f.name);
+        parent.add(f);
+      }
+    });
+
+    return parent.map((p) {
+      widget.model.topics.forEach((c) {
+        if (c.parentTopicID == p.topicID) {
+          member.add(c);
+        }
+      });
+
+      int indexLtmTopic = model.linkTrainingMeetingTopics.indexWhere((t) => t.topicID == p.topicID);
+      LinkTrainingMeetingTopic linkTrainingMeetingTopic = model.linkTrainingMeetingTopics.elementAt(indexLtmTopic);
+      topicStatus.add(linkTrainingMeetingTopic.dataStatusID);
+      ltmTopic.add(linkTrainingMeetingTopic);
+
+      return Parent(
+          parent: topicCards(model, p, tab, index++),
+          childList: ChildList(
+              children: _buildTopicParentList(model, member, p.topicID, tab + 15)));
+    }).toList();
+  }
+
+  Widget topicCards(AppModelV2 model, Topic topic, double tab, index) {
     print('index: ' +index.toString());
+    print('topic: ' +topic.name);
     return Container(
+        height: 85,
         padding: EdgeInsets.all(10),
+        margin: EdgeInsets.fromLTRB(tab, 5, 5, 5),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 4,
+              spreadRadius: 2,
+              color: Colors.black.withOpacity(0.3),
+            ),
+          ],
+        ),
         child: Row(
           children:[
-            Container(
-              width: 50.0,
-              height: 50.0,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: NetworkImage(
-                        "https://source.unsplash.com/ZHvM3XIOHoE" ?? Icons.person_pin
-                    )
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 20,
-            ),
             Text(
-                '${studentData.fullName
+                '${topic.name
                     .trim()
-                    .length <= 20 ? studentData.fullName.trim() : studentData
-                    .fullName.trim().substring(0, 20) + '...'}',
+                    .length <= 20 ? topic.name.trim() : topic.name.trim().substring(0, 20) + '...'}',
                 style: TextStyle(
                     fontFamily: 'ZillaSlab',
                     fontSize: 17,
@@ -301,7 +285,7 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
               child: Column(
                 children: <Widget>[
                   Text(
-                      'Masuk',
+                      'Selesai',
                       style: TextStyle(
                           fontFamily: 'ZillaSlab',
                           fontSize: 14,
@@ -309,30 +293,40 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
                       )
                   ),
                   Checkbox(
-                    value: userStatus[index],
+                    value: topicStatus[index],
                     onChanged: (bool value) {
                       setState(() {
-                        userStatus[index] = !userStatus[index];
-                        sessionAbsenceList[index].isIn = userStatus[index];
+                        topicStatus[index] = !topicStatus[index];
+                        ltmTopic[index].dataStatusID = topicStatus[index];
                       });
-                      print('sessionIndex $index: ${sessionAbsenceList[index].isIn}');
-                      model.fetchSessionAbsenceByPersonIdAndDate(sessionAbsence.studentID, dateNow).then((onValue){
-                        if(onValue) {
-                          setState(() {
-                            showPutButton = true;
-                          });
-                        } else {
-                          setState(() {
-                            showPostButton = true;
-                          });
-                        }
-                      });
+                      print('index 4 value: ${topicStatus[4]}');
+                      print('sessionIndex $index: ${ltmTopic[index].dataStatusID}');
                     },
                   ),
                 ],
               ),
             )
           ],
+        )
+    );
+  }
+
+  Widget _buildNewTopicList(AppModelV2 model) {
+    ltmTopic = new List();
+    index = 0;
+    return Expanded(
+      child: TreeView(
+        parentList: _buildNewTopicParentList(model, model.topics, 0, 5),
+      )
+    );
+  }
+
+  Widget _buildTopicList(AppModelV2 model) {
+    ltmTopic = new List();
+    index = 0;
+    return Expanded(
+        child: TreeView(
+          parentList: _buildTopicParentList(model, model.topics , 0, 5),
         )
     );
   }
@@ -345,8 +339,10 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
         children: <Widget>[
           _buildDropDownClassLevel(model),
           showSessions ? _buildDropDownSession(model) : Container(),
-          showNewStudentData ? _buildNewResultSearch(model): Container(),
-          showStudentData ? _buildResultSearch(model) : Container(),
+//          showNewStudentData ? _buildNewResultSearch(model): Container(),
+//          showStudentData ? _buildResultSearch(model) : Container(),
+          showNewTopicData ? _buildNewTopicList(model) : Container(),
+          showTopicData ? _buildTopicList(model) : Container(),
         ],
       ),
       floatingActionButton:

@@ -1,5 +1,4 @@
 import 'package:bwa_learning/pages/student/student_class/ViewClass.dart';
-import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
 import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -109,6 +108,12 @@ List<MenuUtamaItem> listTeacherMainMenu(BuildContext context, AppModelV2 model) 
         title: 'Daftar   Pelajaran',
         icon: (FontAwesomeIcons.book),
         colorBox: Colors.redAccent,
+        iconColor: Colors.white,
+        onTap: () => Navigator.pushNamed(context, '/teacherCourseList')),
+    MenuUtamaItem(
+        title: 'Update Mengajar',
+        icon: (FontAwesomeIcons.book),
+        colorBox: Colors.yellow,
         iconColor: Colors.white,
         onTap: () => Navigator.pushNamed(context, '/teacherCourseList')),
     MenuUtamaItem(

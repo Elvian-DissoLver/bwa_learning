@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:bwa_learning/models/talim/SessionAbsence.dart';
-import 'package:intl/intl.dart';
 import 'package:mysql1/mysql1.dart';
 
 import 'Config.dart';
@@ -120,7 +119,11 @@ class SessionAbsenceDao {
     sessionAbsence.sessionAbsenceID = random.nextInt(999999);
 
     await db.query(
-        "INSERT INTO journalsessionabsence (ID,PersonId,TrainingSessionID,IsIn,Date_) VALUES (${sessionAbsence.sessionAbsenceID},'${sessionAbsence.studentID}',${sessionAbsence.trainingSessionID},${SessionAbsence.getIsInFromBool(sessionAbsence.isIn)},'${sessionAbsence.date}')");
+        "INSERT INTO talim.journalsessionabsence(ID,PersonID,TrainingSessionID,IsIn,Date_) VALUES (${sessionAbsence.sessionAbsenceID},'${sessionAbsence.studentID}',${sessionAbsence.trainingSessionID},${SessionAbsence.getIsInFromBool(sessionAbsence.isIn)},'${sessionAbsence.date}')")
+    .catchError((onError){
+      print('error: $onError');
+      return onError;
+    });
     print('sukses post');
   }
 
