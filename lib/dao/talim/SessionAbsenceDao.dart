@@ -98,7 +98,10 @@ class SessionAbsenceDao {
     print("getSessionAbsenceById");
     var db = await database;
     var res = await db.query(
-        "SELECT * FROM journalsessionabsence WHERE sessionAbsenceId = '$sessionAbsenceId'");
+        "SELECT * FROM journalsessionabsence WHERE sessionAbsenceId = '$sessionAbsenceId'").catchError((onError) {
+          print(onError);
+          return onError;
+    });
 
     SessionAbsence findSessionAbsence;
 

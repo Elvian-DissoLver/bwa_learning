@@ -55,27 +55,39 @@ class LinkTrainingMeetingTopicDao {
     return linkTrainingMeetingTopicList;
   }
 
+  Future<LinkTrainingMeetingTopic> getLinkTrainingMeetingTopicById(int ltmTopicId) async {
+    print("getLinkTrainingMeetingTopicById");
+    var db = await database;
+    var res = await db.query(
+        "SELECT * FROM linktrainingmeetingtopic WHERE ID = '$ltmTopicId'");
+
+    LinkTrainingMeetingTopic findLtmTopic;
+
+    if (res.length > 0) {
+      res.forEach((f) {
+        print(f);
+        findLtmTopic = LinkTrainingMeetingTopic.fromJson(f.fields);
+      });
+      return findLtmTopic;
+    }
+    return null;
+  }
+
   Future addLinkTrainingMeetingTopic(LinkTrainingMeetingTopic linkTrainingMeetingTopic) async {
     print("addLinkTrainingMeetingTopic");
     final db = await database;
-    var random = Random.secure();
-    linkTrainingMeetingTopic.id = random.nextInt(999999);
 
     await db.query(
-        "INSERT INTO talim.linktrainingmeetingtopic(ID,PersonID,TrainingSessionID,IsIn,Date_) VALUES (${linkTrainingMeetingTopic.id},${linkTrainingMeetingTopic.trainingSessionID},${LinkTrainingMeetingTopic.getIsInFromBool(linkTrainingMeetingTopic.dataStatusID)},'${linkTrainingMeetingTopic.topicID}')")
-    .catchError((onError){
-      print('error: $onError');
-      return onError;
-    });
+        "INSERT INTO talim.linktrainingmeetingtopic(ID,TrainingSessionID,DataStatusID,TopicID) VALUES (${linkTrainingMeetingTopic.id},${linkTrainingMeetingTopic.trainingSessionID},${LinkTrainingMeetingTopic.getIsInFromBool(linkTrainingMeetingTopic.dataStatusID)},'${linkTrainingMeetingTopic.topicID}')");
     print('sukses post');
   }
 
   Future updateLinkTrainingMeetingTopic(LinkTrainingMeetingTopic linkTrainingMeetingTopic) async {
-    print("addLinkTrainingMeetingTopic");
+    print("updateLinkTrainingMeetingTopic");
     final db = await database;
 
     await db.query(
-        "UPDATE linktrainingmeetingtopic SET IsIn=${LinkTrainingMeetingTopic.getIsInFromBool(linkTrainingMeetingTopic.dataStatusID)} WHERE ID=${linkTrainingMeetingTopic.id}");
+        "UPDATE linktrainingmeetingtopic SET DataStatusID=${LinkTrainingMeetingTopic.getIsInFromBool(linkTrainingMeetingTopic.dataStatusID)} WHERE ID=${linkTrainingMeetingTopic.id}");
     print('sukses update');
   }
 }
