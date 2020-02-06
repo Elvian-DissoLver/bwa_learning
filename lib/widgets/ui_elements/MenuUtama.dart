@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:scoped_model/scoped_model.dart';
-
 import 'MenuUtamaItem.dart';
 
 class MenuUtama extends StatelessWidget {
@@ -111,11 +110,17 @@ List<MenuUtamaItem> listTeacherMainMenu(BuildContext context, AppModelV2 model) 
         iconColor: Colors.white,
         onTap: () => Navigator.pushNamed(context, '/teacherCourseList')),
     MenuUtamaItem(
+        title: 'Update Progress Murid',
+        icon: (FontAwesomeIcons.book),
+        colorBox: Colors.lightGreenAccent,
+        iconColor: Colors.white,
+        onTap: () => Navigator.pushNamed(context, '/teacherUpdateStudentProgress')),
+    MenuUtamaItem(
         title: 'Update Mengajar',
         icon: (FontAwesomeIcons.book),
         colorBox: Colors.yellow,
         iconColor: Colors.white,
-        onTap: () => Navigator.pushNamed(context, '/teacherCourseList')),
+        onTap: () => Navigator.pushNamed(context, '/teacherUpdateTopicLesson')),
     MenuUtamaItem(
         title: 'Daftar  Kehadiran',
         icon: (FontAwesomeIcons.clipboardCheck),

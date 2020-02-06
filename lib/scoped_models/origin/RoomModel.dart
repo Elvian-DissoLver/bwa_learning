@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:bwa_learning/dao/origin/ClassDao.dart';
 import 'package:bwa_learning/models/origin/Class.dart';
 import 'package:scoped_model/scoped_model.dart';

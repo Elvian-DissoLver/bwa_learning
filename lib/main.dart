@@ -7,6 +7,7 @@ import 'package:bwa_learning/pages/student/schedule_class/SchedulePage.dart';
 import 'package:bwa_learning/pages/teacher/attendance_list/TeacherAttendanceList.dart';
 import 'package:bwa_learning/pages/teacher/course_list/TeacherCourseList.dart';
 import 'package:bwa_learning/pages/teacher/schedule_teacher/ScheduleTeacher.dart';
+import 'package:bwa_learning/pages/teacher/update_student_progress/TeacherUpdateStudentProgress.dart';
 import 'package:bwa_learning/pages/teacher/update_topic_lesson/TeacherUpdateTopicLesson.dart';
 import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
 import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
@@ -84,7 +85,9 @@ class _BWALearningState extends State<BWALearning> {
               ScheduleTeacher(model: _model),
           '/teacherCourseList': (BuildContext context) =>
               TeacherCourseList(_model),
-          '/teacherCourseList': (BuildContext context) =>
+          '/teacherUpdateStudentProgress': (BuildContext context) =>
+              TeacherUpdateStudentProgress(_model2),
+          '/teacherUpdateTopicLesson': (BuildContext context) =>
               TeacherUpdateTopicLesson(_model2),
           '/teacherAttendanceList': (BuildContext context) =>
               TeacherAttendanceList(_model2),

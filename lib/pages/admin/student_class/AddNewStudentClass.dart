@@ -1,8 +1,8 @@
 import 'package:bwa_learning/models/origin/Student.dart';
 import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
+import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
 import 'package:bwa_learning/widgets/admin/student/StudentCard.dart';
 import 'package:bwa_learning/widgets/dialog/InfoDialog.dart';
-import 'package:bwa_learning/widgets/dialog/MessageDialog.dart';
 import 'package:bwa_learning/widgets/dialog/SuccessDialog.dart';
 import 'package:bwa_learning/widgets/loading/loading_modal.dart';
 import 'package:bwa_learning/widgets/ui_elements/rounded_button.dart';
@@ -37,7 +37,7 @@ class _AddNewStudentClassState extends State<AddNewStudentClass> {
     super.initState();
   }
 
-  Widget _buildAppBar(AppModel model) {
+  Widget _buildAppBar(AppModelV2 model) {
     return AppBar(
       title: Text(
         'Daftar Siswa',
@@ -52,8 +52,8 @@ class _AddNewStudentClassState extends State<AddNewStudentClass> {
     });
 
     if (_controller.text.isEmpty) {
-      return MessageDialog.show(
-          context, 'Tidak ditemukan', 'Masukkan minimal satu karakter');
+//      return MessageDialog.show(
+//          context, 'Tidak ditemukan', 'Masukkan minimal satu karakter' ,model);
     }
 
     await widget.model
@@ -108,7 +108,7 @@ class _AddNewStudentClassState extends State<AddNewStudentClass> {
           context,
         );
       } else {
-        MessageDialog.show(context, 'Terjadi kesalahan', 'Coba ulangi lagi!');
+//        MessageDialog.show(context, 'Terjadi kesalahan', 'Coba ulangi lagi!', model);
       }
     });
   }

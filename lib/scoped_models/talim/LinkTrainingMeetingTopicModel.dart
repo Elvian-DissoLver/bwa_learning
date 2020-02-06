@@ -39,20 +39,14 @@ mixin LinkTrainingMeetingTopicModel on Model {
 
     print('fetch linkTrainingMeetingTopics by TrainingSessionId');
 
-    try {
-      _linkTrainingMeetingTopics = await LinkTrainingMeetingTopicDao.db
-          .getLinkTrainingMeetingTopicByTrainingSessionID(trainingSessionID);
+    _linkTrainingMeetingTopics = await LinkTrainingMeetingTopicDao.db
+        .getLinkTrainingMeetingTopicByTrainingSessionID(trainingSessionID);
 
-      if (_linkTrainingMeetingTopics.length > 0) {
-        _isLoading = false;
-        notifyListeners();
-        return true;
-      } else {
-        _isLoading = false;
-        notifyListeners();
-        return false;
-      }
-    } catch (error) {
+    if (_linkTrainingMeetingTopics.length > 0) {
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    } else {
       _isLoading = false;
       notifyListeners();
       return false;

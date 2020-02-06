@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:math';
-
 import 'package:bwa_learning/models/talim/Topic.dart';
 import 'package:mysql1/mysql1.dart';
 
@@ -43,10 +40,7 @@ class TopicDao {
 
     List<Topic> topicList = [];
     var res = await db.query(
-        "SELECT * FROM topic WHERE Company_id = $companyID AND Keywords=$keyword").catchError((onError) {
-          print(onError);
-          return onError;
-    });
+        "SELECT * FROM topic WHERE Company_id = $companyID AND Keywords=$keyword");
 
     if (res.length > 0) {
       res.forEach((f) {

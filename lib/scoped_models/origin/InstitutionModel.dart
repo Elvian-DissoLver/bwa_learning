@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:bwa_learning/dao/origin/InstitutionDao.dart';
 import 'package:bwa_learning/models/origin/Institution.dart';
+import 'RoomModel.dart';
 
-import 'ClassModel.dart';
 
 mixin InstitutionModel on CoreModel {
   List<Institution> _institutions = [];

@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:bwa_learning/dao/talim/TopicDao.dart';
 import 'package:bwa_learning/models/talim/Topic.dart';
-import 'package:intl/intl.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 mixin TopicModel on Model {
@@ -31,7 +29,12 @@ mixin TopicModel on Model {
     _topic = topic;
   }
 
-  Future<bool> fetchTopicByCompanyIdAndKeyword(int companyID, String keyword) async {
+  void setLoading2(bool loading){
+    _isLoading = loading;
+  }
+
+  Future<bool> fetchTopicByCompanyIdAndKeyword(
+      int companyID, String keyword) async {
     _isLoading = true;
     notifyListeners();
 
@@ -39,19 +42,14 @@ mixin TopicModel on Model {
 
     print('fetch topics by CompanyId and keyword');
 
-    try {
-      _topics = await TopicDao.db.getTopicByCompanyIDAndKeyword(companyID, keyword);
+    _topics =
+        await TopicDao.db.getTopicByCompanyIDAndKeyword(companyID, keyword);
 
-      if(_topics.length > 0){
-        _isLoading = false;
-        notifyListeners();
-        return true;
-      } else {
-        _isLoading = false;
-        notifyListeners();
-        return false;
-      }
-    } catch (error) {
+    if (_topics.length > 0) {
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    } else {
       _isLoading = false;
       notifyListeners();
       return false;

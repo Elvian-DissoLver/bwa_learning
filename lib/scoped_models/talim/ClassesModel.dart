@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:bwa_learning/dao/talim/ClassDao.dart';
 import 'package:bwa_learning/models/talim/Class.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -30,6 +29,9 @@ mixin ClassesModel on CoreModel {
 
   void setCurrentClass(Class setClass) {
     _class = setClass;
+  }
+  void setLoading(bool loading) {
+    _isLoading = loading;
   }
 
   Future<Null> fetchClassByInstitutionId(int institutionId) async {

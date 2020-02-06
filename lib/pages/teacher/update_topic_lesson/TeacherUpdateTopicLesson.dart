@@ -58,7 +58,7 @@ class _TeacherUpdateTopicLessonState extends State<TeacherUpdateTopicLesson> {
   Widget _buildAppBar(AppModelV2 model) {
     return AppBar(
       title: Text(
-        'Daftar Kehadiran',
+        'Update Mengajar',
       ),
     );
   }
@@ -327,16 +327,14 @@ class _TeacherUpdateTopicLessonState extends State<TeacherUpdateTopicLesson> {
                 .show(context);
           }
         }).catchError((onError) {
-          MessageDialog.show(
-              context,
-              'Terjadi kesalahan $onError',
-              'Coba ulangi lagi!');
+          MessageDialog.show(context,
+              'Terjadi kesalahan $onError', 'Coba ulangi lagi!');
         });
       }
     }).catchError((onError) {
       print(onError);
       MessageDialog.show(context,
-          'Terjadi kesalahan $onError', 'Coba ulangi lagi!');
+          'Terjadi kesalahan $onError', 'Coba ulangi lagi!' );
     }).whenComplete((){
       model.fetchLinkTrainingMeetingTopicByTrainingSessionId(selectSessions.trainingSessionID);
     });

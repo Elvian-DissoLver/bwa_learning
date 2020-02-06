@@ -1,6 +1,5 @@
 import 'package:bwa_learning/models/origin/Class.dart';
 import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
-import 'package:bwa_learning/widgets/dialog/MessageDialog.dart';
 import 'package:bwa_learning/widgets/dialog/SuccessDialog.dart';
 import 'package:bwa_learning/widgets/loading/loading_modal.dart';
 import 'package:flutter/cupertino.dart';
@@ -105,8 +104,8 @@ class _AddNewClassState extends State<AddNewClass> {
               }
             ).show(context);
           } else {
-            MessageDialog.show(
-                context, 'Terjadi kesalahan', 'Coba ulangi lagi!');
+//            MessageDialog.show(
+//                context, 'Terjadi kesalahan', 'Coba ulangi lagi!');
           }
         });
       }
