@@ -1,16 +1,12 @@
-import 'package:bwa_learning/models/origin/Class.dart';
 import 'package:bwa_learning/models/origin/Course.dart';
 import 'package:bwa_learning/models/origin/Teacher.dart';
 import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
-import 'package:bwa_learning/widgets/dialog/MessageDialog.dart';
-import 'package:bwa_learning/widgets/dialog/SuccessDialog.dart';
 import 'package:bwa_learning/widgets/loading/loading_modal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'CourseList.dart';
 
 // ignore: must_be_immutable
 class AddNewCourse extends StatefulWidget {

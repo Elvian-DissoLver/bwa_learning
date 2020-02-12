@@ -1,6 +1,5 @@
 import 'package:bwa_learning/models/origin/Student.dart';
 import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
-import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
 import 'package:bwa_learning/widgets/admin/student/StudentCard.dart';
 import 'package:bwa_learning/widgets/dialog/InfoDialog.dart';
 import 'package:bwa_learning/widgets/dialog/SuccessDialog.dart';
@@ -35,14 +34,6 @@ class _AddNewStudentClassState extends State<AddNewStudentClass> {
   @override
   void initState() {
     super.initState();
-  }
-
-  Widget _buildAppBar(AppModelV2 model) {
-    return AppBar(
-      title: Text(
-        'Daftar Siswa',
-      ),
-    );
   }
 
   _handlingSearch() async {

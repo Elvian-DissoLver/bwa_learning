@@ -89,7 +89,7 @@ List<MenuUtamaItem> listTeacherMainMenu(BuildContext context, AppModelV2 model) 
         icon: (FontAwesomeIcons.chalkboard),
         colorBox: Colors.blue,
         iconColor: Colors.white,
-        onTap: () => Navigator.pushNamed(context, '/teacherScheduleList')),
+        onTap: () => Navigator.pushNamed(context, '/teacherSchedule')),
     MenuUtamaItem(
         title: 'Kelasku',
         icon: Icons.class_,

@@ -1,7 +1,6 @@
 import 'package:bwa_learning/models/origin/LevelClass.dart';
 import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import 'ClassCard.dart';

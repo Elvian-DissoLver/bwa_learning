@@ -51,7 +51,8 @@ dependencies:
   json_annotation:
   enum_to_string:
   tree_view:
-  super_tooltip:
+  table_calendar:
+  flutter_week_view:
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bwa_learning/models/talim/LinkTrainingMeetingTopic.dart';
 import 'package:mysql1/mysql1.dart';
 

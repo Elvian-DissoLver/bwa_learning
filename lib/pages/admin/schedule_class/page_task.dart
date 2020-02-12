@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'page_addlist.dart';
-
 List<String> day = [
   'Senin',
   'Selasa',
@@ -287,49 +285,6 @@ class _TaskPageState extends State<TaskPage>
         ),
       );
     });
-  }
-
-  void _addTaskPressed() async {
-    Navigator.of(context).push(
-      new PageRouteBuilder(
-        pageBuilder: (_, __, ___) => new NewTaskPage(
-          user: widget.model.currentUser,
-        ),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            new ScaleTransition(
-          scale: new Tween<double>(
-            begin: 1.5,
-            end: 1.0,
-          ).animate(
-            CurvedAnimation(
-              parent: animation,
-              curve: Interval(
-                0.50,
-                1.00,
-                curve: Curves.linear,
-              ),
-            ),
-          ),
-          child: ScaleTransition(
-            scale: Tween<double>(
-              begin: 0.0,
-              end: 1.0,
-            ).animate(
-              CurvedAnimation(
-                parent: animation,
-                curve: Interval(
-                  0.00,
-                  0.50,
-                  curve: Curves.linear,
-                ),
-              ),
-            ),
-            child: child,
-          ),
-        ),
-      ),
-    );
-    //Navigator.of(context).pushNamed('/new');
   }
 
   Padding _getToolbar(BuildContext context) {

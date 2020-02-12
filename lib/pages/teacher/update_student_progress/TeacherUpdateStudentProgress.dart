@@ -240,10 +240,11 @@ class _TeacherUpdateStudentProgressState
           print('indexStudent: $indexStudent');
           studentProgressList.add(studentProgress);
           studentProgressList[index].submittedDate = dateNow;
+
         }
         Student studentData =
             indexStudent != -1 ? model.students[indexStudent] : null;
-        print(studentData.fullName);
+
         return _buildListViewBuilder(
             model, context, index, studentProgress, studentData);
       },

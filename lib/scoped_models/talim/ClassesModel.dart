@@ -30,11 +30,12 @@ mixin ClassesModel on CoreModel {
   void setCurrentClass(Class setClass) {
     _class = setClass;
   }
+
   void setLoading(bool loading) {
     _isLoading = loading;
   }
 
-  Future<Null> fetchClassByInstitutionId(int institutionId) async {
+  Future<bool> fetchClassByInstitutionId(int institutionId) async {
     _isLoading = true;
     notifyListeners();
 
@@ -42,16 +43,29 @@ mixin ClassesModel on CoreModel {
 
     print('fetch kelas by institutionId');
 
-    try {
-      _classes = await ClassDao.db.getClassByInstitutionId(institutionId);
+    _classes = await ClassDao.db.getClassByInstitutionId(institutionId);
 
-      _isLoading = false;
-      notifyListeners();
-    } catch (error) {
-      _isLoading = false;
-      notifyListeners();
-    }
+    _isLoading = false;
+    notifyListeners();
+    return true;
   }
+
+  Future<bool> fetchClassByInstitutionIDAndInstructorID(int institutionID, int instructorID) async {
+    _isLoading = true;
+    notifyListeners();
+
+    _classes = [];
+
+    print('fetch kelas by institutionId and instructorId');
+
+    _classes = await ClassDao.db.getClassByInstitutionAndInstructorID(institutionID, instructorID);
+
+    _isLoading = false;
+    notifyListeners();
+    return true;
+  }
+  
+  
 
   Future<bool> findClassByName(String className) async {
     _isLoading = true;
@@ -60,7 +74,7 @@ mixin ClassesModel on CoreModel {
     try {
       var result = await ClassDao.db.getClassByName(className, 1234);
 
-      if (result!=null) {
+      if (result != null) {
         _isLoading = false;
         notifyListeners();
         print('woilop');
@@ -132,5 +146,4 @@ mixin ClassesModel on CoreModel {
       return false;
     }
   }
-
 }

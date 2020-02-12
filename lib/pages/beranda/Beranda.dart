@@ -1,5 +1,3 @@
-
-import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
 import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
 import 'package:bwa_learning/widgets/ui_elements/Akun.dart';
 import 'package:bwa_learning/widgets/ui_elements/MenuUtama.dart';

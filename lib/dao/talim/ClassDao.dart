@@ -57,6 +57,28 @@ class ClassDao {
     return classList;
   }
 
+  Future<List<Class>> getClassByInstitutionAndInstructorID(int institutionID, int instructorID) async {
+    print("getClassByInstitutionIDAndInstructorID");
+    var db = await database;
+
+    List<Class> classList = [];
+
+    var res = await db.query("SELECT * FROM class where SchoolPackageID = $institutionID AND id_instructor = $instructorID");
+
+    if (res.fields.length > 0) {
+      res.forEach((f) {
+        print(f);
+        classList.add(Class.fromJson(f.fields));
+      });
+
+    }
+    else{
+      print("Null");
+    }
+
+    return classList;
+  }
+
   Future<Class> getClassByName(String className, int institutionId) async {
     print("getClassByName");
     var db = await database;

@@ -20,6 +20,7 @@ class TeacherAttendanceList extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
+
     return _TeacherAttendanceListState();
   }
 }
@@ -48,7 +49,10 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
     print(dateNow);
 
     widget.model.fetchClassByInstitutionId(
-        institutionId);
+        institutionId).catchError((onError){
+      MessageDialog.show(
+          context, 'Terjadi kesalahan $onError', 'Coba ulangi lagi!');
+    });
 
     super.initState();
   }
@@ -85,6 +89,7 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
           elevation: 16,
           style: TextStyle(color: Colors.deepPurple),
           onChanged: (newValue) {
+
             setState(() {
               selectLevelClass = newValue;
             });
