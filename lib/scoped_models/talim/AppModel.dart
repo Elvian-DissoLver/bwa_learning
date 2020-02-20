@@ -11,6 +11,7 @@ import 'ClassesModel.dart';
 import 'InstitutionModel.dart';
 import 'InstructorModel.dart';
 import 'SessionAbsenceModel.dart';
+import 'TrainingClassModel.dart';
 
 
 class AppModelV2 extends Model
@@ -27,5 +28,6 @@ class AppModelV2 extends Model
         TopicModel,
         StudentProgressModel,
         TimeScheduleModel,
-        ScheduleModel
+        ScheduleModel,
+        TrainingClassModel
 {}

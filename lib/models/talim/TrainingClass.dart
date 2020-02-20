@@ -17,5 +17,6 @@ class TrainingClass {
     name = map['Name'];
     standardCredit = map['StandardCredit'];
     topicID = map['TopicID'];
+    print('TrainingClass');
   }
 }

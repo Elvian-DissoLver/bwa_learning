@@ -87,6 +87,8 @@ class _TeacherUpdateStudentProgressState
           onChanged: (newValue) {
             setState(() {
               selectLevelClass = newValue;
+              selectTopic = null;
+              showStudentProgress = false;
             });
             model
                 .fetchTopicByCompanyIdAndKeyword(institutionId, '1')
@@ -96,12 +98,15 @@ class _TeacherUpdateStudentProgressState
                   showTopics = true;
                 });
               } else {
-                return MessageDialog.show(context, 'Tidak ditemukan',
-                    'Belum tersedia data untuk kelas ${selectLevelClass.classNo}');
+                return MessageDialog.show(
+                    context,
+                    'Tidak ditemukan',
+                    'Belum tersedia data untuk kelas ${selectLevelClass.classNo}',
+                    ()=> Navigator.of(context).pop());
               }
             }).catchError((onError) {
-              MessageDialog.show(
-                  context, 'Terjadi kesalahan $onError', 'Coba ulangi lagi!');
+              MessageDialog.show(context, 'Terjadi kesalahan $onError',
+                  'Coba ulangi lagi!', ()=> Navigator.of(context).pop());
             });
           },
           hint: Text(
@@ -151,8 +156,8 @@ class _TeacherUpdateStudentProgressState
             model
                 .fetchStudentByInstitutionId(institutionId)
                 .catchError((onError) {
-              MessageDialog.show(
-                  context, 'Terjadi kesalahan $onError', 'Coba ulangi lagi!');
+              MessageDialog.show(context, 'Terjadi kesalahan $onError',
+                  'Coba ulangi lagi!', ()=> Navigator.of(context).pop());
             });
 
             model
@@ -164,12 +169,15 @@ class _TeacherUpdateStudentProgressState
                   showStudentProgress = true;
                 });
               } else {
-                return MessageDialog.show(context, 'Tidak ditemukan',
-                    'Data student progress belum tersedia untuk kelas ini');
+                return MessageDialog.show(
+                    context,
+                    'Tidak ditemukan',
+                    'Data student progress belum tersedia untuk kelas ini',
+                    ()=> Navigator.of(context).pop());
               }
             }).catchError((onError) {
-              MessageDialog.show(
-                  context, 'Terjadi kesalahan $onError', 'Coba ulangi lagi!');
+              MessageDialog.show(context, 'Terjadi kesalahan $onError',
+                  'Coba ulangi lagi!', ()=> Navigator.of(context).pop());
               setState(() {
                 model.setLoading(false);
               });
@@ -192,7 +200,7 @@ class _TeacherUpdateStudentProgressState
   Widget _buildListViewBuilder(AppModelV2 model, BuildContext context,
       int index, StudentProgress studentProgress, Student studentData) {
     return GestureDetector(
-      onTap: () {},
+      onTap: ()=> Navigator.of(context).pop(),
       child: studentData != null
           ? Container(
               margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
@@ -214,7 +222,7 @@ class _TeacherUpdateStudentProgressState
                 color: Colors.white,
                 child: InkWell(
                   borderRadius: BorderRadius.circular(16),
-                  onTap: () {},
+                  onTap: ()=> Navigator.of(context).pop(),
                   child: studentProgressCard(
                       model, studentProgress, studentData, index),
                 ),
@@ -240,7 +248,6 @@ class _TeacherUpdateStudentProgressState
           print('indexStudent: $indexStudent');
           studentProgressList.add(studentProgress);
           studentProgressList[index].submittedDate = dateNow;
-
         }
         Student studentData =
             indexStudent != -1 ? model.students[indexStudent] : null;
@@ -282,11 +289,14 @@ class _TeacherUpdateStudentProgressState
             Spacer(),
             Center(
               child: GestureDetector(
-                onTap: () => editScore(model, studentProgress, studentData, index),
+                onTap: () =>
+                    editScore(model, studentProgress, studentData, index),
                 child: Column(
                   children: <Widget>[
                     Text('Skor'),
-                    SizedBox(height: 7,),
+                    SizedBox(
+                      height: 7,
+                    ),
                     Center(
                       child: Tooltip(
                         preferBelow: false,
@@ -294,14 +304,10 @@ class _TeacherUpdateStudentProgressState
                         message: 'Tap to edit',
                         child: Text(
                           '${studentProgressList[index].quantitativeScore}',
-                          style: TextStyle(
-                            fontSize: 16
-                          ),
+                          style: TextStyle(fontSize: 16),
                         ),
                       ),
                     )
-
-
                   ],
                 ),
               ),
@@ -310,7 +316,8 @@ class _TeacherUpdateStudentProgressState
         ));
   }
 
-  editScore(AppModelV2 appModel, StudentProgress studentProgress, Student studentData, int index) {
+  editScore(AppModelV2 appModel, StudentProgress studentProgress,
+      Student studentData, int index) {
     Alert(
         context: context,
         title: "Edit Skor",
@@ -350,7 +357,8 @@ class _TeacherUpdateStudentProgressState
             TextField(
               onChanged: (value) {
                 setState(() {
-                  studentProgressList[index].quantitativeScore = value.replaceFirst(RegExp(','), '.');
+                  studentProgressList[index].quantitativeScore =
+                      value.replaceFirst(RegExp(','), '.');
                   showPutButton = true;
                 });
 
@@ -360,7 +368,8 @@ class _TeacherUpdateStudentProgressState
                 WhitelistingTextInputFormatter(
                     RegExp(r"^(?=.*[1-9])\s*\d*[.]?\d{0,2}\s*$"))
               ],
-              keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+              keyboardType:
+                  TextInputType.numberWithOptions(signed: true, decimal: true),
               controller: new TextEditingController(
                   text: studentProgress.quantitativeScore),
               decoration: InputDecoration(
@@ -413,7 +422,7 @@ class _TeacherUpdateStudentProgressState
 //                });
 //              }).show(context);
 //            } else {
-//              MessageDialog.show(context, 'Terjadi kesalahan', 'Coba ulangi lagi!');
+//              MessageDialog.show(context, 'Terjadi kesalahan', 'Coba ulangi lagi!', Navigator.of(context).pop());
 //            }
 //          })
 //        }).show(context);
@@ -426,26 +435,30 @@ class _TeacherUpdateStudentProgressState
       icon: Icon(Icons.system_update_alt),
       label: Text('Perbarui data'),
       onPressed: () {
-        InfoDialog('Anda yakin untuk memperbarui data?', () => {
-          model.updateStudentProgresses(studentProgressList).then((onValue) {
-            if(onValue) {
-              SuccessDialog('Data telah berhasil diperbarui', () {
-                setState(() {
-                  showPutButton = false;
-                });
-              }).show(context);
-            } else {
-              MessageDialog.show(
-                  context, 'Terjadi kesalahan ', 'Coba ulangi lagi!');
-            }
-          }).catchError((onError){
-            MessageDialog.show(
-                context, 'Terjadi kesalahan $onError', 'Coba ulangi lagi!');
-            setState(() {
-              model.setLoading(false);
-            });
-          })
-        }).show(context);
+        InfoDialog(
+            'Anda yakin untuk memperbarui data?',
+            () => {
+                  model
+                      .updateStudentProgresses(studentProgressList)
+                      .then((onValue) {
+                    if (onValue) {
+                      SuccessDialog('Data telah berhasil diperbarui', () {
+                        setState(() {
+                          showPutButton = false;
+                        });
+                      }).show(context);
+                    } else {
+                      MessageDialog.show(context, 'Terjadi kesalahan ',
+                          'Coba ulangi lagi!', ()=> Navigator.of(context).pop());
+                    }
+                  }).catchError((onError) {
+                    MessageDialog.show(context, 'Terjadi kesalahan $onError',
+                        'Coba ulangi lagi!', ()=> Navigator.of(context).pop());
+                    setState(() {
+                      model.setLoading(false);
+                    });
+                  })
+                }).show(context);
       },
     );
   }

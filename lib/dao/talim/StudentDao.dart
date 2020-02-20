@@ -71,4 +71,21 @@ class StudentDao {
     return findStudent;
   }
 
+  Future<Student> getStudentByEmail(String email) async {
+    print("getStudentByEmail");
+    var db = await database;
+    var res = await db.query("SELECT * FROM students WHERE email = '$email'");
+
+    Student findStudent;
+
+    if (res.length > 0) {
+      res.forEach((f) {
+        print(f);
+        findStudent = Student.fromJson(f.fields);
+      });
+      return findStudent;
+    }
+    return null;
+  }
+
 }

@@ -4,6 +4,7 @@ import 'package:bwa_learning/models/talim/LinkTrainingMeetingTopic.dart';
 import 'package:bwa_learning/models/talim/Session.dart';
 import 'package:bwa_learning/models/talim/SessionAbsence.dart';
 import 'package:bwa_learning/models/talim/Topic.dart';
+import 'package:bwa_learning/models/talim/TrainingClass.dart';
 import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
 import 'package:bwa_learning/widgets/dialog/InfoDialog.dart';
 import 'package:bwa_learning/widgets/dialog/MessageDialog.dart';
@@ -27,8 +28,10 @@ class TeacherUpdateTopicLesson extends StatefulWidget {
 }
 
 class _TeacherUpdateTopicLessonState extends State<TeacherUpdateTopicLesson> {
+  TrainingClass selectTrainingClass;
   Class selectLevelClass;
   Session selectSessions;
+  bool showClass = false;
   bool showSessions = false;
   bool showNewStudentData = false;
   bool showStudentData = false;
@@ -50,7 +53,13 @@ class _TeacherUpdateTopicLessonState extends State<TeacherUpdateTopicLesson> {
     institutionId = widget.model.currentInstitution.institutionId;
     dateNow = DateFormat('yyyy-MM-D').format(DateTime.now());
 
-    widget.model.fetchClassByInstitutionId(institutionId);
+    widget.model.fetchTrainingClassByCompanyId(institutionId).catchError((onError) {
+      MessageDialog.show(context, 'Terjadi kesalahan $onError',
+          'Coba ulangi lagi!', ()=> Navigator.pushNamed(context, '/'));
+      setState(() {
+        widget.model.setLoading(false);
+      });
+    });
 
     super.initState();
   }
@@ -59,6 +68,65 @@ class _TeacherUpdateTopicLessonState extends State<TeacherUpdateTopicLesson> {
     return AppBar(
       title: Text(
         'Update Mengajar',
+      ),
+    );
+  }
+
+  Widget _buildDropDownTrainingClass(AppModelV2 model) {
+    return Center(
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        padding: EdgeInsets.all(10),
+        width: 160,
+        height: 50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 4,
+              spreadRadius: 2,
+              color: Colors.black.withOpacity(0.3),
+            ),
+          ],
+        ),
+        child: DropdownButton<TrainingClass>(
+          value: selectTrainingClass,
+          iconSize: 24,
+          elevation: 16,
+          style: TextStyle(color: Colors.deepPurple),
+          onChanged: (newValue) {
+            setState(() {
+              selectTrainingClass = newValue;
+              selectLevelClass = null;
+              showTopicData = false;
+            });
+            model.fetchClassByTrainingClassId(selectTrainingClass.trainingClassID).then((onValue) {
+              if (onValue) {
+                setState(() {
+                  showClass = true;
+                });
+              } else {
+                return MessageDialog.show(
+                    context,
+                    'Tidak ditemukan',
+                    'Belum tersedia Kelas untuk MK ${selectLevelClass.classNo}',
+                        ()=> Navigator.of(context).pop());
+              }
+            });
+          },
+          hint: Text(
+            "Pilih mata kuliah!",
+          ),
+          items: model.trainingClasses.map((value) {
+            return DropdownMenuItem<TrainingClass>(
+              value: value,
+              child: Text(
+                value.name,
+              ),
+            );
+          }).toList(),
+        ),
       ),
     );
   }
@@ -89,6 +157,8 @@ class _TeacherUpdateTopicLessonState extends State<TeacherUpdateTopicLesson> {
           onChanged: (newValue) {
             setState(() {
               selectLevelClass = newValue;
+              selectSessions = null;
+              showTopicData = false;
             });
             model.fetchSessionByClassId(newValue.classId).then((onValue) {
               if (onValue) {
@@ -96,8 +166,11 @@ class _TeacherUpdateTopicLessonState extends State<TeacherUpdateTopicLesson> {
                   showSessions = true;
                 });
               } else {
-                return MessageDialog.show(context, 'Tidak ditemukan',
-                    'Belum tersedia Sesi untuk kelas ${selectLevelClass.classNo}');
+                return MessageDialog.show(
+                    context,
+                    'Tidak ditemukan',
+                    'Belum tersedia Sesi untuk kelas ${selectLevelClass.classNo}',
+                        ()=> Navigator.of(context).pop());
               }
             });
           },
@@ -147,13 +220,13 @@ class _TeacherUpdateTopicLessonState extends State<TeacherUpdateTopicLesson> {
             model
                 .fetchTopicByCompanyIdAndKeyword(institutionId, '1')
                 .then((onValue) {
-              if (!onValue){
+              if (!onValue) {
                 return MessageDialog.show(context, 'Tidak ditemukan',
-                    'Data Topik belum tersedia untuk Sesi ini');
+                    'Data Topik belum tersedia untuk Sesi ini', ()=> Navigator.of(context).pop());
               }
-            }).catchError((onError){
-              MessageDialog.show(context,
-                  'Terjadi kesalahan $onError', 'Coba ulangi lagi!');
+            }).catchError((onError) {
+              MessageDialog.show(context, 'Terjadi kesalahan $onError',
+                  'Coba ulangi lagi!', ()=> Navigator.of(context).pop());
             });
 
             model
@@ -165,25 +238,28 @@ class _TeacherUpdateTopicLessonState extends State<TeacherUpdateTopicLesson> {
                   showTopicData = true;
                 });
               } else {
-                model.topics.forEach((t){
-                  LinkTrainingMeetingTopic ltmTopic = new LinkTrainingMeetingTopic(
+                model.topics.forEach((t) {
+                  LinkTrainingMeetingTopic ltmTopic =
+                      new LinkTrainingMeetingTopic(
                     id: Random.secure().nextInt(999999),
                     trainingSessionID: selectSessions.trainingSessionID,
                     dataStatusID: false,
                     topicID: t.topicID,
                   );
-                  model.addLinkTrainingMeetingTopic(ltmTopic).catchError((onError){
-                    MessageDialog.show(context,
-                        'Terjadi kesalahan $onError', 'Coba ulangi lagi!');
+                  model
+                      .addLinkTrainingMeetingTopic(ltmTopic)
+                      .catchError((onError) {
+                    MessageDialog.show(context, 'Terjadi kesalahan $onError',
+                        'Coba ulangi lagi!', ()=> Navigator.of(context).pop());
                   });
                   setState(() {
                     showTopicData = true;
                   });
                 });
               }
-            }).catchError((onError){
-              MessageDialog.show(context,
-                  'Terjadi kesalahan $onError', 'Coba ulangi lagi!');
+            }).catchError((onError) {
+              MessageDialog.show(context, 'Terjadi kesalahan $onError',
+                  'Coba ulangi lagi!', ()=> Navigator.of(context).pop());
             });
           },
           hint: Text("Pilih Sesi!"),
@@ -280,8 +356,7 @@ class _TeacherUpdateTopicLessonState extends State<TeacherUpdateTopicLesson> {
                           color: Colors.black)),
                   Checkbox(
                     value: topicStatus[index],
-                    onChanged: (bool value) =>
-                      updateCheckbox(model, index),
+                    onChanged: (bool value) => updateCheckbox(model, index),
                   ),
                 ],
               ),
@@ -295,8 +370,7 @@ class _TeacherUpdateTopicLessonState extends State<TeacherUpdateTopicLesson> {
       topicStatus[index] = !topicStatus[index];
       ltmTopic[index].dataStatusID = topicStatus[index];
     });
-    print(
-        'sessionIndex $index: ${ltmTopic[index].dataStatusID}');
+    print('sessionIndex $index: ${ltmTopic[index].dataStatusID}');
     print('ltmTOPIC: ${ltmTopic[index].id}');
     print('ltmTOPIC: ${ltmTopic[index].topicID}');
     await model
@@ -304,43 +378,37 @@ class _TeacherUpdateTopicLessonState extends State<TeacherUpdateTopicLesson> {
         .then((onValue) {
       if (onValue) {
         model.updateLtmTopic(ltmTopic[index]).then((onValue) {
-          if(onValue){
-            SuccessDialog(
-                'Data telah berhasil diperbarui', () {})
+          if (onValue) {
+            SuccessDialog('Data telah berhasil diperbarui', (){})
                 .show(context);
           }
         }).catchError((onError) {
-          MessageDialog.show(
-              context,
-              'Terjadi kesalahan $onError',
-              'Coba ulangi lagi!');
+          MessageDialog.show(context, 'Terjadi kesalahan $onError',
+              'Coba ulangi lagi!', ()=> Navigator.of(context).pop());
         });
       } else {
         print('ltmTOPIC2: ${ltmTopic[index].id}');
         print('ltmTOPIC2: ${ltmTopic[index].topicID}');
-        model
-            .addLinkTrainingMeetingTopic(ltmTopic[index])
-            .then((onValue) {
+        model.addLinkTrainingMeetingTopic(ltmTopic[index]).then((onValue) {
           if (onValue) {
-            SuccessDialog(
-                'Data telah berhasil diperbarui', () {})
+            SuccessDialog('Data telah berhasil diperbarui', ()=> Navigator.of(context).pop())
                 .show(context);
           }
         }).catchError((onError) {
-          MessageDialog.show(context,
-              'Terjadi kesalahan $onError', 'Coba ulangi lagi!');
+          MessageDialog.show(context, 'Terjadi kesalahan $onError',
+              'Coba ulangi lagi!', ()=> Navigator.of(context).pop());
         });
       }
     }).catchError((onError) {
       print(onError);
-      MessageDialog.show(context,
-          'Terjadi kesalahan $onError', 'Coba ulangi lagi!' );
-    }).whenComplete((){
-      model.fetchLinkTrainingMeetingTopicByTrainingSessionId(selectSessions.trainingSessionID);
+      MessageDialog.show(
+          context, 'Terjadi kesalahan $onError', 'Coba ulangi lagi!', ()=> Navigator.of(context).pop());
+    }).whenComplete(() {
+      model.fetchLinkTrainingMeetingTopicByTrainingSessionId(
+          selectSessions.trainingSessionID);
     });
     print('ltmTOPIC3: ${ltmTopic[index].id}');
     print('ltmTOPIC3: ${ltmTopic[index].topicID}');
-
   }
 
   Widget _buildTopicList(AppModelV2 model) {
@@ -358,8 +426,14 @@ class _TeacherUpdateTopicLessonState extends State<TeacherUpdateTopicLesson> {
       resizeToAvoidBottomPadding: false,
       body: Column(
         children: <Widget>[
-          _buildDropDownClassLevel(model),
-          showSessions ? _buildDropDownSession(model) : Container(),
+          _buildDropDownTrainingClass(model),
+          Row(
+            children: <Widget>[
+              showClass ? _buildDropDownClassLevel(model) : Container(),
+              Spacer(),
+              showSessions ? _buildDropDownSession(model) : Container(),
+            ],
+          ),
           showTopicData ? _buildTopicList(model) : Container(),
         ],
       ),
@@ -385,8 +459,8 @@ class _TeacherUpdateTopicLessonState extends State<TeacherUpdateTopicLesson> {
                         });
                       }).show(context);
                     } else {
-                      MessageDialog.show(
-                          context, 'Terjadi kesalahan', 'Coba ulangi lagi!');
+                      MessageDialog.show(context, 'Terjadi kesalahan',
+                          'Coba ulangi lagi!', ()=> Navigator.of(context).pop());
                     }
                   })
                 }).show(context);
@@ -412,8 +486,8 @@ class _TeacherUpdateTopicLessonState extends State<TeacherUpdateTopicLesson> {
                         });
                       }).show(context);
                     } else {
-                      MessageDialog.show(
-                          context, 'Terjadi kesalahan', 'Coba ulangi lagi!');
+                      MessageDialog.show(context, 'Terjadi kesalahan',
+                          'Coba ulangi lagi!', ()=> Navigator.of(context).pop());
                     }
                   })
                 }).show(context);

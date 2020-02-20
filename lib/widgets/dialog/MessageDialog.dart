@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class MessageDialog {
   static void show(
-      BuildContext context, String title, String message
+      BuildContext context, String title, String message, final Function onPressed
       ) {
     showDialog(
       context: context,
@@ -12,7 +12,7 @@ class MessageDialog {
           content: Text(message),
           actions: <Widget>[
             FlatButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: onPressed,
               child: Text('OK'),
             )
           ],

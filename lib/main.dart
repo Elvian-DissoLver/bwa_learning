@@ -11,6 +11,7 @@ import 'package:bwa_learning/pages/teacher/update_student_progress/TeacherUpdate
 import 'package:bwa_learning/pages/teacher/update_topic_lesson/TeacherUpdateTopicLesson.dart';
 import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
 import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
+import 'package:bwa_learning/widgets/dialog/MessageDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -30,6 +31,7 @@ class _BWALearningState extends State<BWALearning> {
   AppModel _model;
   AppModelV2 _model2;
   User user;
+
   @override
   void initState() {
     _model = AppModel();
@@ -38,21 +40,26 @@ class _BWALearningState extends State<BWALearning> {
     _model.fetchInstitutionById(1234);
     _model2.fetchInstitutionById(1234);
 
-//    _model.findUserByEmail("iman@mail.com").then((onValue) {
-    _model2.findUserByEmail("ewo@mail.com").then((onValue) {
-      _model2.currentUser.status == 'student' &&
-              _model2.currentInstitution != null
-          ? _model
-              .fetchStudentByEmail(_model.currentUser.email,
-                  _model.currentInstitution.institutionId)
-              .then((onValue) {
-              _model.findStudentClassById(_model.currentStudent.classId);
-            })
-          : _model2.currentUser.status == 'teacher' &&
-                  _model2.currentInstitution != null
-              ? _model2
-                  .fetchInstructorByEmail(_model2.currentUser.email)
-              : null;
+    _model2.findUserByEmail("ewo@mail.com").then((onValue) async {
+      if(_model2.currentUser.status == 'student' &&
+          _model2.currentInstitution != null){
+        _model2
+            .fetchStudentByEmail(_model.currentUser.email)
+            .then((onValue) {
+          _model.findStudentClassById(_model.currentStudent.classId);
+        });
+      } else if (_model2.currentUser.status == 'teacher' &&
+          _model2.currentInstitution != null){
+        await _model2
+            .fetchInstructorByEmail(_model2.currentUser.email)
+            .catchError((onError) {
+          MessageDialog.show(context, 'Terjadi kesalahan $onError',
+              'Coba ulangi lagi!', () => Navigator.of(context).pop());
+        });
+      }
+    }).catchError((onError) {
+      MessageDialog.show(
+          context, 'Terjadi kesalahan $onError', 'Coba ulangi lagi!', () => Navigator.of(context).pop());
     });
 
     super.initState();

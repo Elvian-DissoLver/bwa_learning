@@ -1,6 +1,7 @@
 
 class TimeSchedule {
   int timeScheduleID;
+  int scheduleID;
   String name;
   var startDate;
   var endDate;
@@ -13,6 +14,7 @@ class TimeSchedule {
 
   TimeSchedule({
     this.timeScheduleID,
+    this.scheduleID,
     this.name,
     this.startDate,
     this.endDate,
@@ -22,7 +24,6 @@ class TimeSchedule {
     this.weeks,
     this.days,
     this.companyID,
-
   });
 
   TimeSchedule.fromJson(Map<String, dynamic> map) {
@@ -37,7 +38,7 @@ class TimeSchedule {
     weeks = map['Weeks'];
     days = map['Days'];
     companyID = map['Company_id'];
-    print('loop');
+    print('TimeSchedule');
   }
 
   static bool getIsInFromInt(int value) {

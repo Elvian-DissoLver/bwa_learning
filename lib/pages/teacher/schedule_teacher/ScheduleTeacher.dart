@@ -140,10 +140,10 @@ class _ScheduleTeacherState extends State<ScheduleTeacher>
 
     int categoryId =  widget.model.courses.elementAt(indexCourse).categoryId;
 
-    int indexCategory = widget.model.Categories.indexWhere((t) => t.categoryId == categoryId);
+    int indexCategory = widget.model.categories.indexWhere((t) => t.categoryId == categoryId);
 
 //    indexCourse != null ? categoryCourseName = widget.model.courses.elementAt(indexCourse).courseName : categoryCourseName = '';
-    indexCourse != null ? categoryCourseName = widget.model.Categories.elementAt(indexCategory).categoryName : categoryCourseName = '';
+    indexCourse != null ? categoryCourseName = widget.model.categories.elementAt(indexCategory).categoryName : categoryCourseName = '';
 
     return Text(
       categoryCourseName,

@@ -1,4 +1,7 @@
+import 'package:bwa_learning/models/talim/Class.dart';
 import 'package:bwa_learning/models/talim/TimeSchedule.dart';
+import 'package:bwa_learning/models/talim/TrainingClass.dart';
+import 'package:bwa_learning/pages/teacher/schedule_teacher/ViewTeacherSchedule.dart';
 import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
 import 'package:bwa_learning/widgets/dialog/MessageDialog.dart';
 import 'package:bwa_learning/widgets/loading/loading_modal.dart';
@@ -36,8 +39,8 @@ class _TeacherScheduleDaysState extends State<TeacherScheduleDays> {
   int instructorId;
   int index = 0;
   DateTime date;
-  String hari;
-  String nowDay;
+  String findDay;
+  String selectedDay;
   List<TimeSchedule> schedules = new List();
   List<FlutterWeekViewEvent> events = new List();
 
@@ -48,25 +51,30 @@ class _TeacherScheduleDaysState extends State<TeacherScheduleDays> {
     institutionId = widget.model.currentInstitution.institutionId;
     instructorId = widget.model.currentInstructor.instructorId;
 
-    nowDay = DateFormat('EEEE').format(widget.day);
+    selectedDay = DateFormat('EEEE').format(widget.day);
 
     widget.model
         .fetchTimeScheduleByCompanyId(institutionId)
-        .catchError((onError) {
-      MessageDialog.show(
-          context, 'Terjadi kesalahan $onError', 'Coba ulangi lagi!');
-    }).whenComplete(() async {
+        .then((onValue) async {
       await widget.model
           .fetchScheduleByCompanyId(institutionId)
-          .then((onValue) {
-        print('done2');
-      }).catchError((onError) {
+          .catchError((onError) {
         MessageDialog.show(
-            context, 'Terjadi kesalahan $onError', 'Coba ulangi lagi!');
+          context, 'Terjadi kesalahan $onError', 'Coba ulangi lagi!', () => Navigator.of(context).pop());
+        setState(() {
+          widget.model.setLoading(false);
+        });
       });
 
+    }).catchError((onError) {
+      MessageDialog.show(
+          context, 'Terjadi kesalahan $onError', 'Coba ulangi lagi!', () => Navigator.of(context).pop());
+      setState(() {
+        widget.model.setLoading(false);
+      });
+    }).whenComplete((){
       setUpSchedule(widget.model);
-      events = event();
+      events = event(widget.model);
 
       events.forEach((f) {
         print('print ${f.title}');
@@ -82,21 +90,22 @@ class _TeacherScheduleDaysState extends State<TeacherScheduleDays> {
     schedules = [];
     model.timeSchedules.forEach((t) {
       index = 0;
-      hari = '';
+      findDay = '';
       print(t.days);
       print(getDaysFromString(t.days));
       print(t.startTime);
-      if (getDaysFromString(t.days) == nowDay) {
+      if (getDaysFromString(t.days) == selectedDay) {
         if (t.startTime.toString() == '0:00:00.000000') {
           if (model.schedules.length > 0) {
             model.schedules.forEach((s) {
               index = 0;
-              hari = '';
+              findDay = '';
               print(s.days);
               print(getDaysFromString(s.days));
-              if (getDaysFromString(s.days) == nowDay) {
+              if (getDaysFromString(s.days) == selectedDay) {
                 TimeSchedule timeSchedule = new TimeSchedule(
-                    timeScheduleID: s.scheduleID,
+                    timeScheduleID: s.timeScheduleID,
+                    scheduleID: s.scheduleID,
                     name: s.name,
                     startDate: s.startDate,
                     endDate: s.endDate,
@@ -132,13 +141,13 @@ class _TeacherScheduleDaysState extends State<TeacherScheduleDays> {
 
   String getDaysFromString(String day) {
     if (index < 7) {
-      if (day[index] == '1' && nowDay == days[index]) {
-        hari = days[index];
+      if (day[index] == '1' && selectedDay == days[index]) {
+        findDay = days[index];
       }
       index++;
       getDaysFromString(day);
     }
-    return hari;
+    return findDay;
   }
 
   Duration parseDuration(String s) {
@@ -156,7 +165,7 @@ class _TeacherScheduleDaysState extends State<TeacherScheduleDays> {
     return Duration(hours: hours, minutes: minutes, microseconds: micros);
   }
 
-  List<FlutterWeekViewEvent> event() {
+  List<FlutterWeekViewEvent> event(AppModelV2 model) {
     events = new List();
 
     schedules.sort((a, b) {
@@ -165,18 +174,36 @@ class _TeacherScheduleDaysState extends State<TeacherScheduleDays> {
 
     Duration duration;
 
-    schedules.forEach((f) {
-      print(f.name);
+    schedules.forEach((s) {
+      print(s.timeScheduleID);
+      int indexClass = widget.model.classes.indexWhere((t) => t.timeScheduleID == s.timeScheduleID);
+      Class findClass = widget.model.classes.elementAt(indexClass);
 
-      duration = parseDuration(f.startTime.toString());
+      int indexTC = widget.model.trainingClasses.indexWhere((t) => t.trainingClassID == findClass.trainingClassID);
+      TrainingClass trainingClass = widget.model.trainingClasses.elementAt(indexTC);
+
+      duration = parseDuration(s.startTime.toString());
       print(duration.toString());
 
       FlutterWeekViewEvent flutterWeekViewEvent = new FlutterWeekViewEvent(
-          title: f.name,
-          description: 'Long',
-          start: date.add(parseDuration(f.startTime.toString())),
-          end: date.add(parseDuration(f.endTime.toString())),
-          onTap: () {});
+          title: findClass.classNo,
+          description: trainingClass.name,
+          start: date.add(parseDuration(s.startTime.toString())),
+          end: date.add(parseDuration(s.endTime.toString())),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ViewTeacherSchedule(
+                  model: model,
+                  findClass: findClass,
+                  trainingClass: trainingClass,
+                  schedule: s,
+                ),
+              ),
+            );
+
+          });
       events.add(flutterWeekViewEvent);
     });
 
@@ -191,11 +218,11 @@ class _TeacherScheduleDaysState extends State<TeacherScheduleDays> {
           ? DayView(
               date: widget.day,
               events: events,
-              currentTimeCircleColor: Colors.pink,
+              currentTimeCircleColor: Colors.purple,
             )
           : Container(
               child:
-                  Center(child: Text('Jadwal untuk hari ini belum tersedia')),
+                  Center(child: Text('Jadwal untuk ${DateFormat('yyyy-MM-dd').format(widget.day)} belum tersedia')),
             ),
     );
   }

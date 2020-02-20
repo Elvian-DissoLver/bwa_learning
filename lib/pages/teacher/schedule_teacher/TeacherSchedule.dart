@@ -1,4 +1,3 @@
-import 'package:bwa_learning/models/talim/StudentProgress.dart';
 import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
 import 'package:bwa_learning/widgets/dialog/MessageDialog.dart';
 import 'package:bwa_learning/widgets/loading/loading_modal.dart';
@@ -50,9 +49,13 @@ class _TeacherScheduleState
     widget.model.fetchClassByInstitutionIDAndInstructorID(institutionId, instructorId)
       .then((onValue) {
       setStartDateAndEndDate();
+      widget.model.fetchTrainingClassByCompanyId(institutionId).catchError((onError){
+        MessageDialog.show(
+          context, 'Terjadi kesalahan $onError', 'Coba ulangi lagi!', () => Navigator.of(context).pop());
+      });
     }).catchError((onError){
       MessageDialog.show(
-          context, 'Terjadi kesalahan $onError', 'Coba ulangi lagi!');
+          context, 'Terjadi kesalahan $onError', 'Coba ulangi lagi!', () => Navigator.of(context).pop());
     });
 
     super.initState();

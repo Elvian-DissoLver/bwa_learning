@@ -47,7 +47,7 @@ class CourseCard extends StatelessWidget {
           caption: 'Delete',
           color: Colors.red,
           icon: Icons.delete,
-          onTap: () {},
+          onTap: ()=> Navigator.of(context).pop(),
         ),
       ],
     );

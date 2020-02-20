@@ -62,7 +62,7 @@ mixin StudentModel on Model {
     try {
       _students = await StudentDao.db.getStudentByInstitutionID(institutionId);
 
-      if(_students.length > 0) {
+      if (_students.length > 0) {
         _isLoading = false;
         notifyListeners();
         return true;
@@ -76,5 +76,20 @@ mixin StudentModel on Model {
       notifyListeners();
       return false;
     }
+  }
+
+  Future<bool> fetchStudentByEmail(String email) async {
+    _isLoading = true;
+    notifyListeners();
+
+    print('fetch students by email');
+
+    await StudentDao.db.getStudentByEmail(email).then((onValue) {
+      _student = onValue;
+    });
+
+    _isLoading = false;
+    notifyListeners();
+    return true;
   }
 }

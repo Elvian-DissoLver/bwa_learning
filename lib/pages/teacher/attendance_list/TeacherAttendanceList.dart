@@ -51,7 +51,7 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
     widget.model.fetchClassByInstitutionId(
         institutionId).catchError((onError){
       MessageDialog.show(
-          context, 'Terjadi kesalahan $onError', 'Coba ulangi lagi!');
+          context, 'Terjadi kesalahan $onError', 'Coba ulangi lagi!', () => Navigator.of(context).pop());
     });
 
     super.initState();
@@ -89,9 +89,11 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
           elevation: 16,
           style: TextStyle(color: Colors.deepPurple),
           onChanged: (newValue) {
-
             setState(() {
               selectLevelClass = newValue;
+              selectSessions = null;
+              showNewStudentData = false;
+              showStudentData = false;
             });
             model.fetchSessionByClassId(newValue.classId).then((onValue) {
               if (onValue) {
@@ -100,7 +102,7 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
                 });
               } else {
                 return MessageDialog.show(context, 'Tidak ditemukan',
-                    'Belum tersedia Sesi untuk kelas ${selectLevelClass.classNo}');
+                    'Belum tersedia Sesi untuk kelas ${selectLevelClass.classNo}', () => Navigator.of(context).pop());
               }
             });
           },
@@ -163,7 +165,7 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
                     });
                   } else{
                     return MessageDialog.show(context, 'Tidak ditemukan',
-                        'Data student belum tersedia untuk Sesi ini');
+                        'Data student belum tersedia untuk Sesi ini', () => Navigator.of(context).pop());
                   }
                 });
               }
@@ -187,7 +189,7 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
 
   Widget _buildListViewBuilder(AppModelV2 model, BuildContext context, int index, SessionAbsence sessionAbsence, Student studentData) {
     return GestureDetector(
-      onTap: () {},
+      onTap: ()=> Navigator.of(context).pop(),
       child: studentData!=null ? Container(
           margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
           height: 84,
@@ -374,7 +376,7 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
                 });
               }).show(context);
             } else {
-              MessageDialog.show(context, 'Terjadi kesalahan', 'Coba ulangi lagi!');
+              MessageDialog.show(context, 'Terjadi kesalahan', 'Coba ulangi lagi!', () => Navigator.of(context).pop());
             }
           })
         }).show(context);
@@ -396,7 +398,7 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
                 });
               }).show(context);
             } else {
-              MessageDialog.show(context, 'Terjadi kesalahan', 'Coba ulangi lagi!');
+              MessageDialog.show(context, 'Terjadi kesalahan', 'Coba ulangi lagi!', () => Navigator.of(context).pop());
             }
           })
         }).show(context);

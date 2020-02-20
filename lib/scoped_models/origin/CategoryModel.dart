@@ -10,7 +10,7 @@ mixin CategoryModel on Model {
   Category _category;
   bool _isLoading = false;
 
-  List<Category> get Categories {
+  List<Category> get categories {
     return List.from(_categories);
   }
 

@@ -30,6 +30,9 @@ mixin TimeScheduleModel on Model {
     _timeSchedule = timeSchedule;
   }
 
+  void setLoading(bool load){
+    _isLoading = load;
+  }
 
   Future<bool> findTimeScheduleById(int ltmTopicId) async {
     _isLoading = true;

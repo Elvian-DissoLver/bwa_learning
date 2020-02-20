@@ -62,12 +62,12 @@ class _DetailSchedulePageState extends State<DetailSchedulePage> {
 
     int categoryId =  widget.model.courses.elementAt(indexCourse).categoryId;
 
-    int indexCategory = widget.model.Categories.indexWhere((t) => t.categoryId == categoryId);
+    int indexCategory = widget.model.categories.indexWhere((t) => t.categoryId == categoryId);
 
     if(indexCourse != null) {
       category = Category(
           categoryId: categoryId,
-          categoryName:  widget.model.Categories.elementAt(indexCategory).categoryName
+          categoryName:  widget.model.categories.elementAt(indexCategory).categoryName
       );
       return category;
     }
@@ -132,7 +132,7 @@ class _DetailSchedulePageState extends State<DetailSchedulePage> {
                                   //minWidth: double.infinity,
                                   child: RaisedButton(
                                     elevation: 3.0,
-                                    onPressed: () {},
+                                    onPressed: ()=> Navigator.of(context).pop(),
                                     child: Text('YES'),
                                     color: Colors.deepPurpleAccent,
                                     textColor: const Color(0xffffffff),

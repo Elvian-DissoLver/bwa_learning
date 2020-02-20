@@ -185,7 +185,7 @@ class _TeacherCourseListState extends State<TeacherCourseList> {
   Widget _buildFloatingActionButton(AppModel model) {
     return FloatingActionButton(
       child: Icon(Icons.add),
-      onPressed: () {},
+      onPressed: ()=> Navigator.of(context).pop(),
     );
   }
 

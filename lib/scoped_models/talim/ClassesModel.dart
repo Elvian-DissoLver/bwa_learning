@@ -50,6 +50,21 @@ mixin ClassesModel on CoreModel {
     return true;
   }
 
+  Future<bool> fetchClassByTrainingClassId(int trainingClassId) async {
+    _isLoading = true;
+    notifyListeners();
+
+    _classes = [];
+
+    print('fetch kelas by TrainingClassId');
+
+    _classes = await ClassDao.db.getClassByTrainingClassId(trainingClassId);
+
+    _isLoading = false;
+    notifyListeners();
+    return true;
+  }
+
   Future<bool> fetchClassByInstitutionIDAndInstructorID(int institutionID, int instructorID) async {
     _isLoading = true;
     notifyListeners();

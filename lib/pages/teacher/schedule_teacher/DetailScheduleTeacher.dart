@@ -64,12 +64,12 @@ class _DetailScheduleTeacherState extends State<DetailScheduleTeacher> {
 
     int categoryId =  widget.model.courses.elementAt(indexCourse).categoryId;
 
-    int indexCategory = widget.model.Categories.indexWhere((t) => t.categoryId == categoryId);
+    int indexCategory = widget.model.categories.indexWhere((t) => t.categoryId == categoryId);
 
     if(indexCourse != null) {
       category = Category(
           categoryId: categoryId,
-          categoryName:  widget.model.Categories.elementAt(indexCategory).categoryName
+          categoryName:  widget.model.categories.elementAt(indexCategory).categoryName
       );
       return category;
     }
