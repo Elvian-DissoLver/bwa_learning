@@ -25,9 +25,9 @@ class Akun extends StatelessWidget {
                   ),
                 ),
               ),
-              title: Text(model.currentUser.userName, style: TextStyle(fontWeight: FontWeight.bold),
+              title: Text(model.currentUser!=null ? model.currentUser.userName : '', style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              subtitle: Text(model.currentUser.status, style: TextStyle(fontWeight: FontWeight.bold),
+              subtitle: Text(model.currentUser!=null ? model.currentUser.status : '', style: TextStyle(fontWeight: FontWeight.bold),
               ),
 
             ),

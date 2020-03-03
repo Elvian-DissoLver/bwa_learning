@@ -30,25 +30,17 @@ mixin StudentModel on Model {
     _student = student;
   }
 
-  Future<bool> fetchStudentById(int studentId) async {
+  Future<bool> fetchStudentByStudentId(var studentId) async {
     _isLoading = true;
     notifyListeners();
 
-    print('fetch student by id');
+    print('fetch student by StudentId');
 
-    try {
-      await StudentDao.db.getStudentById(studentId).then((onValue) {
-        _student = onValue;
-      });
+    _student = await StudentDao.db.getStudentById(studentId);
 
-      _isLoading = false;
-      notifyListeners();
-      return true;
-    } catch (error) {
-      _isLoading = false;
-      notifyListeners();
-      return false;
-    }
+    _isLoading = false;
+    notifyListeners();
+    return true;
   }
 
   Future<bool> fetchStudentByInstitutionId(int institutionId) async {
@@ -84,9 +76,7 @@ mixin StudentModel on Model {
 
     print('fetch students by email');
 
-    await StudentDao.db.getStudentByEmail(email).then((onValue) {
-      _student = onValue;
-    });
+    _student = await StudentDao.db.getStudentByEmail(email);
 
     _isLoading = false;
     notifyListeners();

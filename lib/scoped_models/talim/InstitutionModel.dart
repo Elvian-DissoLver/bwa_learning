@@ -33,7 +33,7 @@ mixin InstitutionModel on CoreModel {
     _isLoading = true;
     notifyListeners();
 
-    print('fetch kelas by institutionId');
+    print('fetch institution by institutionId');
 
     try {
       _institution= await InstitutionDao.db.getInstitutionById(institutionId);

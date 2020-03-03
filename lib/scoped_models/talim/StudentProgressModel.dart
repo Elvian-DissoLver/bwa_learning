@@ -77,6 +77,26 @@ mixin StudentProgressModel on Model {
     }
   }
 
+  Future<bool> fetchStudentProgressByClassIdTopicIDAndStudentId(int classID, int topicID, var studentID) async {
+    _isLoading = true;
+    notifyListeners();
+
+    print('fetch studentProgresss by ClassId TopicId and StudentId');
+
+    _studentProgress =
+    await StudentProgressDao.db.getStudentProgressByClassIdTopicIDAndStudentId(classID, topicID, studentID);
+
+    if (_studentProgress != null) {
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    } else {
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
   Future<bool> findStudentProgressById(int studentProgressID) async {
     _isLoading = true;
     notifyListeners();

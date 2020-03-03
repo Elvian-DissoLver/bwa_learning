@@ -39,7 +39,8 @@ mixin InstructorModel on Model {
     print('fetch instructors by institutionId');
 
     try {
-      _instructors = await InstructorDao.db.getInstructorByInstitutionId(institutionId);
+      _instructors =
+          await InstructorDao.db.getInstructorByInstitutionId(institutionId);
 
       _isLoading = false;
       notifyListeners();
@@ -55,19 +56,11 @@ mixin InstructorModel on Model {
 
     print('fetch instructor by id');
 
-    try {
-      await InstructorDao.db.getInstructorById(instructorId).then((onValue) {
-        _instructor = onValue;
-      });
+    _instructor = await InstructorDao.db.getInstructorById(instructorId);
 
-      _isLoading = false;
-      notifyListeners();
-      return true;
-    } catch (error) {
-      _isLoading = false;
-      notifyListeners();
-      return false;
-    }
+    _isLoading = false;
+    notifyListeners();
+    return true;
   }
 
   Future<bool> fetchInstructorByEmail(String email) async {
@@ -76,19 +69,11 @@ mixin InstructorModel on Model {
 
     print('fetch instructor by email');
 
-    try {
-      await InstructorDao.db.getInstructorByEmail(email).then((onValue) {
-        _instructor = onValue;
-      });
+    _instructor = await InstructorDao.db.getInstructorByEmail(email);
 
-      print("teacher: "+_instructor.name);
-      _isLoading = false;
-      notifyListeners();
-      return true;
-    } catch (error) {
-      _isLoading = false;
-      notifyListeners();
-      return false;
-    }
+    print("teacher: " + _instructor.name);
+    _isLoading = false;
+    notifyListeners();
+    return true;
   }
 }

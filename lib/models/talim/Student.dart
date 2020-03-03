@@ -1,6 +1,6 @@
 class Student {
   int id;
-  String studentID;
+  var studentID;
   String fullName;
   String emailAddress;
   int institutionID;

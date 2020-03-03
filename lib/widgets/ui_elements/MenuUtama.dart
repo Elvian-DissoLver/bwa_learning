@@ -14,11 +14,11 @@ class MenuUtama extends StatelessWidget {
       return GridView.count(
           shrinkWrap: true,
           crossAxisCount: 4,
-          children: model.currentUser.status == 'admin'
+          children: model.currentUser !=null && model.currentUser.status == 'admin'
               ? listAdminMainMenu(context, model)
-              : model.currentUser.status == 'student'
+              : model.currentUser != null && model.currentUser.status == 'student'
                   ? listStudentMainMenu(context, model)
-                  : model.currentUser.status == 'teacher'
+                  : model.currentUser != null&& model.currentUser.status == 'teacher'
                       ? listTeacherMainMenu(context, model)
                       : listStudentMainMenu(context, model));
     });
@@ -76,7 +76,13 @@ List<MenuUtamaItem> listStudentMainMenu(BuildContext context, AppModelV2 model) 
               builder: (context) => ViewClass(),
             ),
           );
-        })
+        }),
+    MenuUtamaItem(
+        title: 'Update Progress Belajar',
+        icon: (FontAwesomeIcons.book),
+        colorBox: Colors.lightGreenAccent,
+        iconColor: Colors.white,
+        onTap: () => Navigator.pushNamed(context, '/studentUpdateLessonProgress')),
   ];
 
   return menuUtamaItem;
@@ -104,7 +110,7 @@ List<MenuUtamaItem> listTeacherMainMenu(BuildContext context, AppModelV2 model) 
           );
         }),
     MenuUtamaItem(
-        title: 'Daftar   Pelajaran',
+        title: 'Daftar \nPelajaran',
         icon: (FontAwesomeIcons.book),
         colorBox: Colors.redAccent,
         iconColor: Colors.white,
@@ -122,7 +128,7 @@ List<MenuUtamaItem> listTeacherMainMenu(BuildContext context, AppModelV2 model) 
         iconColor: Colors.white,
         onTap: () => Navigator.pushNamed(context, '/teacherUpdateTopicLesson')),
     MenuUtamaItem(
-        title: 'Daftar  Kehadiran',
+        title: 'Daftar Kehadiran',
         icon: (FontAwesomeIcons.clipboardCheck),
         colorBox: Colors.greenAccent,
         iconColor: Colors.white,

@@ -33,14 +33,9 @@ class _TeacherUpdateTopicLessonState extends State<TeacherUpdateTopicLesson> {
   Session selectSessions;
   bool showClass = false;
   bool showSessions = false;
-  bool showNewStudentData = false;
-  bool showStudentData = false;
   bool showTopicData = false;
-  bool showNewTopicData = false;
   bool showPostButton = false;
   bool showPutButton = false;
-  bool isInVal = false;
-  var userStatus = List<bool>();
   var topicStatus = List<bool>();
   int institutionId;
   var dateNow;
@@ -99,6 +94,8 @@ class _TeacherUpdateTopicLessonState extends State<TeacherUpdateTopicLesson> {
             setState(() {
               selectTrainingClass = newValue;
               selectLevelClass = null;
+              showClass = false;
+              showSessions = false;
               showTopicData = false;
             });
             model.fetchClassByTrainingClassId(selectTrainingClass.trainingClassID).then((onValue) {

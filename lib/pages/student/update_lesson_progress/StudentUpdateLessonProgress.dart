@@ -3,6 +3,7 @@ import 'package:bwa_learning/models/talim/Student.dart';
 import 'package:bwa_learning/models/talim/StudentProgress.dart';
 import 'package:bwa_learning/models/talim/Topic.dart';
 import 'package:bwa_learning/models/talim/TrainingClass.dart';
+import 'package:bwa_learning/pages/student/update_lesson_progress/DetailUpdateLessonProgress.dart';
 import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
 import 'package:bwa_learning/widgets/dialog/InfoDialog.dart';
 import 'package:bwa_learning/widgets/dialog/MessageDialog.dart';
@@ -15,19 +16,19 @@ import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class TeacherUpdateStudentProgress extends StatefulWidget {
+class StudentUpdateLessonProgress extends StatefulWidget {
   final AppModelV2 model;
 
-  TeacherUpdateStudentProgress(this.model);
+  StudentUpdateLessonProgress(this.model);
 
   @override
   State<StatefulWidget> createState() {
-    return _TeacherUpdateStudentProgressState();
+    return _StudentUpdateLessonProgressState();
   }
 }
 
-class _TeacherUpdateStudentProgressState
-    extends State<TeacherUpdateStudentProgress> {
+class _StudentUpdateLessonProgressState
+    extends State<StudentUpdateLessonProgress> {
   TrainingClass selectTrainingClass;
   Class selectLevelClass;
   Topic selectTopic;
@@ -49,9 +50,11 @@ class _TeacherUpdateStudentProgressState
     print(DateTime.now());
     print(dateNow);
 
-    widget.model.fetchTrainingClassByCompanyId(institutionId).catchError((onError) {
+    widget.model
+        .fetchTrainingClassByCompanyId(institutionId)
+        .catchError((onError) {
       MessageDialog.show(context, 'Terjadi kesalahan $onError',
-          'Coba ulangi lagi!', ()=> Navigator.pushNamed(context, '/'));
+          'Coba ulangi lagi!', () => Navigator.pushNamed(context, '/'));
       setState(() {
         widget.model.setLoading(false);
       });
@@ -60,18 +63,6 @@ class _TeacherUpdateStudentProgressState
     percentScore.addListener(currencyInputFormatter);
 
     super.initState();
-  }
-
-  currencyInputFormatter() {
-    print('percent: ' + percentScore.text);
-
-    if (percentScore.text.length < 1) {
-      percentScore.text = '0';
-    }
-
-    if (percentScore.text.length > 0 && double.parse(percentScore.text) > 100) {
-      percentScore.text = '0';
-    }
   }
 
   Widget _buildAppBar(AppModelV2 model) {
@@ -111,10 +102,13 @@ class _TeacherUpdateStudentProgressState
               selectLevelClass = null;
               selectTopic = null;
               showClass = false;
-              showTopics= false;
+              showTopics = false;
               showStudentProgress = false;
             });
-            model.fetchClassByTrainingClassId(selectTrainingClass.trainingClassID).then((onValue) {
+            model
+                .fetchClassByTrainingClassId(
+                    selectTrainingClass.trainingClassID)
+                .then((onValue) {
               if (onValue) {
                 setState(() {
                   showClass = true;
@@ -124,7 +118,7 @@ class _TeacherUpdateStudentProgressState
                     context,
                     'Tidak ditemukan',
                     'Belum tersedia Kelas untuk MK ${selectLevelClass.classNo}',
-                        ()=> Navigator.of(context).pop());
+                    () => Navigator.of(context).pop());
               }
             });
           },
@@ -185,24 +179,24 @@ class _TeacherUpdateStudentProgressState
                     context,
                     'Tidak ditemukan',
                     'Belum tersedia data untuk kelas ${selectLevelClass.classNo}',
-                    ()=> Navigator.of(context).pop());
+                    () => Navigator.of(context).pop());
               }
             }).catchError((onError) {
               MessageDialog.show(context, 'Terjadi kesalahan $onError',
-                  'Coba ulangi lagi!', ()=> Navigator.of(context).pop());
+                  'Coba ulangi lagi!', () => Navigator.of(context).pop());
             });
           },
           hint: Text(
             "Pilih kelas!",
           ),
-          items: model.classes.map((value) {
+          items: showClass ? model.classes.map((value) {
             return DropdownMenuItem<Class>(
               value: value,
               child: Text(
                 value.classNo,
               ),
             );
-          }).toList(),
+          }).toList():[],
         ),
       ),
     );
@@ -236,45 +230,54 @@ class _TeacherUpdateStudentProgressState
               selectTopic = newValue;
             });
 
-            model
-                .fetchStudentByInstitutionId(institutionId)
-                .catchError((onError) {
-              MessageDialog.show(context, 'Terjadi kesalahan $onError',
-                  'Coba ulangi lagi!', ()=> Navigator.of(context).pop());
-            });
 
+//            model
+//                .fetchStudentByInstitutionId(institutionId)
+//                .catchError((onError) {
+//              MessageDialog.show(context, 'Terjadi kesalahan $onError',
+//                  'Coba ulangi lagi!', () => Navigator.of(context).pop());
+//            });
+//
+            print('studentId: '+model.currentStudent.studentID);
             model
-                .fetchStudentProgressByClassIdAndTopicID(
-                    selectLevelClass.classId, selectTopic.topicID)
+                .fetchStudentProgressByClassIdTopicIDAndStudentId(
+                    selectLevelClass.classId, selectTopic.topicID, model.currentStudent.studentID)
                 .then((onValue) {
               if (onValue) {
                 setState(() {
                   showStudentProgress = true;
                 });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailUpdateLessonProgress(model, selectTrainingClass, selectLevelClass, selectTopic),
+                  ),
+                );
               } else {
                 return MessageDialog.show(
                     context,
                     'Tidak ditemukan',
                     'Data student progress belum tersedia untuk kelas ini',
-                    ()=> Navigator.of(context).pop());
+                    () => Navigator.of(context).pop());
               }
             }).catchError((onError) {
               MessageDialog.show(context, 'Terjadi kesalahan $onError',
-                  'Coba ulangi lagi!', ()=> Navigator.of(context).pop());
+                  'Coba ulangi lagi!', () => Navigator.of(context).pop());
               setState(() {
                 model.setLoading(false);
               });
             });
+
           },
           hint: Text("Pilih Topic!"),
-          items: model.topics.map((value) {
+          items: showTopics ? model.topics.map((value) {
             return DropdownMenuItem<Topic>(
               value: value,
               child: Text(
                 value.name,
               ),
             );
-          }).toList(),
+          }).toList(): [],
         ),
       ),
     );
@@ -283,7 +286,7 @@ class _TeacherUpdateStudentProgressState
   Widget _buildListViewBuilder(AppModelV2 model, BuildContext context,
       int index, StudentProgress studentProgress, Student studentData) {
     return GestureDetector(
-      onTap: ()=> Navigator.of(context).pop(),
+      onTap: () => Navigator.of(context).pop(),
       child: studentData != null
           ? Container(
               margin: EdgeInsets.fromLTRB(10, 8, 10, 8),
@@ -325,7 +328,7 @@ class _TeacherUpdateStudentProgressState
         print(index);
         StudentProgress studentProgress = model.studentProgresses[index];
         int indexStudent =
-            model.students.indexWhere((t) => t.studentID == studentProgress.studentID.toString());
+            model.students.indexWhere((t) => t.id == studentProgress.studentID);
         print('find');
         if (indexStudent > -1) {
           print('indexStudent: $indexStudent');
@@ -386,7 +389,7 @@ class _TeacherUpdateStudentProgressState
                         waitDuration: Duration(microseconds: 2),
                         message: 'Tap to edit',
                         child: Text(
-                          '${studentProgressList[index].quantitativeScore.toString()}',
+                          '${studentProgressList[index].quantitativeScore}',
                           style: TextStyle(fontSize: 16),
                         ),
                       ),
@@ -449,7 +452,7 @@ class _TeacherUpdateStudentProgressState
               },
               inputFormatters: [
                 WhitelistingTextInputFormatter(
-                    RegExp(r"^(?=.*[1-9])\s*\d*[.]?\d{0,2}\s*$"))
+                    RegExp(r"^(?=.*[1-9])\s*\d*[.]?\d{0,2}\s*$")),
               ],
               keyboardType:
                   TextInputType.numberWithOptions(signed: true, decimal: true),
@@ -473,17 +476,31 @@ class _TeacherUpdateStudentProgressState
         ]).show();
   }
 
+  currencyInputFormatter() {
+    print('percent: ' + percentScore.text);
+
+    if (percentScore.text.length < 1) {
+      percentScore.text = '0';
+    }
+
+    if (percentScore.text.length > 0 && double.parse(percentScore.text) > 100) {
+      percentScore.text = '0';
+    }
+  }
+
   Widget _buildPageContent(AppModelV2 model) {
     return Scaffold(
       appBar: _buildAppBar(model),
       resizeToAvoidBottomPadding: false,
-      body: Column(
-        children: <Widget>[
-          _buildDropDownTrainingClass(model),
-          showClass ? _buildDropDownClassLevel(model) : Container(),
-          showTopics ? _buildDropDownTopic(model) : Container(),
-          showStudentProgress ? _buildResultSearch(model) : Container(),
-        ],
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            _buildDropDownTrainingClass(model),
+            _buildDropDownClassLevel(model),
+            _buildDropDownTopic(model),
+            showStudentProgress ? _buildResultSearch(model) : Container(),
+          ],
+        ),
       ),
       floatingActionButton: showPostButton
           ? _buildFloatingPostButton(model)
@@ -531,12 +548,15 @@ class _TeacherUpdateStudentProgressState
                         });
                       }).show(context);
                     } else {
-                      MessageDialog.show(context, 'Terjadi kesalahan ',
-                          'Coba ulangi lagi!', ()=> Navigator.of(context).pop());
+                      MessageDialog.show(
+                          context,
+                          'Terjadi kesalahan ',
+                          'Coba ulangi lagi!',
+                          () => Navigator.of(context).pop());
                     }
                   }).catchError((onError) {
                     MessageDialog.show(context, 'Terjadi kesalahan $onError',
-                        'Coba ulangi lagi!', ()=> Navigator.of(context).pop());
+                        'Coba ulangi lagi!', () => Navigator.of(context).pop());
                     setState(() {
                       model.setLoading(false);
                     });

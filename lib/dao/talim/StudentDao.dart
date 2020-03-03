@@ -35,8 +35,8 @@ class StudentDao {
     return studentList;
   }
 
-  Future<Student> getStudentById(int studentId) async {
-    print("getStudentById");
+  Future<Student> getStudentById(var studentId) async {
+    print("getStudentByStudentId");
     var db = await database;
     var res = await db.query("SELECT * FROM students WHERE StudentID = '$studentId'");
 

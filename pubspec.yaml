@@ -53,6 +53,8 @@ dependencies:
   tree_view:
   table_calendar:
   flutter_week_view:
+  percent_indicator:
+  smooth_star_rating:
 
 dev_dependencies:
   flutter_test:

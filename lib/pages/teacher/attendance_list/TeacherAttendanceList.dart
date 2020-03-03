@@ -1,8 +1,8 @@
-import 'package:bwa_learning/models/origin/Course.dart';
 import 'package:bwa_learning/models/talim/Class.dart';
 import 'package:bwa_learning/models/talim/Session.dart';
 import 'package:bwa_learning/models/talim/SessionAbsence.dart';
 import 'package:bwa_learning/models/talim/Student.dart';
+import 'package:bwa_learning/models/talim/TrainingClass.dart';
 import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
 import 'package:bwa_learning/widgets/dialog/InfoDialog.dart';
 import 'package:bwa_learning/widgets/dialog/MessageDialog.dart';
@@ -26,16 +26,16 @@ class TeacherAttendanceList extends StatefulWidget {
 }
 
 class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
+  TrainingClass selectTrainingClass;
   Class selectLevelClass;
   Session selectSessions;
+  bool showClass = false;
   bool showSessions = false;
   bool showNewStudentData = false;
   bool showStudentData = false;
   bool showPostButton = false;
   bool showPutButton = false;
-  bool isInVal = false;
   var userStatus = List<bool>();
-  List<Course> listCourses;
   int institutionId;
   var dateNow;
   List<SessionAbsence> sessionAbsenceList;
@@ -48,10 +48,12 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
     print(DateTime.now());
     print(dateNow);
 
-    widget.model.fetchClassByInstitutionId(
-        institutionId).catchError((onError){
-      MessageDialog.show(
-          context, 'Terjadi kesalahan $onError', 'Coba ulangi lagi!', () => Navigator.of(context).pop());
+    widget.model.fetchTrainingClassByCompanyId(institutionId).catchError((onError) {
+      MessageDialog.show(context, 'Terjadi kesalahan $onError',
+          'Coba ulangi lagi!', ()=> Navigator.pushNamed(context, '/'));
+      setState(() {
+        widget.model.setLoading(false);
+      });
     });
 
     super.initState();
@@ -61,6 +63,67 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
     return AppBar(
       title: Text(
         'Daftar Kehadiran',
+      ),
+    );
+  }
+
+  Widget _buildDropDownTrainingClass(AppModelV2 model) {
+    return Center(
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        padding: EdgeInsets.all(10),
+        width: 160,
+        height: 50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 4,
+              spreadRadius: 2,
+              color: Colors.black.withOpacity(0.3),
+            ),
+          ],
+        ),
+        child: DropdownButton<TrainingClass>(
+          value: selectTrainingClass,
+          iconSize: 24,
+          elevation: 16,
+          style: TextStyle(color: Colors.deepPurple),
+          onChanged: (newValue) {
+            setState(() {
+              selectTrainingClass = newValue;
+              selectLevelClass = null;
+              showSessions = false;
+              showNewStudentData = false;
+              showStudentData = false;
+            });
+            model.fetchClassByTrainingClassId(selectTrainingClass.trainingClassID).then((onValue) {
+              if (onValue) {
+                setState(() {
+                  showClass = true;
+                });
+              } else {
+                return MessageDialog.show(
+                    context,
+                    'Tidak ditemukan',
+                    'Belum tersedia Kelas untuk MK ${selectLevelClass.classNo}',
+                        ()=> Navigator.of(context).pop());
+              }
+            });
+          },
+          hint: Text(
+            "Pilih mata kuliah!",
+          ),
+          items: model.trainingClasses.map((value) {
+            return DropdownMenuItem<TrainingClass>(
+              value: value,
+              child: Text(
+                value.name,
+              ),
+            );
+          }).toList(),
+        ),
       ),
     );
   }
@@ -350,8 +413,14 @@ class _TeacherAttendanceListState extends State<TeacherAttendanceList> {
       resizeToAvoidBottomPadding: false,
       body: Column(
         children: <Widget>[
-          _buildDropDownClassLevel(model),
-          showSessions ? _buildDropDownSession(model) : Container(),
+          _buildDropDownTrainingClass(model),
+          Row(
+            children: <Widget>[
+              showClass ? _buildDropDownClassLevel(model) : Container(),
+              Spacer(),
+              showSessions ? _buildDropDownSession(model) : Container(),
+            ],
+          ),
           showNewStudentData ? _buildNewResultSearch(model): Container(),
           showStudentData ? _buildResultSearch(model) : Container(),
         ],

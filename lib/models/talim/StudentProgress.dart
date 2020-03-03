@@ -1,13 +1,15 @@
 
 class StudentProgress {
   int studentProgressID;
-  int classID;
-  int topicID;
+  var classID;
+  var topicID;
   int studentID;
   int institutionId;
   int instructorId;
-  String quantitativeScore;
+  var quantitativeScore;
   var submittedDate;
+  var studentPercentSense;
+  var studentComment;
 
   StudentProgress({
     this.studentProgressID,
@@ -17,7 +19,9 @@ class StudentProgress {
     this.institutionId,
     this.instructorId,
     this.quantitativeScore,
-    this.submittedDate
+    this.submittedDate,
+    this.studentPercentSense,
+    this.studentComment
   });
 
   StudentProgress.fromJson(Map<String, dynamic> map) {
@@ -27,8 +31,9 @@ class StudentProgress {
     studentID = map['id_student'];
     institutionId = map['InstitutionID'];
     instructorId = map['id_instructor'];
-    quantitativeScore = map['QuantitativeScore'].toString();
+    quantitativeScore = map['QuantitativeScore'];
     submittedDate = map['submitteddate'];
-    print('done');
+    studentPercentSense = map['studentPercentSense'];
+    studentComment = map['studentComment'];
   }
 }

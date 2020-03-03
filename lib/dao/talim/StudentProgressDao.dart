@@ -73,6 +73,25 @@ class StudentProgressDao {
     return studentProgressList;
   }
 
+  Future<StudentProgress> getStudentProgressByClassIdTopicIDAndStudentId(
+      int classID, int topicID, var studentId) async {
+    print("getStudentProgressByClassIdTopicIDAndStudentId");
+    var db = await database;
+
+    StudentProgress findStudentProgress;
+    var res = await db.query(
+        "SELECT * FROM journalstudentprogress WHERE id_classes = $classID AND TopicID=$topicID AND id_student=$studentId");
+
+    if (res.length > 0) {
+      res.forEach((f) {
+        print(f);
+        findStudentProgress = StudentProgress.fromJson(f.fields);
+      });
+      return findStudentProgress;
+    }
+    return null;
+  }
+
   Future<StudentProgress> getStudentProgressById(int ltmTopicId) async {
     print("getStudentProgressById");
     var db = await database;

@@ -1,6 +1,5 @@
-
-import 'package:bwa_learning/dao/origin/UserDao.dart';
-import 'package:bwa_learning/models/origin/User.dart';
+import 'package:bwa_learning/dao/talim/UserDao.dart';
+import 'package:bwa_learning/models/talim/User.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -11,7 +10,7 @@ mixin UserModel on Model {
 
   bool _isLoading = false;
 
-  User get currentUser{
+  User get currentUser {
     return _user;
   }
 
@@ -21,18 +20,10 @@ mixin UserModel on Model {
 
     print('find user by email');
 
-    try {
-      await UserDao.db.getUserByEmail(email).then((onValue) {
-        _user =onValue;
-      });
+    _user = await UserDao.db.getUserByEmail(email);
 
-      _isLoading = false;
-      notifyListeners();
-      return true;
-    } catch (error) {
-      _isLoading = false;
-      notifyListeners();
-      return false;
-    }
+    _isLoading = false;
+    notifyListeners();
+    return true;
   }
 }

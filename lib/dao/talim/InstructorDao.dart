@@ -112,7 +112,7 @@ class InstructorDao {
   Future<Instructor> getInstructorById(int instructorId) async {
     print("getInstructorById");
     var db = await database;
-    var res = await db.query("SELECT * FROM instructor WHERE instructorId = '$instructorId'");
+    var res = await db.query("SELECT * FROM instructors WHERE id_instructor = '$instructorId'");
 
     Instructor findInstructor;
 

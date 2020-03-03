@@ -4,6 +4,7 @@ import 'package:bwa_learning/pages/admin/student_class/StudentClassList.dart';
 import 'package:bwa_learning/pages/admin/student_list/StudentList.dart';
 import 'package:bwa_learning/pages/admin/teacher_list/TeacherList.dart';
 import 'package:bwa_learning/pages/student/schedule_class/SchedulePage.dart';
+import 'package:bwa_learning/pages/student/update_lesson_progress/StudentUpdateLessonProgress.dart';
 import 'package:bwa_learning/pages/teacher/attendance_list/TeacherAttendanceList.dart';
 import 'package:bwa_learning/pages/teacher/course_list/TeacherCourseList.dart';
 import 'package:bwa_learning/pages/teacher/schedule_teacher/TeacherSchedule.dart';
@@ -40,22 +41,16 @@ class _BWALearningState extends State<BWALearning> {
     _model.fetchInstitutionById(1234);
     _model2.fetchInstitutionById(1234);
 
-    _model2.findUserByEmail("ewo@mail.com").then((onValue) async {
+    _model2.findUserByEmail("eman@mail.com").then((onValue) async {
       if(_model2.currentUser.status == 'student' &&
           _model2.currentInstitution != null){
         _model2
-            .fetchStudentByEmail(_model.currentUser.email)
-            .then((onValue) {
-          _model.findStudentClassById(_model.currentStudent.classId);
-        });
+            .fetchStudentByStudentId(_model2.currentUser.userId);
+
       } else if (_model2.currentUser.status == 'teacher' &&
           _model2.currentInstitution != null){
         await _model2
-            .fetchInstructorByEmail(_model2.currentUser.email)
-            .catchError((onError) {
-          MessageDialog.show(context, 'Terjadi kesalahan $onError',
-              'Coba ulangi lagi!', () => Navigator.of(context).pop());
-        });
+            .fetchInstructorByEmail(_model2.currentUser.email);
       }
     }).catchError((onError) {
       MessageDialog.show(
@@ -87,6 +82,8 @@ class _BWALearningState extends State<BWALearning> {
           // student
           '/studentScheduleList': (BuildContext context) =>
               SchedulePage(model: _model),
+          '/studentUpdateLessonProgress': (BuildContext context) =>
+              StudentUpdateLessonProgress(_model2),
           // teacher
           '/teacherSchedule': (BuildContext context) =>
               TeacherSchedule(_model2),
