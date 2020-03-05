@@ -65,7 +65,8 @@ mixin ClassesModel on CoreModel {
     return true;
   }
 
-  Future<bool> fetchClassByInstitutionIDAndInstructorID(int institutionID, int instructorID) async {
+  Future<bool> fetchClassByInstitutionIDAndInstructorID(
+      int institutionID, int instructorID) async {
     _isLoading = true;
     notifyListeners();
 
@@ -73,14 +74,13 @@ mixin ClassesModel on CoreModel {
 
     print('fetch kelas by institutionId and instructorId');
 
-    _classes = await ClassDao.db.getClassByInstitutionAndInstructorID(institutionID, instructorID);
+    _classes = await ClassDao.db
+        .getClassByInstitutionAndInstructorID(institutionID, instructorID);
 
     _isLoading = false;
     notifyListeners();
     return true;
   }
-  
-  
 
   Future<bool> findClassByName(String className) async {
     _isLoading = true;
@@ -111,7 +111,7 @@ mixin ClassesModel on CoreModel {
     notifyListeners();
 
     try {
-      await ClassDao.db.getClassById(classId, 1234).then((onValue) {
+      await ClassDao.db.getClassById(classId).then((onValue) {
         _class = onValue;
       });
 
@@ -134,28 +134,20 @@ mixin ClassesModel on CoreModel {
     }
   }
 
-  Future<bool> findClassById(int classId) async {
+  Future<bool> findClassById(var classId) async {
     _isLoading = true;
     notifyListeners();
 
-    try {
-      await ClassDao.db.getClassById(classId, 1234).then((onValue) {
-        _searchClass = onValue;
-      });
+    _searchClass = await ClassDao.db.getClassById(classId);
 
-      if (_searchClass != null) {
-        _isLoading = false;
-        notifyListeners();
+    if (_searchClass != null) {
+      _isLoading = false;
+      notifyListeners();
 
-        print(_searchClass.classNo);
+      print(_searchClass.classNo);
 
-        return true;
-      } else {
-        _isLoading = false;
-        notifyListeners();
-        return false;
-      }
-    } catch (error) {
+      return true;
+    } else {
       _isLoading = false;
       notifyListeners();
       return false;

@@ -1,6 +1,3 @@
-import 'package:bwa_learning/models/talim/Class.dart';
-import 'package:bwa_learning/models/talim/TimeSchedule.dart';
-import 'package:bwa_learning/models/talim/TrainingClass.dart';
 import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
 import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,12 +6,9 @@ import 'package:scoped_model/scoped_model.dart';
 
 class ViewTeacherSchedule extends StatefulWidget {
   final AppModelV2 model;
-  final Class findClass;
-  final TrainingClass trainingClass;
-  final TimeSchedule schedule;
 
   ViewTeacherSchedule(
-      {Key key, this.model, this.findClass, this.trainingClass, this.schedule})
+      {Key key, this.model})
       : super(key: key);
 
   @override
@@ -90,7 +84,7 @@ class _ViewTeacherScheduleState extends State<ViewTeacherSchedule> {
                   ),
                   child: Center(
                     child: Text(
-                      widget.findClass.classNo,
+                      model.currentClass.classNo,
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Medium',
@@ -110,7 +104,7 @@ class _ViewTeacherScheduleState extends State<ViewTeacherSchedule> {
                   ),
                   child: Center(
                     child: Text(
-                      widget.trainingClass.name,
+                      model.currentTrainingClass.name,
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Medium',
@@ -301,6 +295,7 @@ class _ViewTeacherScheduleState extends State<ViewTeacherSchedule> {
                                 color: Colors.greenAccent,
                                 shape: BoxShape.circle),
                             child: RawMaterialButton(
+                              onPressed: () {},
                               shape: CircleBorder(),
                               child:
                                   Icon(Icons.access_alarm, color: Colors.red),
@@ -310,7 +305,7 @@ class _ViewTeacherScheduleState extends State<ViewTeacherSchedule> {
                             width: 10,
                           ),
                           Text(
-                            '${widget.schedule.startTime} - ${widget.schedule.endTime}',
+                            '${model.currentTimeSchedule.startTime} - ${model.currentTimeSchedule.endTime}',
                             style: TextStyle(
                               color: Colors.black,
                               fontFamily: 'Medium',
@@ -370,6 +365,7 @@ class SelectDateButtonState extends State<SelectDateButton> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
+      onChanged: (value) {},
 //      value: selectLevelClass,
       iconSize: 24,
       elevation: 16,

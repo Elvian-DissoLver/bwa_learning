@@ -4,10 +4,11 @@ import 'package:bwa_learning/pages/admin/student_class/StudentClassList.dart';
 import 'package:bwa_learning/pages/admin/student_list/StudentList.dart';
 import 'package:bwa_learning/pages/admin/teacher_list/TeacherList.dart';
 import 'package:bwa_learning/pages/student/schedule_class/SchedulePage.dart';
+import 'package:bwa_learning/pages/student/student_schedule/StudentSchedule.dart';
 import 'package:bwa_learning/pages/student/update_lesson_progress/StudentUpdateLessonProgress.dart';
 import 'package:bwa_learning/pages/teacher/attendance_list/TeacherAttendanceList.dart';
 import 'package:bwa_learning/pages/teacher/course_list/TeacherCourseList.dart';
-import 'package:bwa_learning/pages/teacher/schedule_teacher/TeacherSchedule.dart';
+import 'package:bwa_learning/pages/teacher/teacher_schedule/TeacherSchedule.dart';
 import 'package:bwa_learning/pages/teacher/update_student_progress/TeacherUpdateStudentProgress.dart';
 import 'package:bwa_learning/pages/teacher/update_topic_lesson/TeacherUpdateTopicLesson.dart';
 import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
@@ -44,7 +45,7 @@ class _BWALearningState extends State<BWALearning> {
     _model2.findUserByEmail("eman@mail.com").then((onValue) async {
       if(_model2.currentUser.status == 'student' &&
           _model2.currentInstitution != null){
-        _model2
+        await _model2
             .fetchStudentByStudentId(_model2.currentUser.userId);
 
       } else if (_model2.currentUser.status == 'teacher' &&
@@ -82,6 +83,8 @@ class _BWALearningState extends State<BWALearning> {
           // student
           '/studentScheduleList': (BuildContext context) =>
               SchedulePage(model: _model),
+          '/studentSchedule': (BuildContext context) =>
+              StudentSchedule(_model2),
           '/studentUpdateLessonProgress': (BuildContext context) =>
               StudentUpdateLessonProgress(_model2),
           // teacher

@@ -1,7 +1,4 @@
-import 'package:bwa_learning/models/talim/Class.dart';
 import 'package:bwa_learning/models/talim/TimeSchedule.dart';
-import 'package:bwa_learning/models/talim/TrainingClass.dart';
-import 'package:bwa_learning/pages/teacher/schedule_teacher/ViewTeacherSchedule.dart';
 import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
 import 'package:bwa_learning/widgets/dialog/MessageDialog.dart';
 import 'package:bwa_learning/widgets/loading/loading_modal.dart';
@@ -10,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_week_view/flutter_week_view.dart';
 import 'package:intl/intl.dart';
 import 'package:scoped_model/scoped_model.dart';
+
+import 'ViewTeacherSchedule.dart';
 
 List<String> days = [
   'Sunday',
@@ -176,35 +175,35 @@ class _TeacherScheduleDaysState extends State<TeacherScheduleDays> {
 
     schedules.forEach((s) {
       print(s.timeScheduleID);
-      int indexClass = widget.model.classes.indexWhere((t) => t.timeScheduleID == s.timeScheduleID);
-      Class findClass = widget.model.classes.elementAt(indexClass);
+      model.setCurrentTimeSchedule(s);
+      int indexClass = model.classes.indexWhere((t) => t.timeScheduleID == s.timeScheduleID);
+      if (indexClass > -1) {
+        model.setCurrentClass(model.classes.elementAt(indexClass));
+        int indexTC = model.trainingClasses.indexWhere((t) =>
+        t.trainingClassID == model.currentClass.trainingClassID);
+        model.setCurrentTrainingClass(model.trainingClasses.elementAt(indexTC));
 
-      int indexTC = widget.model.trainingClasses.indexWhere((t) => t.trainingClassID == findClass.trainingClassID);
-      TrainingClass trainingClass = widget.model.trainingClasses.elementAt(indexTC);
+        duration = parseDuration(s.startTime.toString());
+        print(duration.toString());
 
-      duration = parseDuration(s.startTime.toString());
-      print(duration.toString());
-
-      FlutterWeekViewEvent flutterWeekViewEvent = new FlutterWeekViewEvent(
-          title: findClass.classNo,
-          description: trainingClass.name,
-          start: date.add(parseDuration(s.startTime.toString())),
-          end: date.add(parseDuration(s.endTime.toString())),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ViewTeacherSchedule(
-                  model: model,
-                  findClass: findClass,
-                  trainingClass: trainingClass,
-                  schedule: s,
+        FlutterWeekViewEvent flutterWeekViewEvent = new FlutterWeekViewEvent(
+            title: model.currentClass.classNo,
+            description: model.currentTrainingClass.name,
+            start: date.add(parseDuration(s.startTime.toString())),
+            end: date.add(parseDuration(s.endTime.toString())),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ViewTeacherSchedule(
+                          model: model
+                      ),
                 ),
-              ),
-            );
-
-          });
-      events.add(flutterWeekViewEvent);
+              );
+            });
+        events.add(flutterWeekViewEvent);
+      }
     });
 
     return events;

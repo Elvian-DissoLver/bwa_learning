@@ -43,6 +43,7 @@ class Feature extends StatelessWidget {
                                 shape: BoxShape.circle
                             ),
                             child: RawMaterialButton(
+                              onPressed: () {},
                               shape: CircleBorder(),
                               child: Icon(
                                 Icons.person_pin,
@@ -74,6 +75,7 @@ class Feature extends StatelessWidget {
                                 shape: BoxShape.circle
                             ),
                             child: RawMaterialButton(
+                              onPressed: () {},
                               shape: CircleBorder(),
                               child: Icon(
                                 Icons.schedule,

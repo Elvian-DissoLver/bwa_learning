@@ -4,24 +4,64 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 
-class ViewScheduleCourse extends StatefulWidget {
+class ViewScheduleTeacher extends StatefulWidget {
   final AppModel model;
 
-  ViewScheduleCourse(
+  ViewScheduleTeacher(
       {Key key, this.model})
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ViewScheduleCourseState();
+  State<StatefulWidget> createState() => _ViewScheduleTeacherState();
 }
 
-class _ViewScheduleCourseState extends State< ViewScheduleCourse> {
+class _ViewScheduleTeacherState extends State< ViewScheduleTeacher> {
+
+  DateTime _date = new DateTime.now();
+
+  onDateChanged(DateTime date) {
+    _date = date;
+    //setState(() {}); //optional
+  }
+
   @override
   void initState() {
     super.initState();
     widget.model.fetchTeacherById(widget.model.currentCourse.teacherId);
     widget.model.fetchCourseStateByCourseIdAndClassId(widget.model.currentScheduleCourse.courseId, widget.model.currentScheduleCourse.classId);
   }
+
+  updateCourseClass(AppModel model) {
+
+  }
+
+  alertUpdateCourse(AppModel model) {
+    var alert = new AlertDialog(
+        title: Text("Set Reminder"),
+    content: Column(
+    mainAxisSize: MainAxisSize.min,
+    children: <Widget>[
+    // Date
+    SelectDateButton(
+    date: _date,
+    dateCallback: onDateChanged,
+    ),
+    ],
+    ),
+    actions: <Widget>[
+    new FlatButton(
+        onPressed: () => debugPrint("Save button"), child: Text('Save')),
+      new FlatButton(
+          onPressed: () => Navigator.pop(context), child: Text('Cancel'))
+    ],
+    );
+    showDialog(
+        context: context,
+        builder: (_) {
+          return alert;
+        });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +77,28 @@ class _ViewScheduleCourseState extends State< ViewScheduleCourse> {
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(left: 16, top: 70),
+                  padding: EdgeInsets.only(left: 16, top: 50),
+                ),
+
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  padding: EdgeInsets.all(10),
+                  width: 150,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.white,
+                  ),
+                  child: Center(
+                    child: Text(
+                      model.currentClass.className,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Medium',
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
                 ),
 
                 Container(
@@ -130,7 +191,7 @@ class _ViewScheduleCourseState extends State< ViewScheduleCourse> {
                   margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   padding: EdgeInsets.all(10),
                   width: MediaQuery.of(context).size.width - 32,
-                  height: 80,
+                  height: 120,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(8),
@@ -168,10 +229,15 @@ class _ViewScheduleCourseState extends State< ViewScheduleCourse> {
                                   fontSize: 12,
                                 ),
                               ),
+                              IconButton(
+                                icon: Icon(Icons.edit),
+                                iconSize: 20,
+                                onPressed: () => alertUpdateCourse(model),
+                              )
                             ],
                           ),
                           SizedBox(
-                            height: 6,
+                            height: 5,
                           ),
                           Text(
                             model.currentCourse.courseName.toString(),
@@ -271,3 +337,61 @@ class _ViewScheduleCourseState extends State< ViewScheduleCourse> {
   }
 }
 
+class SelectDateButton extends StatefulWidget {
+  final DateTime date;
+
+  final ValueChanged<DateTime> dateCallback;
+
+  SelectDateButton({Key key, this.date, this.dateCallback}) : super(key: key);
+
+  @override
+  SelectDateButtonState createState() {
+    return new SelectDateButtonState();
+  }
+}
+
+class SelectDateButtonState extends State<SelectDateButton> {
+  DateTime _date;
+
+  @override
+  void initState() {
+    super.initState();
+    _date = widget.date;
+  }
+
+  void selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: _date,
+      firstDate: new DateTime(2018),
+      lastDate: new DateTime(2019),
+    );
+    if (picked != null) {
+      widget.dateCallback(picked);
+      _date = picked;
+      setState(() {});
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      onChanged: (value) {},
+//      value: selectLevelClass,
+      iconSize: 24,
+      elevation: 16,
+      style: TextStyle(color: Colors.deepPurple),
+      hint: Text(
+        "Pilih tingkat pelajaran!",
+      ),
+      items: ['Kelas X', 'Kelas XI', 'Kelas XII'].map((value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(
+            value,
+          ),
+        );
+      }).toList(),
+    );
+  }
+}

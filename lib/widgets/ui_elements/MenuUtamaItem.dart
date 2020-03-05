@@ -21,6 +21,7 @@ class MenuUtamaItem extends StatelessWidget {
                 shape: BoxShape.circle
             ),
             child: RawMaterialButton(
+              onPressed: onTap,
               shape: CircleBorder(),
               child: Icon(icon, color: iconColor,),
             ),

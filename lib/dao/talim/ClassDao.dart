@@ -118,10 +118,10 @@ class ClassDao {
     return null;
   }
 
-  Future<Class> getClassById(int classId, int institutionId) async {
+  Future<Class> getClassById(var classId) async {
     print("getClassById");
     var db = await database;
-    var res = await db.query("SELECT * FROM class WHERE id_classes = '$classId' and SchoolPackageID = $institutionId");
+    var res = await db.query("SELECT * FROM class WHERE id_classes = '$classId'");
 
     Class findClass;
 

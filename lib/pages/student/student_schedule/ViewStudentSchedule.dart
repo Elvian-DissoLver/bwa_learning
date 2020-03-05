@@ -1,22 +1,22 @@
 import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
+import 'package:bwa_learning/scoped_models/talim/AppModel.dart';
+import 'package:bwa_learning/widgets/dialog/MessageDialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
+class ViewStudentSchedule extends StatefulWidget {
+  final AppModelV2 model;
 
-class ViewScheduleTeacher extends StatefulWidget {
-  final AppModel model;
-
-  ViewScheduleTeacher(
+  ViewStudentSchedule(
       {Key key, this.model})
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ViewScheduleTeacherState();
+  State<StatefulWidget> createState() => _ViewStudentScheduleState();
 }
 
-class _ViewScheduleTeacherState extends State< ViewScheduleTeacher> {
-
+class _ViewStudentScheduleState extends State<ViewStudentSchedule> {
   DateTime _date = new DateTime.now();
 
   onDateChanged(DateTime date) {
@@ -27,33 +27,39 @@ class _ViewScheduleTeacherState extends State< ViewScheduleTeacher> {
   @override
   void initState() {
     super.initState();
-    widget.model.fetchTeacherById(widget.model.currentCourse.teacherId);
-    widget.model.fetchCourseStateByCourseIdAndClassId(widget.model.currentScheduleCourse.courseId, widget.model.currentScheduleCourse.classId);
+
+    widget.model
+        .fetchInstructorById(widget.model.currentClass.instructorId)
+        .catchError((onError) {
+      MessageDialog.show(context, 'Terjadi kesalahan $onError',
+          'Coba ulangi lagi!', () => Navigator.of(context).pop());
+      setState(() {
+        widget.model.setLoading(false);
+      });
+    });
   }
 
-  updateCourseClass(AppModel model) {
-
-  }
+  updateCourseClass(AppModel model) {}
 
   alertUpdateCourse(AppModel model) {
     var alert = new AlertDialog(
-        title: Text("Set Reminder"),
-    content: Column(
-    mainAxisSize: MainAxisSize.min,
-    children: <Widget>[
-    // Date
-    SelectDateButton(
-    date: _date,
-    dateCallback: onDateChanged,
-    ),
-    ],
-    ),
-    actions: <Widget>[
-    new FlatButton(
-        onPressed: () => debugPrint("Save button"), child: Text('Save')),
-      new FlatButton(
-          onPressed: () => Navigator.pop(context), child: Text('Cancel'))
-    ],
+      title: Text("Set Reminder"),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          // Date
+          SelectDateButton(
+            date: _date,
+            dateCallback: onDateChanged,
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        new FlatButton(
+            onPressed: () => debugPrint("Save button"), child: Text('Save')),
+        new FlatButton(
+            onPressed: () => Navigator.pop(context), child: Text('Cancel'))
+      ],
     );
     showDialog(
         context: context,
@@ -62,12 +68,10 @@ class _ViewScheduleTeacherState extends State< ViewScheduleTeacher> {
         });
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<AppModel>(
-      builder: (BuildContext context, Widget child, AppModel model) {
-
+    return ScopedModelDescendant<AppModelV2>(
+      builder: (BuildContext context, Widget child, AppModelV2 model) {
         return Scaffold(
           resizeToAvoidBottomPadding: false,
           body: Container(
@@ -79,7 +83,6 @@ class _ViewScheduleTeacherState extends State< ViewScheduleTeacher> {
                 Padding(
                   padding: EdgeInsets.only(left: 16, top: 50),
                 ),
-
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   padding: EdgeInsets.all(10),
@@ -91,7 +94,7 @@ class _ViewScheduleTeacherState extends State< ViewScheduleTeacher> {
                   ),
                   child: Center(
                     child: Text(
-                      model.currentClass.className,
+                      model.currentClass.classNo,
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Medium',
@@ -100,7 +103,6 @@ class _ViewScheduleTeacherState extends State< ViewScheduleTeacher> {
                     ),
                   ),
                 ),
-
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   padding: EdgeInsets.all(10),
@@ -112,7 +114,7 @@ class _ViewScheduleTeacherState extends State< ViewScheduleTeacher> {
                   ),
                   child: Center(
                     child: Text(
-                      model.currentCategory.categoryName,
+                      widget.model.currentTrainingClass.name,
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Medium',
@@ -121,7 +123,6 @@ class _ViewScheduleTeacherState extends State< ViewScheduleTeacher> {
                     ),
                   ),
                 ),
-
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   padding: EdgeInsets.all(10),
@@ -150,9 +151,8 @@ class _ViewScheduleTeacherState extends State< ViewScheduleTeacher> {
                           image: DecorationImage(
                               fit: BoxFit.fill,
                               image: NetworkImage(
-                                  "https://source.unsplash.com/ZHvM3XIOHoE" ?? Icons.person_pin
-                              )
-                          ),
+                                  "https://source.unsplash.com/ZHvM3XIOHoE" ??
+                                      Icons.person_pin)),
                         ),
                       ),
                       SizedBox(
@@ -174,7 +174,7 @@ class _ViewScheduleTeacherState extends State< ViewScheduleTeacher> {
                             height: 6,
                           ),
                           Text(
-                            model.currentTeacher.fullName,
+                            model.currentInstructor.name,
                             style: TextStyle(
                               color: Colors.black,
                               fontFamily: 'Medium',
@@ -186,73 +186,73 @@ class _ViewScheduleTeacherState extends State< ViewScheduleTeacher> {
                     ],
                   ),
                 ),
-
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  padding: EdgeInsets.all(10),
-                  width: MediaQuery.of(context).size.width - 32,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 4,
-                        spreadRadius: 2,
-                        color: Colors.black.withOpacity(0.3),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-//                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                'Mata Pelajaran',
-                                style: TextStyle(
-                                  color: Color(0xff7a7a7a),
-                                  fontFamily: 'Medium',
-                                  fontSize: 12,
-                                ),
-                              ),
-                              Spacer(),
-                              Text(
-                                model.currentCourseState.isDone == 1 ? 'Sudah Dipelajari' : 'Sedang Dipelajari',
-                                style: TextStyle(
-                                  color: Color(0xff7a7a7a),
-                                  fontFamily: 'Medium',
-                                  fontSize: 12,
-                                ),
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.edit),
-                                iconSize: 20,
-                                onPressed: () => alertUpdateCourse(model),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            model.currentCourse.courseName.toString(),
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'Medium',
-                              fontSize: 16,
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-
+//                Container(
+//                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+//                  padding: EdgeInsets.all(10),
+//                  width: MediaQuery.of(context).size.width - 32,
+//                  height: 120,
+//                  decoration: BoxDecoration(
+//                    color: Colors.white,
+//                    borderRadius: BorderRadius.circular(8),
+//                    boxShadow: [
+//                      BoxShadow(
+//                        blurRadius: 4,
+//                        spreadRadius: 2,
+//                        color: Colors.black.withOpacity(0.3),
+//                      ),
+//                    ],
+//                  ),
+//                  child: Column(
+////                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                    children: <Widget>[
+//                      Column(
+//                        crossAxisAlignment: CrossAxisAlignment.start,
+//                        mainAxisAlignment: MainAxisAlignment.center,
+//                        children: <Widget>[
+//                          Row(
+//                            children: <Widget>[
+//                              Text(
+//                                'Mata Pelajaran',
+//                                style: TextStyle(
+//                                  color: Color(0xff7a7a7a),
+//                                  fontFamily: 'Medium',
+//                                  fontSize: 12,
+//                                ),
+//                              ),
+//                              Spacer(),
+//                              Text(
+//                                model.currentCourseState.isDone == 1
+//                                    ? 'Sudah Dipelajari'
+//                                    : 'Sedang Dipelajari',
+//                                style: TextStyle(
+//                                  color: Color(0xff7a7a7a),
+//                                  fontFamily: 'Medium',
+//                                  fontSize: 12,
+//                                ),
+//                              ),
+//                              IconButton(
+//                                icon: Icon(Icons.edit),
+//                                iconSize: 20,
+//                                onPressed: () => alertUpdateCourse(model),
+//                              )
+//                            ],
+//                          ),
+//                          SizedBox(
+//                            height: 5,
+//                          ),
+//                          Text(
+//                            model.currentCourse.courseName.toString(),
+//                            style: TextStyle(
+//                              color: Colors.black,
+//                              fontFamily: 'Medium',
+//                              fontSize: 16,
+//                            ),
+//                          )
+//                        ],
+//                      ),
+//                    ],
+//                  ),
+//                ),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   padding: EdgeInsets.all(10),
@@ -303,18 +303,19 @@ class _ViewScheduleTeacherState extends State< ViewScheduleTeacher> {
                             width: 30.0,
                             decoration: BoxDecoration(
                                 color: Colors.greenAccent,
-                                shape: BoxShape.circle
-                            ),
+                                shape: BoxShape.circle),
                             child: RawMaterialButton(
+                              onPressed: () {},
                               shape: CircleBorder(),
-                              child: Icon(Icons.access_alarm, color: Colors.red),
+                              child:
+                                  Icon(Icons.access_alarm, color: Colors.red),
                             ),
                           ),
                           SizedBox(
                             width: 10,
                           ),
                           Text(
-                            '${model.currentScheduleCourse.startAt} - ${model.currentScheduleCourse.endAt}',
+                            '${model.currentTimeSchedule.startTime} - ${model.currentTimeSchedule.endTime}',
                             style: TextStyle(
                               color: Colors.black,
                               fontFamily: 'Medium',
@@ -323,7 +324,6 @@ class _ViewScheduleTeacherState extends State< ViewScheduleTeacher> {
                           )
                         ],
                       ),
-
                     ],
                   ),
                 ),
@@ -375,6 +375,7 @@ class SelectDateButtonState extends State<SelectDateButton> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
+      onChanged: (value) {},
 //      value: selectLevelClass,
       iconSize: 24,
       elevation: 16,

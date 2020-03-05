@@ -33,14 +33,13 @@ class StudentProgressDao {
     return studentProgressList;
   }
 
-  Future<List<StudentProgress>> getStudentProgressByTopicID(
-      int topicID) async {
+  Future<List<StudentProgress>> getStudentProgressByTopicID(int topicID) async {
     print("getStudentProgressByTopicID");
     var db = await database;
 
     List<StudentProgress> studentProgressList = [];
-    var res = await db.query(
-        "SELECT * FROM journalstudentprogress WHERE TopicID = $topicID");
+    var res = await db
+        .query("SELECT * FROM journalstudentprogress WHERE TopicID = $topicID");
 
     if (res.length > 0) {
       res.forEach((f) {
@@ -61,6 +60,26 @@ class StudentProgressDao {
     List<StudentProgress> studentProgressList = [];
     var res = await db.query(
         "SELECT * FROM journalstudentprogress WHERE id_classes = $classID AND TopicID=$topicID");
+
+    if (res.length > 0) {
+      res.forEach((f) {
+        print(f.fields);
+        studentProgressList.add(StudentProgress.fromJson(f.fields));
+      });
+    } else {
+      print("Null");
+    }
+    return studentProgressList;
+  }
+
+  Future<List<StudentProgress>> getStudentProgressByStudentID(
+      var studentId) async {
+    print("getStudentProgressByStudentID");
+    var db = await database;
+
+    List<StudentProgress> studentProgressList = [];
+    var res = await db.query(
+        "SELECT * FROM journalstudentprogress WHERE id_student = $studentId");
 
     if (res.length > 0) {
       res.forEach((f) {
@@ -95,8 +114,8 @@ class StudentProgressDao {
   Future<StudentProgress> getStudentProgressById(int ltmTopicId) async {
     print("getStudentProgressById");
     var db = await database;
-    var res = await db.query(
-        "SELECT * FROM journalstudentprogress WHERE ID = '$ltmTopicId'");
+    var res = await db
+        .query("SELECT * FROM journalstudentprogress WHERE ID = '$ltmTopicId'");
 
     StudentProgress findLtmTopic;
 

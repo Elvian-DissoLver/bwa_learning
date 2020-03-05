@@ -2,10 +2,11 @@ import 'package:bwa_learning/models/origin/Category.dart';
 import 'package:bwa_learning/models/origin/Class.dart';
 import 'package:bwa_learning/models/origin/Course.dart';
 import 'package:bwa_learning/models/origin/ScheduleCourse.dart';
-import 'package:bwa_learning/pages/teacher/schedule_teacher/ViewScheduleTeacher.dart';
 import 'package:bwa_learning/scoped_models/origin/AppModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+
+import 'ViewScheduleTeacher.dart';
 
 class DetailScheduleTeacher extends StatefulWidget {
   final AppModel model;

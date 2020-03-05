@@ -230,7 +230,6 @@ class _StudentUpdateLessonProgressState
               selectTopic = newValue;
             });
 
-
             model
                 .fetchStudentByInstitutionId(institutionId)
                 .catchError((onError) {

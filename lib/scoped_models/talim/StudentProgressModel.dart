@@ -21,7 +21,7 @@ mixin StudentProgressModel on Model {
     return _isLoading;
   }
 
-  void setLoading(bool loading){
+  void setLoading(bool loading) {
     _isLoading = loading;
   }
 
@@ -55,7 +55,8 @@ mixin StudentProgressModel on Model {
     }
   }
 
-  Future<bool> fetchStudentProgressByClassIdAndTopicID(int classID, int topicID) async {
+  Future<bool> fetchStudentProgressByClassIdAndTopicID(
+      int classID, int topicID) async {
     _isLoading = true;
     notifyListeners();
 
@@ -63,8 +64,8 @@ mixin StudentProgressModel on Model {
 
     print('fetch studentProgresss by ClassId and TopicId');
 
-    _studentProgresses =
-    await StudentProgressDao.db.getStudentProgressByClassIDAndTopicID(classID, topicID);
+    _studentProgresses = await StudentProgressDao.db
+        .getStudentProgressByClassIDAndTopicID(classID, topicID);
 
     if (_studentProgresses.length > 0) {
       _isLoading = false;
@@ -77,14 +78,38 @@ mixin StudentProgressModel on Model {
     }
   }
 
-  Future<bool> fetchStudentProgressByClassIdTopicIDAndStudentId(int classID, int topicID, var studentID) async {
+  Future<bool> fetchStudentProgressByStudentID(var studentID) async {
+    _isLoading = true;
+    notifyListeners();
+
+    _studentProgresses = [];
+
+    print('fetch studentProgresss by studentId');
+
+    _studentProgresses =
+        await StudentProgressDao.db.getStudentProgressByStudentID(studentID);
+
+    if (_studentProgresses.length > 0) {
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    } else {
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> fetchStudentProgressByClassIdTopicIDAndStudentId(
+      int classID, int topicID, var studentID) async {
     _isLoading = true;
     notifyListeners();
 
     print('fetch studentProgresss by ClassId TopicId and StudentId');
 
-    _studentProgress =
-    await StudentProgressDao.db.getStudentProgressByClassIdTopicIDAndStudentId(classID, topicID, studentID);
+    _studentProgress = await StudentProgressDao.db
+        .getStudentProgressByClassIdTopicIDAndStudentId(
+            classID, topicID, studentID);
 
     if (_studentProgress != null) {
       _isLoading = false;
@@ -124,7 +149,8 @@ mixin StudentProgressModel on Model {
     print('update studentProgresses by Teacher');
 
     for (StudentProgress studentProgress in studentProgress) {
-      await StudentProgressDao.db.updateStudentProgressByTeacher(studentProgress);
+      await StudentProgressDao.db
+          .updateStudentProgressByTeacher(studentProgress);
     }
 
     _isLoading = false;

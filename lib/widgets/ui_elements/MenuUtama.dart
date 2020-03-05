@@ -59,11 +59,11 @@ List<MenuUtamaItem> listAdminMainMenu(BuildContext context, AppModelV2 model) {
 List<MenuUtamaItem> listStudentMainMenu(BuildContext context, AppModelV2 model) {
   var menuUtamaItem = [
     MenuUtamaItem(
-        title: 'Jadwal Kelas',
+        title: 'Jadwal Belajar',
         icon: (FontAwesomeIcons.chalkboard),
         colorBox: Colors.blue,
         iconColor: Colors.white,
-        onTap: () => Navigator.pushNamed(context, '/studentScheduleList')),
+        onTap: () => Navigator.pushNamed(context, '/studentSchedule')),
     MenuUtamaItem(
         title: 'Kelasku',
         icon: Icons.class_,

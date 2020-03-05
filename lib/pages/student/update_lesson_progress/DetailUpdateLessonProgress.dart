@@ -78,6 +78,7 @@ class _DetailUpdateLessonProgressState
       title: Text(
         'Update Perkembangan Murid',
       ),
+      automaticallyImplyLeading: false,
     );
   }
 

@@ -118,8 +118,8 @@ class Header extends StatelessWidget {
                     ),
                     Spacer(),
                     IconButton(
-                      icon: Icon(Icons.edit),
-
+                      onPressed: () {},
+                      icon: Icon(Icons.edit)
                     )
                   ],
                 ),
