@@ -117,14 +117,14 @@ mixin StudentProgressModel on Model {
     }
   }
 
-  Future<bool> updateStudentProgresses(
+  Future<bool> updateStudentProgressesByTeacher(
       List<StudentProgress> studentProgress) async {
     _isLoading = true;
     notifyListeners();
-    print('update studentProgress');
+    print('update studentProgresses by Teacher');
 
     for (StudentProgress studentProgress in studentProgress) {
-      await StudentProgressDao.db.updateStudentProgress(studentProgress);
+      await StudentProgressDao.db.updateStudentProgressByTeacher(studentProgress);
     }
 
     _isLoading = false;
@@ -132,11 +132,11 @@ mixin StudentProgressModel on Model {
     return true;
   }
 
-  Future updateStudentProgress(StudentProgress studentProgress) async {
+  Future updateStudentProgressByStudent(StudentProgress studentProgress) async {
     _isLoading = true;
     notifyListeners();
-    print('update studentProgress');
-    await StudentProgressDao.db.updateStudentProgress(studentProgress);
+    print('update studentProgress by student');
+    await StudentProgressDao.db.updateStudentProgressByStudent(studentProgress);
 
     _isLoading = false;
     notifyListeners();

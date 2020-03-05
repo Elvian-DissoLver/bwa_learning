@@ -110,12 +110,21 @@ class StudentProgressDao {
     return null;
   }
 
-  Future updateStudentProgress(StudentProgress studentProgress) async {
+  Future updateStudentProgressByTeacher(StudentProgress studentProgress) async {
     print("updateStudentProgress");
     final db = await database;
 
     await db.query(
         "UPDATE journalstudentprogress SET QuantitativeScore=${studentProgress.quantitativeScore} WHERE ID=${studentProgress.studentProgressID}");
+    print('sukses update studentProgress');
+  }
+
+  Future updateStudentProgressByStudent(StudentProgress studentProgress) async {
+    print("updateStudentProgress");
+    final db = await database;
+
+    await db.query(
+        "UPDATE journalstudentprogress SET studentPercentSense=${studentProgress.studentPercentSense}, studentComment='${studentProgress.studentComment}' WHERE ID=${studentProgress.studentProgressID}");
     print('sukses update studentProgress');
   }
 }

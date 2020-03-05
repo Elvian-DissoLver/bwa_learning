@@ -522,7 +522,7 @@ class _TeacherUpdateStudentProgressState
             'Anda yakin untuk memperbarui data?',
             () => {
                   model
-                      .updateStudentProgresses(studentProgressList)
+                      .updateStudentProgressesByTeacher(studentProgressList)
                       .then((onValue) {
                     if (onValue) {
                       SuccessDialog('Data telah berhasil diperbarui', () {

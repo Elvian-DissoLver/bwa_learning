@@ -14,6 +14,10 @@ mixin UserModel on Model {
     return _user;
   }
 
+  bool get isLoading {
+    return _isLoading;
+  }
+
   Future<bool> findUserByEmail(String email) async {
     _isLoading = true;
     notifyListeners();

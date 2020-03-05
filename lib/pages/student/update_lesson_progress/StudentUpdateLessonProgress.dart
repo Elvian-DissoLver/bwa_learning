@@ -231,14 +231,13 @@ class _StudentUpdateLessonProgressState
             });
 
 
-//            model
-//                .fetchStudentByInstitutionId(institutionId)
-//                .catchError((onError) {
-//              MessageDialog.show(context, 'Terjadi kesalahan $onError',
-//                  'Coba ulangi lagi!', () => Navigator.of(context).pop());
-//            });
-//
-            print('studentId: '+model.currentStudent.studentID);
+            model
+                .fetchStudentByInstitutionId(institutionId)
+                .catchError((onError) {
+              MessageDialog.show(context, 'Terjadi kesalahan $onError',
+                  'Coba ulangi lagi!', () => Navigator.of(context).pop());
+            });
+
             model
                 .fetchStudentProgressByClassIdTopicIDAndStudentId(
                     selectLevelClass.classId, selectTopic.topicID, model.currentStudent.studentID)
@@ -325,11 +324,11 @@ class _StudentUpdateLessonProgressState
       shrinkWrap: true,
       itemCount: model.studentProgresses.length,
       itemBuilder: (BuildContext context, int index) {
+        print('find');
         print(index);
         StudentProgress studentProgress = model.studentProgresses[index];
         int indexStudent =
-            model.students.indexWhere((t) => t.id == studentProgress.studentID);
-        print('find');
+            model.students.indexWhere((t) => t.studentID == studentProgress.studentID.toString());
         if (indexStudent > -1) {
           print('indexStudent: $indexStudent');
           studentProgressList.add(studentProgress);
@@ -539,7 +538,7 @@ class _StudentUpdateLessonProgressState
             'Anda yakin untuk memperbarui data?',
             () => {
                   model
-                      .updateStudentProgresses(studentProgressList)
+                      .updateStudentProgressesByTeacher(studentProgressList)
                       .then((onValue) {
                     if (onValue) {
                       SuccessDialog('Data telah berhasil diperbarui', () {
